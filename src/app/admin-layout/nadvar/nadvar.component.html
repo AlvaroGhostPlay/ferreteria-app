@@ -1,0 +1,37 @@
+<nav class="nadvar-color">
+  <div class="contenedor barra-navegacion">
+    <div class="nadvar-logo">
+        <a href="">
+            <img src="../../../img/logo.png" alt="Logo de la ferretería">
+        </a>
+    </div>
+    <div class="menu">
+
+    @for(group of visibleMenu; track $index) {
+        <div class="menu-group">
+        <!-- Título del grupo (el que queda visible) -->
+            <a class="menu-title-btn"
+            [routerLink]="group.ulrBase"
+            routerLinkActive="active">
+            {{ group.title }}
+            </a>
+
+        <!-- Dropdown (solo aparece en hover) -->
+        @if (group.items.length > 0) {
+        <div class="menu-dropdown">
+                @for (item of group.items; track $index) {
+                <a
+            class="menu-item"
+            [routerLink]="item.route"
+            routerLinkActive="active"
+          >
+            {{ item.label }}
+          </a>
+            } 
+        </div>
+    }
+      </div>
+    }
+    </div>
+  </div>
+</nav>

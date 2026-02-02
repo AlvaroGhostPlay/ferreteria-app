@@ -1,0 +1,36 @@
+@use '../base/variables' as v;
+
+.quick-actions{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    .quick-actions--title{
+        font-size: 3rem;
+        font-weight: 600;
+        margin: 1rem 0;
+        color: v.$blanco;
+    }
+
+    .quick-actions--actions{
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        justify-content: space-between;
+
+        .quick-action--image{
+            background-image: url(../img/logo.png);
+            width: 15rem;
+            height: 15rem;
+            background-size: contain;
+            background-repeat: no-repeat;
+            cursor: pointer;
+        }
+
+        .quick-actions--action{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+}

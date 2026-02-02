@@ -1,0 +1,120 @@
+@use '../base/variables' as v;
+
+.nadvar-color{
+  background-color: v.$secundario;
+  position: relative;
+  z-index: 50;
+  margin: 0;
+  padding: 0;
+
+  height: 80px;           // define altura real del navbar
+  display: flex;
+  align-items: center;
+}
+
+.menu {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between; // lo que quieres para meter logo luego
+  align-items: stretch;
+}
+
+/* Cada sección */
+.menu-group {
+  position: relative;
+  height: 100%;  
+}
+
+/* Botón del título (visible siempre) */
+.menu-title-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  font-weight: 600;
+  opacity: 0.9;
+  color: v.$blanco;
+  padding: 2.5rem 2rem;
+  border-radius: .8rem;
+  transition: background 0.3s;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+
+  // para que se sienta clickable
+  &:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* Dropdown oculto por defecto */
+.menu-dropdown {
+  position: absolute;
+  top: calc(100%); // debajo del título
+  left: 50%;
+  transform: translateX(-50%); // centrar respecto al título
+
+  max-width: 22rem;
+  padding: 0.8rem;
+  border-radius: 1rem;
+
+  background-color: v.$secundario; // o un color un poco más oscuro si tienes variable
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  z-index: 999; // sobre el contenido del body
+}
+
+/* Mostrar dropdown al pasar el cursor por el grupo */
+.menu-title-btn:hover + .menu-dropdown,
+.menu-dropdown:hover {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Links dentro del dropdown */
+.menu-item {
+  text-decoration: none;
+  padding: 0.6rem 1rem;
+  border-radius: .8rem;
+  color: v.$blanco;
+  text-align: left;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.menu-item.active {
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+
+.barra-navegacion{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 2rem;
+}
+
+.nadvar-logo{
+    max-width: 20rem;
+}
