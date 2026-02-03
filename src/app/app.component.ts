@@ -4,7 +4,7 @@ import { NadvarComponent } from "./admin-layout/nadvar/nadvar.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NadvarComponent],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html'
 })
 export class AppComponent {

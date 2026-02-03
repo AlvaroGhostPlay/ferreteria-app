@@ -1,0 +1,57 @@
+<div class="contenedor">
+    <div class="header">
+      <h1 class="color-blanco cliente-titulo">Mantenimiento de Clientes</h1>
+      <div class="bnt-rigth">
+        <button class="btn btn-primary" type="button">
+        Agregar cliente
+      </button>
+      </div>
+      
+</div>
+
+<div class="page">
+  <div class="card">
+
+    <div class="table-wrapper">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="color-blanco">Nombre</th>
+            <th class="color-blanco">Correo Electrónico</th>
+            <th class="color-blanco">Teléfono</th>
+            <th class="color-blanco">Eliminar</th>
+            <th class="color-blanco">Editar</th>
+          </tr>
+        </thead>
+
+        <tbody>
+            @for(c of clientes; track c) {
+                <tr>
+                    <td class="color-blanco">{{ c.nombre }}</td>
+                    <td class="color-blanco">{{ c.email }}</td>
+                    <td class="color-blanco">{{ c.telefono }}</td>
+                    <td class="actions">
+                    <button class="btn btn-success" type="button">
+                     Eliminar
+                    </button>
+                    </td>
+                    <td>
+                         <button class="btn btn-danger" type="button">
+                     Editar
+                    </button>
+                    </td>     
+          </tr>
+            }
+          
+            @if (clientes.length === 0) {
+                <tr>
+            <td colspan="4" class="empty">No hay clientes registrados.</td>
+                </tr> 
+            }
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>

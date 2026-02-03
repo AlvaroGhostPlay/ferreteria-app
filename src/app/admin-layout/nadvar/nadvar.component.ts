@@ -45,7 +45,7 @@ export class NadvarComponent {
       section: 'ventas',
       ulrBase: '/auth/ventas',
       items: [
-        { label: 'Nueva venta', route: '/auth/ventas/nueva', section: 'ventas' },
+        { label: 'Nueva venta', route: '/auth/ventas/venta', section: 'ventas' },
         { label: 'Historial', route: '/auth/ventas/historial', section: 'ventas' },
         { label: 'Clientes', route: '/auth/ventas/clientes', section: 'ventas' },
       ],

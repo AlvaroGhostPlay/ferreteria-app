@@ -553,3 +553,92 @@ body > section {
   padding: 2rem;
   text-align: center;
 }
+
+.page {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem 1rem;
+}
+
+.card {
+  width: 100%;
+  background: transparent;
+  border-radius: 0.12rem;
+  box-shadow: 0 0.8rem 2.5rem rgba(0, 0, 0, 0.08);
+}
+
+.header {
+  margin-top: 2rem;
+  display: flex-box;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.header .cliente-titulo {
+  text-align: center;
+}
+.header .bnt-rigth {
+  display: flex;
+  justify-content: flex-end; /* 👉 lo manda a la derecha */
+}
+
+.table-wrapper {
+  overflow-x: auto; /* por si en pantallas pequeñas se aprieta */
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  text-align: left;
+  padding: 0.9rem 0.8rem;
+  border-bottom: 1px solid #000000;
+  white-space: nowrap;
+}
+
+.table thead th {
+  background: transparent;
+  font-weight: 700;
+}
+
+.table tbody tr:hover {
+  background: #1f212b;
+}
+
+.actions {
+  text-align: right;
+  width: 160px;
+}
+
+.empty {
+  text-align: center;
+  padding: 1.5rem;
+  color: #777;
+}
+
+/* Botones básicos */
+.btn {
+  border: none;
+  padding: 0.55rem 0.9rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: #fff;
+}
+
+.btn-danger {
+  background: #dc2626;
+  color: #fff;
+}
+
+.btn:hover {
+  filter: brightness(0.95);
+}

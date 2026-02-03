@@ -6,6 +6,11 @@ import { UsersComponent } from './admin-layout/mantenimientos/users/users.compon
 import { CatalogoComponent } from './admin-layout/mantenimientos/catalogo/catalogo.component';
 import { MantenimientosComponent } from './admin-layout/mantenimientos/mantenimientos.component';
 import { RolesComponent } from './admin-layout/mantenimientos/roles/roles.component';
+import { VentasComponent } from './admin-layout/ventas/ventas.component';
+import { VentaComponent } from './admin-layout/ventas/venta/venta.component';
+import { PedidoComponent } from './admin-layout/ventas/pedido/pedido.component';
+import { HistorialComponent } from './admin-layout/ventas/historial/historial.component';
+import { ClientesComponent } from './admin-layout/ventas/clientes/clientes.component';
 
 const isAdminMatch = true;
 export const routes: Routes = [
@@ -29,6 +34,11 @@ export const routes: Routes = [
       { path: 'mantenimientos/usuarios', component: UsersComponent },
       { path: 'mantenimientos/roles', component: RolesComponent },
       { path: 'mantenimientos/catalogos', component: CatalogoComponent },
+      { path: 'ventas', component: VentasComponent },
+      { path: 'ventas/venta', component: VentaComponent },
+      { path: 'ventas/pedido', component: PedidoComponent },
+      { path: 'ventas/historial', component: HistorialComponent },
+      { path: 'ventas/clientes', component: ClientesComponent },
     ],
     //canMatch: [isAdmin]
   },
