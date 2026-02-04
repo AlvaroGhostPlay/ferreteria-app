@@ -5,6 +5,7 @@
   justify-content: center;
   align-items: flex-start;
   padding: 2rem 1rem;
+  margin-bottom: 2.5rem;
 }
 
 .card{
@@ -28,12 +29,12 @@
 
   .bnt-rigth{
     display: flex;
-    justify-content: flex-end; /* 👉 lo manda a la derecha */
+    justify-content: flex-end;
   }
 }
 
 .table-wrapper{
-  overflow-x: auto; /* por si en pantallas pequeñas se aprieta */
+  overflow-x: auto;
 }
 
 .table{
@@ -53,10 +54,6 @@
   font-weight: 700;
 }
 
-.table tbody tr:hover{
-  background: v.$secundario;
-}
-
 .actions{
   text-align: right;
   width: 160px;
@@ -71,15 +68,16 @@
 /* Botones básicos */
 .btn{
   border: none;
-  padding: .55rem .9rem;
+  padding: 0.5rem .9rem;
   border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
 }
 
 .btn-primary{
-  background: #2563eb;
+  background: v.$azul;
   color: #fff;
+  padding: 2rem 1rem;
 }
 
 .btn-danger{
@@ -87,6 +85,31 @@
   color: #fff;
 }
 
+.btn-success{
+  background-color: v.$azul;
+  color: v.$blanco;
+}
+
+.table-header{
+  background-color: v.$secundario;
+}
+
+.table th, .table td{
+  padding: 2rem 0.8rem;
+}
+
 .btn:hover{
   filter: brightness(0.95);
+}
+
+.table tbody tr:nth-child(odd) {
+  background: rgba(255, 255, 255, 0.03);  // leve diferencia
+}
+
+.table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.table tbody tr:hover{
+  background: v.$secundario;
 }

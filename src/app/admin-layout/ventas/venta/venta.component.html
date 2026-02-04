@@ -1,1 +1,163 @@
-<p>venta works!</p>
+<div class="contenedor">
+    <div class="header">
+        <h1 class="color-blanco cliente-titulo">Nueva Venta</h1>
+    </div>
+    
+    <div class="pos-page">
+         <section class="pos-left">
+    <div class="pos-title-row">
+      <h2 class="subtitulo color-blanco">Punto de Venta</h2>
+      <div class="breadcrumb">Inicio / Ventas</div>
+    </div>
+
+    <div class="search-row">
+      <label class="label">Productos</label>
+      <input
+        class="input"
+        type="text"
+        placeholder="Ingrese el código de barras o el nombre del producto"
+        [value]="search()"
+        (input)="search.set(($any($event.target).value))"
+      />
+    </div>
+
+    <div class="total-row">
+      <div class="total-big">Total Venta: Q {{ total().toFixed(2) }}</div>
+
+      <div class="actions-row">
+        <button class="btn btn-primary" type="button" (click)="realizarVenta()">
+          🛒 Realizar Venta
+        </button>
+        <button class="btn btn-danger" type="button" (click)="vaciarListado()">
+          🗑 Vaciar Listado
+        </button>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Producto</th>
+            <th class="center">Cantidad</th>
+            <th class="right">Precio</th>
+            <th class="right">Total</th>
+            <th class="center">Opciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (it of cart(); track it.code; let i = $index) {
+            <tr>
+              <td>{{ it.code }}</td>
+              <td>{{ it.name }}</td>
+              <td class="center">
+                <div class="qty">
+                  <button type="button" class="icon-btn" (click)="decQty(i)">−</button>
+                  <span>{{ it.qty }} Und(s)</span>
+                  <button type="button" class="icon-btn" (click)="incQty(i)">+</button>
+                </div>
+              </td>
+              <td class="right">Q {{ it.price.toFixed(2) }}</td>
+              <td class="right">Q {{ (it.price * it.qty).toFixed(2) }}</td>
+              <td class="center">
+                <button class="mini-btn warn" type="button" title="Editar cantidad" (click)="incQty(i)">🛒</button>
+                <button class="mini-btn ok" type="button" title="Añadir" (click)="incQty(i)">🧺</button>
+                <button class="mini-btn danger" type="button" title="Eliminar" (click)="remove(i)">🗑</button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6" class="empty">No hay productos en el listado.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- DERECHA -->
+  <aside class="pos-right">
+    <div class="card">
+      <div class="card-header">
+        Total Venta: Q {{ total().toFixed(2) }}
+      </div>
+
+      <div class="card-body">
+        <div class="field">
+          <label>Documento *</label>
+          <select class="select" [value]="docType()" (change)="docType.set($any($event.target).value)">
+            <option>Boleta</option>
+            <option>Factura</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Tipo Pago *</label>
+          <select class="select" [value]="payType()" (change)="payType.set($any($event.target).value)">
+            <option>Efectivo</option>
+            <option>Tarjeta</option>
+            <option>Transferencia</option>
+          </select>
+        </div>
+
+        <div class="two-cols">
+          <div class="field">
+            <label>Serie</label>
+            <input class="input" [value]="serie()" (input)="serie.set($any($event.target).value)" />
+          </div>
+
+          <div class="field">
+            <label>Nro Venta</label>
+            <input class="input" [value]="nroVenta()" (input)="nroVenta.set($any($event.target).value)" />
+          </div>
+        </div>
+
+        @if (payType() === 'Efectivo') {
+          <div class="field">
+            <label>Efectivo recibido</label>
+            <input
+              class="input"
+              type="number"
+              [disabled]="efectivoExacto()"
+              [value]="efectivoRecibido()"
+              (input)="efectivoRecibido.set(+$any($event.target).value)"
+            />
+          </div>
+
+          <label class="check">
+            <input type="checkbox" [checked]="efectivoExacto()" (change)="setEfectivoExacto($any($event.target).checked)" />
+            Efectivo Exacto
+          </label>
+
+          <div class="money-line">
+            <div class="money-label">Monto Efectivo:</div>
+            <div class="money-value">Q {{ (efectivoExacto() ? total() : efectivoRecibido()).toFixed(2) }}</div>
+          </div>
+
+          <div class="money-line">
+            <div class="money-label red">Vuelto:</div>
+            <div class="money-value red">Q {{ vuelto().toFixed(2) }}</div>
+          </div>
+        }
+
+        <div class="totals">
+          <div class="tot-row">
+            <span>SUBTOTAL</span>
+            <strong>Q {{ subtotal().toFixed(2) }}</strong>
+          </div>
+          <div class="tot-row">
+            <span>IGV (18%)</span>
+            <strong>Q {{ igv().toFixed(2) }}</strong>
+          </div>
+          <div class="tot-row total">
+            <span>TOTAL</span>
+            <strong>Q {{ total().toFixed(2) }}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+    </div>
+</div>
