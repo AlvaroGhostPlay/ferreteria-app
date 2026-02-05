@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SharingDataServiceService } from '../../../../../services/sharing-data-service.service';
+import { SharingDataServiceService } from '../../../../services/sharing-data-service.service';
   type Person = {
     id: number;
   };
