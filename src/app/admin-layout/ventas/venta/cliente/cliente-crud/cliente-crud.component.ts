@@ -10,7 +10,7 @@ import { SharingDataServiceService } from '../../../../../services/sharing-data-
 })
 export class ClienteCrudComponent {
 
-  person: Person = { id: 2 };
+  person: Person = { id: 2  };
   constructor(private sharingDataService: SharingDataServiceService) { }
 
 
