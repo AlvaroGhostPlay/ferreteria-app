@@ -1,18 +1,26 @@
+@use '../base/variables' as v;
+
 .pos-page {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 80% 20%;
   gap: 1rem;
   padding: 1rem 0;
+  margin-bottom: 2rem;
 }
 
 .pos-left {
-  background: rgba(255,255,255,0.02);
+  background: transparent;
   border-radius: 10px;
   padding: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
   .subtitulo{
+    display: block;
+    margin: 0 auto;
     font-size: 3rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
+    padding-top: 2rem;
   }
 }
 
@@ -31,7 +39,14 @@
   gap: .4rem;
   margin-bottom: 1rem;
 
-  .label { font-weight: 600; opacity: .9; }
+  .label { 
+    font-weight: 600; 
+    opacity: .9; 
+  }
+}
+
+.input{
+  margin-top: 2rem;
 }
 
 .input, .select {
@@ -40,6 +55,17 @@
   border-radius: 6px;
   border: 1px solid rgba(0,0,0,.12);
   outline: none;
+  color: v.$blanco;
+  background-color: transparent;
+
+  .option{
+    background-color: v.$primario;
+    border: none;
+  }
+  &::placeholder {
+    color: v.$blanco;
+    opacity: 0.8;
+  }
 }
 
 .total-row {
@@ -48,10 +74,11 @@
   align-items: center;
   gap: 1rem;
   margin-bottom: 1rem;
+  margin-top: 3rem;
 }
 
 .total-big {
-  font-size: 1.7rem;
+  font-size: 3rem;
   font-weight: 700;
 }
 
@@ -69,11 +96,11 @@
   font-weight: 700;
 }
 
-.btn-primary { background: #1b66ff; color: #fff; }
-.btn-danger  { background: #e53935; color: #fff; }
+.btn-primary { background: #1b66ff; color: v.$blanco; }
+.btn-danger  { background: #e53935; color: v.$blanco; }
 
 .table-wrap {
-  background: #fff;
+  background: transparent;
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid rgba(0,0,0,.08);
@@ -84,17 +111,12 @@
   border-collapse: collapse;
 
   thead th {
-    background: #17a2b8;
+    background: v.$secundario;
     color: #fff;
-    padding: .85rem .75rem;
     text-align: left;
     font-weight: 700;
   }
 
-  td {
-    padding: .75rem .75rem;
-    border-top: 1px solid rgba(0,0,0,.08);
-  }
 }
 
 .center { text-align: center; }
@@ -126,7 +148,7 @@
 
 .mini-btn.ok { background: #2e7d32; color: #fff; }
 .mini-btn.warn { background: #f59e0b; color: #fff; }
-.mini-btn.danger { background: #dc2626; color: #fff; }
+.mini-btn.danger { background: v.$rojo; color: #fff; }
 
 .empty {
   text-align: center;
@@ -138,15 +160,19 @@
   border: 1px solid rgba(0,0,0,.08);
   border-radius: 8px;
   overflow: hidden;
-  background: #fff;
+  background: transparent;
 }
 
 .card-header {
-  background: #1b66ff;
+  background: v.$azul;
   color: #fff;
   font-weight: 800;
   padding: .9rem 1rem;
   text-align: center;
+}
+
+.danger{
+  color: v.$rojo;
 }
 
 .card-body {
@@ -178,10 +204,10 @@
 .money-line {
   display: flex;
   justify-content: space-between;
-  font-size: 1.05rem;
+  font-size: 2rem;
   font-weight: 800;
 
-  .red { color: #dc2626; }
+  .red { color: v.$rojo; }
 }
 
 .totals {
@@ -194,10 +220,10 @@
 .tot-row {
   display: flex;
   justify-content: space-between;
-  font-size: .95rem;
+  font-size: 2rem;
 
   &.total {
-    font-size: 1.05rem;
+    font-size: 2rem;
     font-weight: 900;
   }
 }

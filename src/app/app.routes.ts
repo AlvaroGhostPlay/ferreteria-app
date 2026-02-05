@@ -11,6 +11,7 @@ import { VentaComponent } from './admin-layout/ventas/venta/venta.component';
 import { PedidoComponent } from './admin-layout/ventas/pedido/pedido.component';
 import { HistorialComponent } from './admin-layout/ventas/historial/historial.component';
 import { ClientesComponent } from './admin-layout/ventas/clientes/clientes.component';
+import { ClienteCrudComponent } from './admin-layout/ventas/venta/cliente/cliente-crud/cliente-crud.component';
 
 const isAdminMatch = true;
 export const routes: Routes = [
@@ -39,6 +40,8 @@ export const routes: Routes = [
       { path: 'ventas/pedido', component: PedidoComponent },
       { path: 'ventas/historial', component: HistorialComponent },
       { path: 'ventas/clientes', component: ClientesComponent },
+      { path: 'ventas/clientes/edit/:id', component: ClienteCrudComponent },
+      { path: 'ventas/clientes/create', component: ClienteCrudComponent },
     ],
     //canMatch: [isAdmin]
   },

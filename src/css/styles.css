@@ -668,20 +668,25 @@ body > section {
 
 .pos-page {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 80% 20%;
   gap: 1rem;
   padding: 1rem 0;
+  margin-bottom: 2rem;
 }
 
 .pos-left {
-  background: rgba(255, 255, 255, 0.02);
+  background: transparent;
   border-radius: 10px;
   padding: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 .pos-left .subtitulo {
+  display: block;
+  margin: 0 auto;
   font-size: 3rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
+  padding-top: 2rem;
 }
 
 .pos-title-row {
@@ -709,12 +714,26 @@ body > section {
   opacity: 0.9;
 }
 
+.input {
+  margin-top: 2rem;
+}
+
 .input, .select {
   width: 100%;
   padding: 0.65rem 0.75rem;
   border-radius: 6px;
   border: 1px solid rgba(0, 0, 0, 0.12);
   outline: none;
+  color: #FFFFFF;
+  background-color: transparent;
+}
+.input .option, .select .option {
+  background-color: #303240;
+  border: none;
+}
+.input::placeholder, .select::placeholder {
+  color: #FFFFFF;
+  opacity: 0.8;
 }
 
 .total-row {
@@ -723,10 +742,11 @@ body > section {
   align-items: center;
   gap: 1rem;
   margin-bottom: 1rem;
+  margin-top: 3rem;
 }
 
 .total-big {
-  font-size: 1.7rem;
+  font-size: 3rem;
   font-weight: 700;
 }
 
@@ -746,16 +766,16 @@ body > section {
 
 .btn-primary {
   background: #1b66ff;
-  color: #fff;
+  color: #FFFFFF;
 }
 
 .btn-danger {
   background: #e53935;
-  color: #fff;
+  color: #FFFFFF;
 }
 
 .table-wrap {
-  background: #fff;
+  background: transparent;
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid rgba(0, 0, 0, 0.08);
@@ -766,15 +786,10 @@ body > section {
   border-collapse: collapse;
 }
 .table thead th {
-  background: #17a2b8;
+  background: #1f212b;
   color: #fff;
-  padding: 0.85rem 0.75rem;
   text-align: left;
   font-weight: 700;
-}
-.table td {
-  padding: 0.75rem 0.75rem;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .center {
@@ -834,15 +849,19 @@ body > section {
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 8px;
   overflow: hidden;
-  background: #fff;
+  background: transparent;
 }
 
 .card-header {
-  background: #1b66ff;
+  background: #2563eb;
   color: #fff;
   font-weight: 800;
   padding: 0.9rem 1rem;
   text-align: center;
+}
+
+.danger {
+  color: #dc2626;
 }
 
 .card-body {
@@ -876,7 +895,7 @@ body > section {
 .money-line {
   display: flex;
   justify-content: space-between;
-  font-size: 1.05rem;
+  font-size: 2rem;
   font-weight: 800;
 }
 .money-line .red {
@@ -893,9 +912,9 @@ body > section {
 .tot-row {
   display: flex;
   justify-content: space-between;
-  font-size: 0.95rem;
+  font-size: 2rem;
 }
 .tot-row.total {
-  font-size: 1.05rem;
+  font-size: 2rem;
   font-weight: 900;
 }

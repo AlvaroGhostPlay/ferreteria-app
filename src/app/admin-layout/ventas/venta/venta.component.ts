@@ -1,14 +1,8 @@
 import { Component, computed, signal } from '@angular/core';
+import { Cart } from '../../../entitie/cart';
 
 type DocType = 'Boleta' | 'Factura';
 type PayType = 'Efectivo' | 'Tarjeta' | 'Transferencia';
-
-interface CartItem {
-  code: string;
-  name: string;
-  qty: number;
-  price: number;
-}
 
 @Component({
   selector: 'app-venta',
@@ -22,64 +16,157 @@ export class VentaComponent {
   payType = signal<PayType>('Efectivo');
   serie = signal('001');
   nroVenta = signal('0000025');
-  efectivoRecibido = signal<number>(32.30);
+  efectivoRecibido = signal<number>(0);
   efectivoExacto = signal(true);
 
-    cart = signal<CartItem[]>([
-    { code: '7802800716777', name: 'Zuko Emoliente', qty: 1, price: 1.00 },
-    { code: '7750182220378', name: 'Fanta Naranja 500ml', qty: 1, price: 1.80 },
-    { code: '7501006559019', name: 'Canchita mantequilla', qty: 1, price: 3.50 },
-    { code: '7751271021999', name: 'Gloria evaporada light 400g', qty: 1, price: 5.00 },
-    { code: '7755139002809', name: 'Paisana extra 5k', qty: 1, price: 20.00 },
-    { code: '7750670014250', name: 'Big cola 400ml', qty: 1, price: 1.00 },
-  ]);
-
-  total = computed(() =>
-    this.cart().reduce((acc, it) => acc + it.qty * it.price, 0)
-  );
-
-  igv = computed(() => this.total() * 0.05);
-  subtotal = computed(() => this.total() - this.igv());
-
-  vuelto = computed(() => {
-    if (this.payType() !== 'Efectivo') return 0;
-    const recibido = this.efectivoExacto() ? this.total() : this.efectivoRecibido();
-    return Math.max(0, +(recibido - this.total()).toFixed(2));
-  });
+    cart: Cart[] =[
+    {
+      product: {
+        id: 1,
+        code: 7802800716777,
+        name: 'Zuko Emoliente',
+        stock: 50,
+        price: 1.00,
+        iva: 0.05
+      },
+      qty: 1,
+      iva: 0,
+      subtotal: 0,
+      total:0
+    },
+    {
+      product: {
+        id: 2,
+        code: 7750182220378,
+        name: 'Fanta Naranja 500ml',
+        stock: 30,
+        price: 1.80,
+        iva: 0.05
+      },
+      qty: 1,
+      iva: 0,
+      subtotal: 0,
+      total:0
+    },
+    {
+      product: {
+        id: 3,
+        code: 7501006559019,
+        name: 'Canchita mantequilla',
+        stock: 25,
+        price: 3.50,
+        iva: 0.05
+      },
+      qty: 1,
+      iva: 0,
+      subtotal: 0,
+      total:0
+    },
+    {
+      product: {
+        id: 4,
+        code: 7751271021999,
+        name: 'Gloria evaporada light 400g',
+        stock: 45,
+        price: 5.00,
+        iva: 0.05
+      },
+      qty: 1,
+      subtotal: 0,
+      iva: 0,
+      total:0
+    }
+  ];
 
   setEfectivoExacto(v: boolean) {
     this.efectivoExacto.set(v);
-    if (v) this.efectivoRecibido.set(+this.total().toFixed(2));
+    if (v) this.efectivoRecibido.set(+this.getTotalGeneralTemp());
   }
 
   incQty(i: number) {
-    const items = [...this.cart()];
+    const items = [...this.cart];
     items[i] = { ...items[i], qty: items[i].qty + 1 };
-    this.cart.set(items);
-    if (this.efectivoExacto()) this.efectivoRecibido.set(+this.total().toFixed(2));
+    this.cart = items;
+    if (this.efectivoExacto()) this.efectivoRecibido.set(+this.getTotalGeneral());
   }
 
   decQty(i: number) {
-    const items = [...this.cart()];
+    const items = [...this.cart];
     items[i] = { ...items[i], qty: Math.max(1, items[i].qty - 1) };
-    this.cart.set(items);
-    if (this.efectivoExacto()) this.efectivoRecibido.set(+this.total().toFixed(2));
+    this.cart = items;
+    if (this.efectivoExacto()) this.efectivoRecibido.set(+this.getTotalGeneral());
   }
 
   remove(i: number) {
-    const items = [...this.cart()];
+    const items = [...this.cart];
     items.splice(i, 1);
-    this.cart.set(items);
-    if (this.efectivoExacto()) this.efectivoRecibido.set(+this.total().toFixed(2));
+    this.cart = items;
+    if (this.efectivoExacto()) this.efectivoRecibido.set(+this.getTotalGeneral());
   }
 
   vaciarListado() {
-    this.cart.set([]);
+    this.cart = [];
   }
 
   realizarVenta() {
     // Luego aquí llamas a tu backend
     alert('Venta lista (demo).');
   }
+
+  calcSubtotal(item: Cart) {
+    item.subtotal = item.qty * item.product.price;
+    return item.subtotal.toFixed(2);
+  }
+
+  calcIva(item: Cart) {
+    item.iva = item.subtotal * item.product.iva;
+    return item.iva.toFixed(2);
+  }
+
+  calcTotal(item: Cart) {
+    item.total = item.subtotal + item.iva;
+    return item.total.toFixed(2);
+  }
+
+  getTotalGeneral() {
+    return this.cart.reduce((acc, it) => acc + it.total, 0).toFixed(2);
+  }
+
+  getIvaGeneral() {
+    return this.cart.reduce((acc, it) => acc + it.iva, 0).toFixed(2);
+  }
+
+  getSubtotalGeneral() {
+    return this.cart.reduce((acc, it) => acc + it.subtotal, 0).toFixed(2);
+  }
+
+  getTotalGeneralTemp() {
+      return this.cart.reduce((acc, it) => acc + it.product.price * it.qty + ( it.product.price * 0.05 * it.qty), 0).toFixed(2);
+    }
+
+  getIvaGeneralTemp() {
+    return this.cart.reduce((acc, it) => acc + ( it.product.price * 0.05 * it.qty), 0).toFixed(2);
+  }
+
+  getSubtotalGeneralTemp() {
+    return this.cart.reduce((acc, it) => acc + it.product.price * it.qty, 0).toFixed(2);
+  }
+
+  montoRecibido(): number {
+  return this.efectivoExacto() ? +this.getTotalGeneralTemp() : this.efectivoRecibido();
+}
+
+vuelto(): number {
+  const total = +this.getTotalGeneralTemp();
+  const recibido = this.montoRecibido();
+  return Math.max(0, +(recibido - total).toFixed(2));
+}
+
+faltante(): number {
+  const total = +this.getTotalGeneralTemp();
+  const recibido = this.montoRecibido();
+  return Math.max(0, +(total - recibido).toFixed(2));
+}
+  
 }
 
