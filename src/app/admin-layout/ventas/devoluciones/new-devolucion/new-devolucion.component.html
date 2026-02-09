@@ -1,31 +1,16 @@
 <div class="contenedor_contenido">
   <div class="header">
-    <h1 class="color-blanco cliente-titulo">Nueva Venta</h1>
+    <h1 class="color-blanco cliente-titulo">Nueva Devolución</h1>
   </div>
 
   <div class="pos-page">
     <section class="pos-left">
       <div class="pos-title-row">
-        <h2 class="subtitulo color-blanco">Punto de Venta</h2>
-      </div>
-
-      <div class="search-row">
-        <label class="label color-blanco">Productos</label>
-        <input class="input" type="text" placeholder="Ingrese el código de barras o el nombre del producto"
-          [value]="search()" (input)="search.set(($any($event.target).value))" />
+        <h2 class="subtitulo color-blanco">Factura</h2>
       </div>
 
       <div class="total-row">
         <div class="total-big color-blanco">Total Venta: Q {{ getTotalGeneralTemp() }}</div>
-
-        <div class="actions-row">
-          <button class="btn btn-primary" type="button" (click)="realizarVenta()">
-            🛒 Realizar Venta
-          </button>
-          <button class="btn btn-danger" type="button" (click)="vaciarListado()">
-            🗑 Vaciar Listado
-          </button>
-        </div>
       </div>
 
       <div class="table-wrap">
@@ -51,9 +36,7 @@
 
               <td class="center">
                 <div class="qty">
-                  <button type="button" class="icon-btn" (click)="decQty(i)">−</button>
                   <span>{{ it.qty }} Und(s)</span>
-                  <button type="button" class="icon-btn" (click)="incQty(i)">+</button>
                 </div>
               </td>
 

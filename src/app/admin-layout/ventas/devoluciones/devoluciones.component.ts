@@ -1,19 +1,13 @@
 import { Component } from '@angular/core';
-import { Router, RouterLink } from "@angular/router";
-import { SharingDataServiceService } from '../../../services/sharing-data-service.service';
+import { RouterLink } from "@angular/router";
 
 @Component({
-  selector: 'app-clientes',
+  selector: 'app-devoluciones',
   imports: [RouterLink],
-  templateUrl: './clientes.component.html'
+  templateUrl: './devoluciones.component.html'
 })
-export class ClientesComponent {
-
-  constructor(private sharingDataService: SharingDataServiceService,
-    private router: Router
-  ){}
-
-  clientes = [
+export class DevolucionesComponent {
+   clientes = [
   { id: 1, nombre: 'Juan Pérez', email: 'juan.perez@example.com', telefono: '555-1234' },
   { id: 2, nombre: 'María López', email: 'maria.lopez@example.com', telefono: '555-7777' },
   { id: 3, nombre: 'Carlos Ruiz', email: 'carlos.ruiz@example.com', telefono: '555-9000' },
@@ -25,8 +19,4 @@ export class ClientesComponent {
   { id: 9, nombre: 'Roberto Jiménez', email: 'roberto.jimenez@example.com', telefono: '555-6666' },
   { id: 10, nombre: 'Laura Hernández', email: 'laura.hernandez@example.com', telefono: '555-7777' },
 ]; 
-
-deleteClient(id: number){
-    this.clientes = [...this.clientes.filter(c => c.id !== id)];
-}
 }

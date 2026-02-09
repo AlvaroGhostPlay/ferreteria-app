@@ -1,0 +1,12 @@
+<div class="contenedor">
+    <div class="header">
+        @if (movimiento.idMovimiento === 0) {
+        <h1 class="color-blanco cliente-titulo">No se encontro Movimientos</h1>
+    } @else {
+        <h1 class="color-blanco cliente-titulo">Movimientos</h1>
+    }
+    </div>
+    <p>{{movimiento.idMovimiento}}</p>
+    <p>{{movimiento.product}}</p>
+    <p>{{movimiento.fecha}}</p>
+</div>

@@ -1,1 +1,61 @@
-<p>users works!</p>
+<div class="contenedor">
+    <div class="header">
+      <h1 class="color-blanco cliente-titulo">Mantenimiento de Usuarios</h1>
+      <div class="bnt-rigth">
+        <button class="btn btn-primary" type="button" [routerLink]="['/auth/mantenimiento/usuairos/create']">
+        Agregar Usuario
+      </button>
+      </div>
+  </div>
+
+<div class="page">
+  <div class="card">
+
+    <div class="table-wrapper">
+      <table class="table">
+        <thead class="table-header">
+          <tr>
+            <th class="color-blanco">Nombre</th>
+            <th class="color-blanco">Correo Electrónico</th>
+            <th class="color-blanco">Teléfono</th>
+            <th class="color-blanco">Editar</th>
+            <th class="color-blanco">Eliminar</th>
+          </tr>
+        </thead>
+
+        <tbody>
+            @for(c of clientes; track c) {
+                <tr>
+                    <td class="color-blanco">{{ c.nombre }}</td>
+                    <td class="color-blanco">{{ c.email }}</td>
+                    <td class="color-blanco">{{ c.telefono }}</td>
+                    <td class="actions">
+                    <button class="btn btn-success" type="button" [routerLink]="['/auth/mantenimiento/usuairos/edit/'+c.id]">
+                     Editar
+                    </button>
+                    </td>
+                    <td>
+                         <button class="btn btn-danger" type="button" (click)="deleteClient(c.id)">
+                     Eliminar
+                    </button>
+                    </td>     
+          </tr>
+            }
+          
+            @if (clientes.length === 0) {
+                <tr>
+            <td colspan="5" class="empty">No hay clientes registrados.</td>
+                </tr> 
+            }
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<pageable
+  [page]="page"
+  [totalPages]="totalPages"
+  (pageChange)="onPageChange($event)">
+</pageable>
+</div>

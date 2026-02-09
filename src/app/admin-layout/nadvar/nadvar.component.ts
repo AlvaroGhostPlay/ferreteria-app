@@ -4,12 +4,12 @@ import { RouterLink } from '@angular/router';
 type MenuSectionId =
   | 'dashboard'
   | 'ventas'
-  | 'caja'
-  | 'supervision'
   | 'inventario'
   | 'productos'
-  | 'mantenimientos'
   | 'reportes'
+  | 'caja'
+  | 'mantenimientos'
+  | 'supervision'
   | 'config';
 
 interface MenuItem {
@@ -41,22 +41,22 @@ export class NadvarComponent {
       ],
     },
     {
-      title: 'Ventas',
-      section: 'ventas',
-      ulrBase: '/auth/ventas',
-      items: [
-        { label: 'Nueva venta', route: '/auth/ventas/venta', section: 'ventas' },
-        { label: 'Historial', route: '/auth/ventas/historial', section: 'ventas' },
-        { label: 'Clientes', route: '/auth/ventas/clientes', section: 'ventas' },
-      ],
-    },
-    {
       title: 'Caja',
       section: 'caja',
       ulrBase: '/caja',
       items: [
         { label: 'Apertura/Cierre', route: '/caja/corte', section: 'caja' },
         { label: 'Movimientos', route: '/caja/movimientos', section: 'caja' },
+      ],
+    },
+    {
+      title: 'Mantenimientos',
+      section: 'mantenimientos',
+      ulrBase: '/auth/mantenimientos',
+      items: [
+        { label: 'Usuarios', route: '/auth/mantenimientos/usuarios', section: 'mantenimientos' },
+        { label: 'Roles', route: '/auth/mantenimientos/roles', section: 'mantenimientos' },
+        { label: 'Catálogos', route: '/auth/mantenimientos/catalogos', section: 'mantenimientos' },
       ],
     },
     {
@@ -69,22 +69,22 @@ export class NadvarComponent {
       ],
     },
     {
+      title: 'Ventas',
+      section: 'ventas',
+      ulrBase: '/auth/ventas',
+      items: [
+        { label: 'Nueva venta', route: '/auth/ventas/venta', section: 'ventas' },
+        { label: 'Historial', route: '/auth/ventas/historial', section: 'ventas' },
+        { label: 'Clientes', route: '/auth/ventas/clientes', section: 'ventas' },
+      ],
+    },
+    {
       title: 'Productos',
       section: 'productos',
       ulrBase: '/productos',
       items: [
         { label: 'Listado', route: '/productos', section: 'productos' },
         { label: 'Precios', route: '/productos/precios', section: 'productos' },
-      ],
-    },
-    {
-      title: 'Mantenimientos',
-      section: 'mantenimientos',
-      ulrBase: '/auth/mantenimientos',
-      items: [
-        { label: 'Usuarios', route: '/auth/mantenimientos/usuarios', section: 'mantenimientos' },
-        { label: 'Roles', route: '/auth/mantenimientos/roles', section: 'mantenimientos' },
-        { label: 'Catálogos', route: '/auth/mantenimientos/catalogos', section: 'mantenimientos' },
       ],
     },
     {

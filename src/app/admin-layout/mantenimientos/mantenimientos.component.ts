@@ -6,5 +6,4 @@ import { Component } from '@angular/core';
   templateUrl: './mantenimientos.component.html'
 })
 export class MantenimientosComponent {
-
 }

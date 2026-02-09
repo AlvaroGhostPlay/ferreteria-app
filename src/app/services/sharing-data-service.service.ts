@@ -8,11 +8,7 @@ type User = {
 })
 export class SharingDataServiceService {
 
-  private _ClienteCreateventEmitter = new EventEmitter<any>();
 
   constructor() { }
 
-  get ClienteCreateventEmitter(){
-    return this._ClienteCreateventEmitter;
-  }
 }

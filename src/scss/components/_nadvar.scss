@@ -13,11 +13,9 @@
 }
 
 .menu {
-  width: 100%;
-  height: 100%;
   display: flex;
-  justify-content: space-between; // lo que quieres para meter logo luego
-  align-items: stretch;
+  align-items: center;
+  gap: 2.5rem; // separación ENTRE opciones
 }
 
 /* Cada sección */
@@ -110,7 +108,7 @@
 
 .barra-navegacion{
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     gap: 2rem;
 }

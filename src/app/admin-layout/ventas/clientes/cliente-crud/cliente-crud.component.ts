@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SharingDataServiceService } from '../../../../services/sharing-data-service.service';
+import { ActivatedRoute } from '@angular/router';
   type Person = {
     id: number;
   };
@@ -10,15 +11,24 @@ import { SharingDataServiceService } from '../../../../services/sharing-data-ser
 })
 export class ClienteCrudComponent {
 
-  person: Person = { id: 2  };
-  constructor(private sharingDataService: SharingDataServiceService) { }
-
+  person!: Person ;
+  constructor(private sharingDataService: SharingDataServiceService,
+    private route :ActivatedRoute 
+  ) { }
 
   ngOnInit() {
-    this.sharingDataService.ClienteCreateventEmitter.subscribe((data: any) => {
-      this.person = data;
+    const id = Number(this.route.snapshot.paramMap.get('id'));
 
-    });
+    if (id) {
+      // modo edición
+      this.person = { id };
+      console.log('Editando cliente con ID:', id);
+    } else {
+      // modo creación
+      this.person = { id: 0 };
+      console.log('Creando cliente');
+    }
+    console.log(this.person.id)
   }
 }
 

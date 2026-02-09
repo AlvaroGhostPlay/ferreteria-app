@@ -422,11 +422,9 @@ body > section {
 }
 
 .menu {
-  width: 100%;
-  height: 100%;
   display: flex;
-  justify-content: space-between;
-  align-items: stretch;
+  align-items: center;
+  gap: 2.5rem;
 }
 
 /* Cada sección */
@@ -508,7 +506,7 @@ body > section {
 
 .barra-navegacion {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   gap: 2rem;
 }

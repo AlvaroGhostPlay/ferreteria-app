@@ -1,1 +1,48 @@
-<p>historial works!</p>
+<div class="contenedor">
+    <div class="header">
+      <h1 class="color-blanco cliente-titulo">Historial de Movimientos</h1>
+  </div>
+
+<div class="page">
+  <div class="card">
+
+    <div class="table-wrapper">
+      <table class="table">
+        <thead class="table-header">
+          <tr>
+            <th class="color-blanco">Id Movimiento</th>
+            <th class="color-blanco">Nombre</th>
+            <th class="color-blanco">Cantidad</th>
+            <th class="color-blanco">Fecha</th>
+            <th class="color-blanco">Ver</th>
+          </tr>
+        </thead>
+
+        <tbody>
+            @for(m of movimientos; track m) {
+                <tr>
+                    <td class="color-blanco">{{ m.idMovimiento }}</td>
+                    <td class="color-blanco">{{ m.personName }}</td>
+                    <td class="color-blanco">{{ m.total }}</td>
+                    <td class="color-blanco">{{ m.fecha }}</td>
+                    <td class="actions">
+                    <button class="btn btn-success" type="button" [routerLink]="['/auth/ventas/historial/'+m.idMovimiento]">
+                     Ver
+                    </button>
+                    </td>   
+          </tr>
+            }
+          
+            @if (movimientos.length === 0) {
+                <tr>
+            <td colspan="4" class="empty">No hay Movimientos</td>
+                </tr> 
+            }
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+

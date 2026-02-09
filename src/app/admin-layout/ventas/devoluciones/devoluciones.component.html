@@ -1,9 +1,9 @@
 <div class="contenedor">
     <div class="header">
-      <h1 class="color-blanco cliente-titulo">Mantenimiento de Clientes</h1>
+      <h1 class="color-blanco cliente-titulo">Devoluciones</h1>
       <div class="bnt-rigth">
-        <button class="btn btn-primary" type="button" [routerLink]="['/auth/ventas/clientes/create']">
-        Agregar cliente
+        <button class="btn btn-primary" type="button" [routerLink]="['/auth/ventas/devoluciones/new']">
+        Nueva Devolución
       </button>
       </div>
   </div>
@@ -15,11 +15,10 @@
       <table class="table">
         <thead class="table-header">
           <tr>
+            <th class="color-blanco">Id devolución</th>
+            <th class="color-blanco">Id Factura</th>
             <th class="color-blanco">Nombre</th>
-            <th class="color-blanco">Correo Electrónico</th>
-            <th class="color-blanco">Teléfono</th>
-            <th class="color-blanco">Editar</th>
-            <th class="color-blanco">Eliminar</th>
+            <th class="color-blanco">Ver</th>
           </tr>
         </thead>
 
@@ -30,21 +29,16 @@
                     <td class="color-blanco">{{ c.email }}</td>
                     <td class="color-blanco">{{ c.telefono }}</td>
                     <td class="actions">
-                    <button class="btn btn-success" type="button" [routerLink]="['/auth/ventas/clientes/edit/'+c.id]">
-                     Editar
+                    <button class="btn btn-success" type="button" [routerLink]="['/auth/ventas/devoluciones/view/'+c.id]">
+                     Ver
                     </button>
-                    </td>
-                    <td>
-                         <button class="btn btn-danger" type="button" (click)="deleteClient(c.id)">
-                     Eliminar
-                    </button>
-                    </td>     
+                    </td>   
           </tr>
             }
           
             @if (clientes.length === 0) {
                 <tr>
-            <td colspan="5" class="empty">No hay clientes registrados.</td>
+            <td colspan="4" class="empty">No hay clientes registrados.</td>
                 </tr> 
             }
           
@@ -54,3 +48,4 @@
   </div>
 </div>
 </div>
+
