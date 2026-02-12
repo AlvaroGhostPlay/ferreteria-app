@@ -53,9 +53,5 @@
     </div>
   </div>
 </div>
-<pageable
-  [page]="page"
-  [totalPages]="totalPages"
-  (pageChange)="onPageChange($event)">
-</pageable>
+<auth-paginator [url]="url" [paginator]="paginator"></auth-paginator>
 </div>

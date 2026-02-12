@@ -1,13 +1,23 @@
 import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { PageableComponent } from '../../pageable/pageable.component';
+import {PaginatorComponent} from '../../paginator/paginator.component'
 
 @Component({
   selector: 'users',
-  imports: [RouterLink, PageableComponent],
+  imports: [RouterLink, PaginatorComponent],
   templateUrl: './users.component.html',
-})
+})  
 export class UsersComponent {
+
+  paginator: any = {
+      totalPages: 0, 
+      number: 0
+    };
+  url:string = '/auth/mantenimientos/usuarios/page/:page';
+
+  ngOnInit() {
+
+  }
 
   constructor(private router: Router){}
   clientes = [
@@ -28,14 +38,7 @@ deleteClient(id: number){
     this.clientes = [...this.clientes.filter(c => c.id !== id)];
 }
 
-page = 1;
-totalPages = 5;
-
 onPageChange(page: number) {
-  this.page = page;
-  this.router.navigate([], {
-    queryParams: { page },
-    queryParamsHandling: 'merge'
-  });
+
 }
 }

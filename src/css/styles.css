@@ -410,6 +410,10 @@ body > section {
   color: #FFFFFF;
 }
 
+.cursor {
+  cursor: pointer;
+}
+
 .nadvar-color {
   background-color: #1f212b;
   position: relative;
@@ -915,4 +919,21 @@ body > section {
 .tot-row.total {
   font-size: 2rem;
   font-weight: 900;
+}
+
+.paginator {
+  display: flex;
+  margin: 1rem 0 0 0;
+  padding: 0;
+  gap: 2rem;
+}
+.paginator .paginator__list {
+  text-decoration: none;
+  list-style: none;
+}
+.paginator .paginator__list a {
+  color: #FFFFFF;
+}
+.paginator .paginator__list a:hover {
+  color: #000000;
 }

@@ -39,10 +39,12 @@ export const routes: Routes = [
 
       { path: 'mantenimientos', component: MantenimientosComponent },
       { path: 'mantenimientos/usuarios', component: UsersComponent },
+      { path: 'mantenimientos/usuarios/page/:page', component: UsersComponent },
       { path: 'mantenimiento/usuairos/create', component: UsuariosCrudComponent },
       { path: 'mantenimiento/usuairos/edit/:id', component: UsuariosCrudComponent },
 
       { path: 'mantenimientos/roles', component: RolesComponent },
+      { path: 'mantenimientos/roles/page/:page', component: RolesComponent },
       { path: 'mantenimientos/roles/create', component: RolesCrudComponent },
       { path: 'mantenimientos/roles/edit/:id', component: RolesCrudComponent },
       { path: 'mantenimientos/catalogos', component: CatalogoComponent },
@@ -56,6 +58,7 @@ export const routes: Routes = [
       { path: 'ventas/historial/:id', component: HistorialVistaComponent },
 
       { path: 'ventas/clientes', component: ClientesComponent },
+      { path: 'ventas/clientes/page/:page', component: ClientesComponent },
       { path: 'ventas/clientes/edit/:id', component: ClienteCrudComponent },
       { path: 'ventas/clientes/create', component: ClienteCrudComponent },
 

@@ -30,5 +30,9 @@ export class ClienteCrudComponent {
     }
     console.log(this.person.id)
   }
+
+  view(id: string) {
+
+  }
 }
 

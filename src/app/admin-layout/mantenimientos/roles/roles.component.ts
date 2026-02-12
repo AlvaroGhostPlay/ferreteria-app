@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { PageableComponent } from '../../pageable/pageable.component';
+import { PaginatorComponent } from '../../paginator/paginator.component';
 
 type Cliente = {
   id: number;
@@ -38,44 +38,29 @@ const MOCK_CLIENTES: Cliente[] = [
 
 @Component({
   selector: 'roles',
-  imports: [PageableComponent, RouterLink],
+  imports: [PaginatorComponent, RouterLink],
   templateUrl: './roles.component.html'
 })
 
 export class RolesComponent {
 constructor(private router: Router){}
 
-page = 1;
-pageSize = 5; // 👈 cuantos registros por página
-totalPages = 1;
+  paginator: any = {
+      totalPages: 0, 
+      number: 0
+    };
+  url:string = '/auth/mantenimientos/roles/page/:page';
 
 ngOnInit() {
-  this.loadClientes(this.page);
+  
 }
 
 
   clientes: Cliente[] = [];
 
-  loadClientes(page: number) {
-  const start = (page - 1) * this.pageSize;
-  const end = start + this.pageSize;
-
-  // simulación backend
-  this.clientes = MOCK_CLIENTES.slice(start, end);
-
-  this.totalPages = Math.ceil(MOCK_CLIENTES.length / this.pageSize);
-}
-
-
 deleteClient(id: number){
     this.clientes = [...this.clientes.filter(c => c.id !== id)];
 }
 
-onPageChange(page: number) {
-  this.page = page;
-
-  // simula request al backend
-  this.loadClientes(page);
-}
 }
 

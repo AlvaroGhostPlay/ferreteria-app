@@ -17,7 +17,7 @@
           <tr>
             <th class="color-blanco">Nombre</th>
             <th class="color-blanco">Correo Electrónico</th>
-            <th class="color-blanco">Teléfono</th>
+            <th class="color-blanco">Hablilitado</th>
             <th class="color-blanco">Editar</th>
             <th class="color-blanco">Eliminar</th>
           </tr>
@@ -25,21 +25,21 @@
 
         <tbody>
             @for(c of clientes; track c) {
-                <tr>
-                    <td class="color-blanco">{{ c.nombre }}</td>
+                  <tr class="cursor" (click)="view(c.personId)">
+                    <td class="color-blanco">{{ c.name }}</td>
                     <td class="color-blanco">{{ c.email }}</td>
-                    <td class="color-blanco">{{ c.telefono }}</td>
+                    <td class="color-blanco">{{ c.enabled }}</td>
                     <td class="actions">
-                    <button class="btn btn-success" type="button" [routerLink]="['/auth/ventas/clientes/edit/'+c.id]">
+                    <button class="btn btn-success" type="button" [routerLink]="['/auth/ventas/clientes/edit/'+c.personId]">
                      Editar
                     </button>
                     </td>
                     <td>
-                         <button class="btn btn-danger" type="button" (click)="deleteClient(c.id)">
+                         <button class="btn btn-danger" type="button" (click)="deleteClient(c.personId)">
                      Eliminar
                     </button>
                     </td>     
-          </tr>
+                  </tr>
             }
           
             @if (clientes.length === 0) {
@@ -53,4 +53,5 @@
     </div>
   </div>
 </div>
+<auth-paginator [paginator]="paginator" [url]="url"></auth-paginator>
 </div>
