@@ -8,8 +8,8 @@ import { Person } from '../entitie/person';
 })
 export class PersonService {
 
-  uri: String = 'http://localhost:62292/person-clients/';
-  uri2: String = 'http://localhost:62292/';
+  uri: String = 'http://localhost:64690/person-clients/';
+  uri2: String = 'http://localhost:64690/';
 
   constructor(private http:HttpClient) { }
 
