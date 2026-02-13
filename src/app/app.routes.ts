@@ -59,7 +59,7 @@ export const routes: Routes = [
 
       { path: 'ventas/clientes', component: ClientesComponent },
       { path: 'ventas/clientes/page/:page', component: ClientesComponent },
-      { path: 'ventas/clientes/edit/:id', component: ClienteCrudComponent },
+      { path: 'ventas/clientes/edit', component: ClienteCrudComponent },
       { path: 'ventas/clientes/create', component: ClienteCrudComponent },
 
       { path: 'ventas/devoluciones', component: DevolucionesComponent },

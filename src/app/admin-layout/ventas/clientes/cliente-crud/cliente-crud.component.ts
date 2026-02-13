@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import { SharingDataServiceService } from '../../../../services/sharing-data-service.service';
 import { ActivatedRoute } from '@angular/router';
-  type Person = {
-    id: number;
-  };
+import { Router } from '@angular/router';
+import { ClientNatural } from '../../../../entitie/client-natural';
+import { ClientLegal } from '../../../../entitie/client-legal';
+import { Person } from '../../../../entitie/person';
+import { PersonService } from '../../../../services/person.service';
+  
 @Component({
   selector: 'cliente-crud',
   imports: [],
@@ -11,24 +14,40 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ClienteCrudComponent {
 
+  clientNatural!: ClientNatural;
+  clientLegal!: ClientLegal
+
+  id!: string; 
+
   person!: Person ;
-  constructor(private sharingDataService: SharingDataServiceService,
-    private route :ActivatedRoute 
+  constructor(
+    private sharingDataService: SharingDataServiceService,
+    private route :ActivatedRoute,
+    private router: Router,
+    private personService: PersonService
   ) { }
 
   ngOnInit() {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-
-    if (id) {
-      // modo edición
-      this.person = { id };
-      console.log('Editando cliente con ID:', id);
-    } else {
-      // modo creación
-      this.person = { id: 0 };
-      console.log('Creando cliente');
+    this.sharingDataService.updateClient$.subscribe(id => {
+    this.id = id;
+    console.log('ID recibido:', this.id);
+    if(this.id != ''){
+      this.personService.getClient(id).subscribe({
+        next: (client : any) =>{
+          console.log(client)
+          this.person = client;
+          if(client.documentType.documentType === 'N'){
+            this.clientNatural = client.clientNatual;
+          } else{
+            this.clientLegal = client.clientLegal;
+          }
+        },
+        error: (err: any) =>{
+          console.log(err);
+        }
+      })
     }
-    console.log(this.person.id)
+    });
   }
 
   view(id: string) {

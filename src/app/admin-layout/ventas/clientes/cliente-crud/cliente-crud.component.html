@@ -1,9 +1,16 @@
 <div class="contenedor">
     <div class="header">
-        @if (person.id === 0) {
+        @if (id !== '') {
         <h1 class="color-blanco cliente-titulo">Crear Cliente</h1>
     } @else {
         <h1 class="color-blanco cliente-titulo">Editar Cliente</h1>
     }
     </div>
+    @if(person.person.personTypeId === 'N'){
+        <div>
+            <label for="">Primer Nombre</label>
+        </div>
+    } @else {
+        
+    }
 </div>

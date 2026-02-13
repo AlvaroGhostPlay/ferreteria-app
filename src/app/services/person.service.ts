@@ -17,7 +17,7 @@ export class PersonService {
     return this.http.get<any>(this.uri+page);
   }
 
-  getClient(id:string): Observable<Person>{
-    return this.http.get<Person>(this.uri2+id);
+  getClient(id:string): Observable<any>{
+    return this.http.get<any>(this.uri2+id);
   }
 }

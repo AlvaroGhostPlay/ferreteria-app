@@ -30,7 +30,7 @@
                     <td class="color-blanco">{{ c.email }}</td>
                     <td class="color-blanco">{{ c.enabled }}</td>
                     <td class="actions">
-                    <button class="btn btn-success" type="button" [routerLink]="['/auth/ventas/clientes/edit/'+c.personId]">
+                    <button class="btn btn-success" type="button" (click)="update(c.personId)">
                      Editar
                     </button>
                     </td>

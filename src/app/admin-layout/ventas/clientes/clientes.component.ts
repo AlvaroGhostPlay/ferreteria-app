@@ -54,4 +54,9 @@ this.service.getClient(id).subscribe({
   error: (err: any) => console.log(err)
   });
 }
+
+update(id: string){
+    this.sharingDataService.emitUpdateClient(id);
+    this.router.navigate(['/auth/ventas/clientes/edit'])
+  }
 }
