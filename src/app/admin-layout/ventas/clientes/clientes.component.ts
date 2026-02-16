@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { SharingDataServiceService } from '../../../services/sharing-data-service.service';
+import { SharingDataServiceService, Mode } from '../../../services/sharing-data-service.service';
 import { PersonService } from '../../../services/person.service';
 import { Person } from '../../../entitie/person';
 import { PaginatorComponent } from '../../paginator/paginator.component';
 
 @Component({
   selector: 'app-clientes',
-  imports: [RouterLink, PaginatorComponent],
+  imports: [ PaginatorComponent],
   templateUrl: './clientes.component.html'
 })
 export class ClientesComponent {
 
-  paginator!: any;
+  paginator: any = { totalPages: 0, number: 0 };
   url:string = '/auth/ventas/clientes/page';
 
   person!: Person;
@@ -32,6 +32,7 @@ ngOnInit() {
 
     this.service.getClients(page).subscribe({
       next: (res: any) => {
+        console.log(res);
         this.clientes = res.content;
         this.paginator = {
           totalPages: res.totalPages,
@@ -47,16 +48,17 @@ deleteClient(id: string){
     this.clientes = [...this.clientes.filter(c => c.personId!== id)];
 }
 view(id: string) {
-this.service.getClient(id).subscribe({
-  next: (res: Person) => {
-    console.log(res);
-  },
-  error: (err: any) => console.log(err)
-  });
+  this.sharingDataService.emitUpdateClientInfo({ id, mode: 'view' });
+  this.router.navigate(['/auth/ventas/clientes/info']);
 }
 
-update(id: string){
-    this.sharingDataService.emitUpdateClient(id);
-    this.router.navigate(['/auth/ventas/clientes/edit'])
-  }
+update(id: string) {
+  this.sharingDataService.emitUpdateClientInfo({ id, mode: 'edit' });
+  this.router.navigate(['/auth/ventas/clientes/edit']);
+}
+
+create(id: string) {
+  this.sharingDataService.emitUpdateClientInfo({ id, mode: 'create' });
+  this.router.navigate(['/auth/ventas/clientes/create']);
+}
 }

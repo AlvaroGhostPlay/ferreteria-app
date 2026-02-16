@@ -12,6 +12,7 @@ import { PedidoComponent } from './admin-layout/ventas/pedido/pedido.component';
 import { HistorialComponent } from './admin-layout/ventas/historial/historial.component';
 import { ClientesComponent } from './admin-layout/ventas/clientes/clientes.component';
 import { ClienteCrudComponent } from './admin-layout/ventas/clientes/cliente-crud/cliente-crud.component';
+import { InfoClientsCrudComponent } from './admin-layout/ventas/clientes/info-clients-crud/info-clients-crud.component';
 import { HistorialVistaComponent } from './admin-layout/ventas/historial/historial-vista/historial-vista.component';
 import { DevolucionesComponent } from './admin-layout/ventas/devoluciones/devoluciones.component';
 import { NewDevolucionComponent } from './admin-layout/ventas/devoluciones/new-devolucion/new-devolucion.component';
@@ -61,6 +62,9 @@ export const routes: Routes = [
       { path: 'ventas/clientes/page/:page', component: ClientesComponent },
       { path: 'ventas/clientes/edit', component: ClienteCrudComponent },
       { path: 'ventas/clientes/create', component: ClienteCrudComponent },
+      { path: 'ventas/clientes/info', component: ClienteCrudComponent },
+      { path: 'ventas/clientes/address/create', component: InfoClientsCrudComponent },
+      { path: 'ventas/clientes/address/edit', component: InfoClientsCrudComponent },
 
       { path: 'ventas/devoluciones', component: DevolucionesComponent },
       { path: 'ventas/devoluciones/new', component: NewDevolucionComponent },

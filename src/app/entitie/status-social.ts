@@ -1,4 +1,4 @@
 export class SocuialStatus{
-    idSocialStatus!: string;
+    socialStatusId!: string;
     socialStatus!: string;
 }

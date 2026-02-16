@@ -1,4 +1,4 @@
 export class DocumentType{
-    documentType!: String 
-    documentTypeId!: String
+    documentType!: string 
+    documentTypeId!: string
 }

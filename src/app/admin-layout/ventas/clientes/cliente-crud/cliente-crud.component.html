@@ -1,16 +1,218 @@
 <div class="contenedor">
-    <div class="header">
-        @if (id !== '') {
-        <h1 class="color-blanco cliente-titulo">Crear Cliente</h1>
+  <div class="header">
+    @if (mode === 'create') {
+    <h1 class="color-blanco cliente-titulo">Crear Cliente</h1>
+    } @else if (mode === 'edit') {
+    <h1 class="color-blanco cliente-titulo">Editar Cliente</h1>
     } @else {
-        <h1 class="color-blanco cliente-titulo">Editar Cliente</h1>
+      <h1 class="color-blanco cliente-titulo">Ver Cliente</h1>
     }
+  </div>
+  
+  <div class="shadow-box">
+<div class="block-form-person-type">
+    <div class="campos">
+      <div>
+        <label class="color-blanco" for="">Tipo de Documento</label>
+
+      </div>
+      <div class="campo-input">
+        <select class="form-select" name="documentTypeId" [(ngModel)]="documentTypeSelected"
+          (ngModelChange)="onDocumentTypeChange($event)" [disabled]="isEdit && hasValue(documentTypeSelected)" required>
+          <option value="" disabled>Seleccione opción</option>
+          @for (dt of documentTypes; track dt.documentTypeId) {
+          <option [value]="dt.documentTypeId">{{ dt.documentType }}</option>
+          }
+        </select>
+      </div>
     </div>
-    @if(person.person.personTypeId === 'N'){
-        <div>
-            <label for="">Primer Nombre</label>
-        </div>
-    } @else {
-        
+
+    <div class="campos">
+      <div>
+        <label class="color-blanco">Documento</label>
+      </div>
+      <div class="campo-input">
+        <input [(ngModel)]="client.person.documentPerson" type="text"
+          [readonly]="isEdit && hasValue(client.person.documentPerson)">
+      </div>
+    </div>
+    <div class="campos span-2">
+      <div>
+        <label class="color-blanco">Email</label>
+      </div>
+      <div class="campo-input">
+        <input [(ngModel)]="client.person.email" type="email">
+      </div>
+    </div>
+    <div class="campos">
+      <div>
+        <label class="color-blanco">Tipo de Persona</label>
+
+      </div>
+      <div class="campo-input">
+        <select class="form-select" name="personTypeId" [(ngModel)]="selectedPersonTypeId"
+          (ngModelChange)="onPersonTypeChange($event)" [disabled]="isEdit && hasValue(selectedPersonTypeId)" required>
+          <option value="" disabled>Seleccione opción</option>
+          @for (pt of personTypes; track pt.personTypeId) {
+          <option [value]="pt.personTypeId">{{ pt.personType }}</option>
+          }
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="block-form">
+    @if (selectedPersonTypeId === 'N') {
+    <div class="campos">
+      <div>
+        <label class="color-blanco">Primer Nombre</label>
+      </div>
+      <div class="campo-input">
+        <input [(ngModel)]="client.personNatural.firstName" type="text">
+      </div>
+    </div>
+
+
+    <div class="campos">
+      <div>
+        <label class="color-blanco">Segundo Nombre</label>
+
+      </div>
+      <div class="campo-input">
+        <input [(ngModel)]="client.personNatural.middleName" type="text">
+      </div>
+    </div>
+
+
+    <div class="campos">
+      <div>
+        <label class="color-blanco">Tercer Nombre</label>
+
+      </div>
+      <div class="campo-input">
+        <input [(ngModel)]="client.personNatural.thirdName" type="text">
+      </div>
+    </div>
+
+    <div class="campos">
+      <div>
+        <label class="color-blanco">Apellido Paterno</label>
+
+      </div>
+      <div class="campo-input">
+        <input [(ngModel)]="client.personNatural.lastName" type="text">
+      </div>
+    </div>
+
+    <div class="campos">
+      <div>
+        <label class="color-blanco">Apellido Materno</label>
+
+      </div>
+      <div class="campo-input">
+        <input [(ngModel)]="client.personNatural.seccondLastName" type="text">
+      </div>
+    </div>
+    <div class="campos">
+      <div>
+        <label class="color-blanco">Género</label>
+
+      </div>
+      <div class="campo-input">
+        <select name="genero" [(ngModel)]="generSelected" (ngModelChange)="onGenerChange($event)"
+          [disabled]="isEdit && hasValue(generSelected)" required>
+          <option value="" disabled>Seleccione opción</option>
+          @for (g of geners; track g.generId) {
+          <option [value]="g.generId">{{ g.gener }}</option>
+          }
+        </select>
+      </div>
+
+    </div>
+
+
+    @if (client.personNatural.gener.generId !== 'M') {
+
+    <div class="campos">
+      <div>
+        <label class="color-blanco">Apellido de Casada</label>
+
+      </div>
+      <div class="campo-input">
+        <input [(ngModel)]="client.personNatural.marriedLastName" type="text">
+      </div>
+    </div>
     }
+
+
+    <div class="campos">
+      <div>
+        <label class="color-blanco" class="color-blanco">Estatus Social</label>
+      </div>
+      <div class="campo-input">
+        <select class="form-select" name="socialStatus" [(ngModel)]="socialStatusSelected"
+          (ngModelChange)="onSocialStatusChange($event)" required>
+          <!-- Placeholder: seleccionado solo cuando el valor es '' -->
+          <option value="" disabled>
+            Seleccione opción
+          </option>
+
+          <!-- Opciones reales -->
+          @for (pt of statusSocials; track pt.socialStatusId) {
+          <option [value]="pt.socialStatusId">
+            {{ pt.socialStatus }}
+          </option>
+          }
+        </select>
+      </div>
+    </div>
+
+    } @else {
+    }
+
+  </div>
+
+  <div class="block-form-person-type">
+    <div class="campos">
+      <div>
+        <label class="color-blanco" class="color-blanco">Habilitado</label>
+      </div>
+      <div class="campo-input">
+        <select class="form-select" name="enabled" [(ngModel)]="enabled" (ngModelChange)="onEnabledChange($event)"
+          required>
+          <!-- Placeholder: seleccionado solo cuando el valor es '' -->
+          <option value="" disabled>
+            Seleccione opción
+          </option>
+
+          <!-- Opciones reales -->
+          @for (pt of types; track pt) {
+          <option [value]="pt">
+            {{ pt ? 'Sí' : 'No' }}
+          </option>
+          }
+        </select>
+      </div>
+    </div>
+  </div>
+
+  @if(mode !== 'view') {
+      <div class="flex">
+     <div class="btn-right">
+    <button class="btn btn-primary" (click)="save()">Guardar</button>
+
+
+
+
+
+
+  </div>
+  </div>
+  }
+
+  </div>
 </div>
+
+@if (mode === 'view') {
+    <info-clients-crud></info-clients-crud>
+  }

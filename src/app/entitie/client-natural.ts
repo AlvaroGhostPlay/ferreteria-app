@@ -8,9 +8,9 @@ export class ClientNatural{
     middleName!: string;
     thirdName!: string;
     lastName!: string;
-    secondLastName!: string;
+    seccondLastName!: string;
     marriedLastName!: string;
     gener!: Gener;
-    socialStatus!: SocuialStatus;
+    statusSocial!: SocuialStatus;
 
 }

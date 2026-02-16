@@ -97,3 +97,9 @@ body > section {
 .cursor{
   cursor: pointer;
 }
+
+.flex{
+  display: flex;
+  justify-content: flex-end;  // manda el botón a la derecha
+  width: 100%;
+}

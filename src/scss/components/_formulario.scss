@@ -1,0 +1,84 @@
+@use '../base/variables' as v;
+
+.block-form {
+  margin: 2rem 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  .campos{
+    display: grid;
+    grid-template-columns: 35% 65%;
+    gap: 1rem;
+    align-items: center;
+
+    .campo-input{
+      width: 100%;
+
+      input,
+      select {
+        width: 100%;
+        box-sizing: border-box;
+      }
+    }
+  }
+}
+
+.block-form-person-type {
+  margin: 6rem 0; // arriba, derecha, abajo, izquierda
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+
+  .campos{
+    display: grid;
+    grid-template-columns: 35% 65%;
+    gap: 1rem;
+    align-items: center;
+
+    .campo-input{
+      width: 100%;
+
+      input,
+      select {
+        width: 100%;
+        box-sizing: border-box;
+      }
+    }
+  }
+}
+
+.span-2 {
+  grid-column: 1 / -1;  // ocupa las 2 columnas
+  width: 100%;
+}
+
+.campos.span-2 {
+  grid-template-columns: 17% 83%; // o 15/85 si quieres más largo
+}
+
+.aline-center{
+  text-align: center;
+}
+
+.btn-center{
+  display: flex;
+  justify-content: center;
+}
+
+.btn-right{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.shadow-box {
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  margin-bottom: 2rem;
+  
+}
+
+.titulo-formulario{
+  margin-top: 6rem;
+  text-align: center;
+}

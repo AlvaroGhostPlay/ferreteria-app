@@ -1,57 +1,62 @@
 <div class="contenedor">
-    <div class="header">
-      <h1 class="color-blanco cliente-titulo">Mantenimiento de Clientes</h1>
-      <div class="bnt-rigth">
-        <button class="btn btn-primary" type="button" [routerLink]="['/auth/ventas/clientes/create']">
+  <div class="header">
+    <h1 class="color-blanco cliente-titulo">Mantenimiento de Clientes</h1>
+    <div class="bnt-rigth">
+      <button class="btn btn-primary" type="button" (click)="create('')">
         Agregar cliente
       </button>
-      </div>
-  </div>
-
-<div class="page">
-  <div class="card">
-
-    <div class="table-wrapper">
-      <table class="table">
-        <thead class="table-header">
-          <tr>
-            <th class="color-blanco">Nombre</th>
-            <th class="color-blanco">Correo Electrónico</th>
-            <th class="color-blanco">Hablilitado</th>
-            <th class="color-blanco">Editar</th>
-            <th class="color-blanco">Eliminar</th>
-          </tr>
-        </thead>
-
-        <tbody>
-            @for(c of clientes; track c) {
-                  <tr class="cursor" (click)="view(c.personId)">
-                    <td class="color-blanco">{{ c.name }}</td>
-                    <td class="color-blanco">{{ c.email }}</td>
-                    <td class="color-blanco">{{ c.enabled }}</td>
-                    <td class="actions">
-                    <button class="btn btn-success" type="button" (click)="update(c.personId)">
-                     Editar
-                    </button>
-                    </td>
-                    <td>
-                         <button class="btn btn-danger" type="button" (click)="deleteClient(c.personId)">
-                     Eliminar
-                    </button>
-                    </td>     
-                  </tr>
-            }
-          
-            @if (clientes.length === 0) {
-                <tr>
-            <td colspan="5" class="empty">No hay clientes registrados.</td>
-                </tr> 
-            }
-          
-        </tbody>
-      </table>
     </div>
   </div>
-</div>
-<auth-paginator [paginator]="paginator" [url]="url"></auth-paginator>
+
+  <div class="page">
+    <div class="card">
+
+      <div class="table-wrapper">
+        <table class="table">
+          <thead class="table-header">
+            <tr>
+              <th class="color-blanco">Nombre</th>
+              <th class="color-blanco">Correo Electrónico</th>
+              <th class="color-blanco">Teléfonos</th>
+              <th class="color-blanco">Habilitado</th>
+              <th class="color-blanco">Editar</th>
+              <th class="color-blanco">Eliminar</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for(c of clientes; track c) {
+            <tr class="cursor" (click)="view(c.personId)">
+              <td class="color-blanco">{{ c.name }}</td>
+              <td class="color-blanco">{{ c.email }}</td>
+              <td class="color-blanco">@for(phone of c.phones; track phone) {
+                <div>{{ phone }}</div>
+                }
+              </td>
+              <td class="color-blanco">{{ c.enabled }}</td>
+              <td class="actions">
+                <button class="btn btn-success" type="button" (click)="update(c.personId)">
+                  Editar
+                </button>
+              </td>
+              <td>
+                <button class="btn btn-danger" type="button" (click)="deleteClient(c.personId)">
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+            }
+
+            @if (clientes.length === 0) {
+            <tr>
+              <td colspan="6" class="empty">No hay clientes registrados.</td>
+            </tr>
+            }
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <auth-paginator [paginator]="paginator" [url]="url"></auth-paginator>
 </div>

@@ -1,4 +1,4 @@
 export class Gener{
-    idGener!: string;
+    generId!: string;
     gener!: string;
 }
