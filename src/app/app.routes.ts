@@ -18,14 +18,18 @@ import { DevolucionesComponent } from './admin-layout/ventas/devoluciones/devolu
 import { NewDevolucionComponent } from './admin-layout/ventas/devoluciones/new-devolucion/new-devolucion.component';
 import { UsuariosCrudComponent } from './admin-layout/mantenimientos/users/usuarios-crud/usuarios-crud.component';
 import { RolesCrudComponent } from './admin-layout/mantenimientos/roles/roles-crud/roles-crud.component';
+import { LoginComponent } from './login/login.component';
+import { AuthCallbackComponent } from './admin-layout/auth-callback/auth-callback.component';
 
 const isAdminMatch = true;
 export const routes: Routes = [
      {
     path: '',
-    redirectTo: '/auth/inicio',
+    redirectTo: '/login',
     pathMatch: 'full'
   },
+
+  { path: 'login', component: LoginComponent },
 
   // privado para los admins
   {
@@ -36,6 +40,7 @@ export const routes: Routes = [
     },
     children: [
       { path: 'inicio', component: DashboardComponent },
+      { path: 'callback', component: AuthCallbackComponent  },
       { path: 'productos', component: ProductsComponent },
 
       { path: 'mantenimientos', component: MantenimientosComponent },

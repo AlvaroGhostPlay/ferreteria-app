@@ -10,8 +10,8 @@ import { PersonCudDTO } from '../dto/client-request';
 })
 export class PersonService {
 
-  uri: string = 'http://localhost:58278/person-clients/';
-  uri2: string = 'http://localhost:58278';
+  uri: string = 'http://localhost:8090/api/persons/person-clients/';
+  uri2: string = 'http://localhost:8090/api/persons';
 
   constructor(private http:HttpClient) { }
 
@@ -20,6 +20,7 @@ export class PersonService {
   }
 
   getClients(page:string): Observable<any>{
+    console.log('TOKEN =>', sessionStorage.getItem('access_token'));
     return this.http.get<any>(this.uri+page);
   }
 
