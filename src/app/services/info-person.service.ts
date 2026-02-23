@@ -9,7 +9,7 @@ import { AddressPhoneRequest } from '../dto/address-phone-request';
 })
 export class InfoPersonService {
 
-  uri: string = 'http://localhost:49748/api/info-person/';
+  uri: string = 'http://localhost:8090/api/info-person/';
 
   constructor(private http:HttpClient) { }
 

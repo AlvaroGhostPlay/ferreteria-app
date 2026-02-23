@@ -1,0 +1,15 @@
+<form (ngSubmit)="onSubmit()" #f="ngForm" class="login contenedor-login">
+  <h2 class="color-blanco margin">Login</h2>
+
+  <label class="color-blanco margin">Usuario</label>
+  <input class="margin" name="username" [(ngModel)]="username" required />
+
+  <label class="color-blanco margin">Contraseña</label>
+  <input class="margin" name="password" [(ngModel)]="password" type="password" required />
+
+  <button class="margin" type="submit">Entrar</button>
+
+  @if (error) {
+    <p style="color:red">{{ error }}</p>
+  }
+</form>

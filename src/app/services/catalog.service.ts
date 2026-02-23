@@ -14,7 +14,7 @@ import { PhoneType } from '../entitie/phone-type';
 })
 export class CatalogService {
 
-  uri: String = 'http://localhost:54320/api/catalog/';
+  uri: String = 'http://localhost:8090/api/catalog/';
 
   constructor(private http:HttpClient) { }
 

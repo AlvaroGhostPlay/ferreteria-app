@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+import { decodeJwt } from './auth-jwt-util.guard';
+import { isTokenExpired } from './auth-jwt-util.guard';
 
 type TokenResponse = {
   access_token: string;
@@ -106,6 +108,13 @@ export class AuthServiceService {
   private storeTokens(t: TokenResponse) {
     sessionStorage.setItem('access_token', t.access_token);
     if (t.refresh_token) sessionStorage.setItem('refresh_token', t.refresh_token);
+    
+    const payload = decodeJwt(t.access_token);
+
+    //Guardo los reoles que viene del access token para usarlo en los guards
+    if (payload?.roles) {
+      sessionStorage.setItem('roles', JSON.stringify(payload.roles));
+    }
   }
 
   private randomString(length: number) {
@@ -124,4 +133,12 @@ export class AuthServiceService {
       .replace(/\//g, '_')
       .replace(/=+$/, '');
   }
+
+isAuthenticated(): boolean {
+  const token = this.accessToken;
+
+  if (!token) return false;
+
+  return !isTokenExpired(token);
+}
 }
