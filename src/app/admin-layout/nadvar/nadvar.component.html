@@ -25,6 +25,11 @@
         }
       </div>
       }
+      @if (auth) {
+        <div class="menu-group">
+        <a class="menu-title-btn" (click)="logout()">Salir</a>
+      </div>
+      }
     </div>
   </div>
 </nav>

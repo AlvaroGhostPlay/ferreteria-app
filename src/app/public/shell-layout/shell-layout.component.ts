@@ -6,6 +6,7 @@ import { NadvarComponent } from '../../admin-layout/nadvar/nadvar.component';
 
 @Component({
   selector: 'app-shell-layout',
+  standalone: true,
   imports: [RouterOutlet, NadvarComponent, FooterAdminComponent],
   templateUrl: './shell-layout.component.html'
 })

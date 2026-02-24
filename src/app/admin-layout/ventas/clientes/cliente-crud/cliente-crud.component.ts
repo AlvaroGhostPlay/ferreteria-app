@@ -335,14 +335,5 @@ client: Client = {
   this.generSelected = '';
   this.documentTypeSelected = '';
   this.enabled = false;
-}
-
-private syncSelectionsFromClient() {
-  this.selectedPersonTypeId = String(this.client.person.person.personTypeId ?? '');
-  this.socialStatusSelected = String(this.client.personNatural.statusSocial.socialStatusId ?? '');
-  this.generSelected = String(this.client.personNatural.gener.generId ?? '');
-  this.documentTypeSelected = String(this.client.person.documentType.documentTypeId ?? '');
-  this.enabled = !!this.client.person.enabled;
-}
-  
+}  
 }

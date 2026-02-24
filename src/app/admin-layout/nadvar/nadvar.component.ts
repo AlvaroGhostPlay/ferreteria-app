@@ -1,6 +1,6 @@
 import { Component} from '@angular/core';
-import { RouterLink } from '@angular/router';
-
+import { Router, RouterLink } from '@angular/router';
+import { AuthServiceService } from '../../auth/auth-service.service'
 type MenuSectionId =
   | 'dashboard'
   | 'ventas'
@@ -98,7 +98,21 @@ export class NadvarComponent {
     },
   ];
 
+  constructor(
+    private authService: AuthServiceService,
+    private router: Router
+  ){}
+
+  get auth(): boolean{
+    return this.authService.isAuthenticated()
+  }
+
   get visibleMenu(): MenuGroup[] {
     return this.menu;
+  }
+
+  logout():void{
+    this.authService.logoutApi();
+    this.router.navigate(['/login']);
   }
 }

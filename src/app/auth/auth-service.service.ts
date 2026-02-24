@@ -94,10 +94,12 @@ export class AuthServiceService {
   }
 
   logoutApi(): Observable<void> {
+    sessionStorage.setItem('refresh_token', '')
+    sessionStorage.setItem('access_token', '')
     return this.http.post<void>(
       `${this.authServer}/api/auth/logout`,
       {},
-      { withCredentials: true }
+      { withCredentials: true },
     );
   }
 

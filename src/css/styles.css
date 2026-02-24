@@ -525,20 +525,121 @@ body > section {
   max-width: 20rem;
 }
 
-.contenedor-login {
-  width: 95%;
-  max-width: 60rem;
-  margin: 0 auto;
+.login-page {
+  min-height: calc(100vh - 120px); /* si luego lo metes en layout */
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: radial-gradient(1200px 600px at 10% 10%, rgba(255, 255, 255, 0.08), transparent), radial-gradient(900px 500px at 90% 20%, rgba(255, 255, 255, 0.06), transparent);
 }
 
-.margin {
-  margin-top: 4rem;
+.login-card {
+  width: min(420px, 100%);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 22px;
+  backdrop-filter: blur(10px);
 }
 
-.login {
+.brand {
   display: flex;
-  flex-direction: column;
+  gap: 14px;
   align-items: center;
+  margin-bottom: 18px;
+}
+
+.logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.title h1 {
+  margin: 0;
+  font-size: 22px;
+  color: #fff;
+}
+
+.title p {
+  margin: 4px 0 0 0;
+  opacity: 0.8;
+  color: #fff;
+  font-size: 13px;
+}
+
+.form {
+  display: grid;
+  gap: 10px;
+}
+
+label {
+  color: #fff;
+  opacity: 0.85;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+input {
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(0, 0, 0, 0.18);
+  color: #fff;
+  padding: 0 12px;
+  outline: none;
+}
+
+input:focus {
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+button {
+  margin-top: 10px;
+  height: 44px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error {
+  margin: 10px 0 0;
+  color: #ffb4b4;
+  font-size: 13px;
+}
+
+.extra {
+  margin-top: 14px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.extra a {
+  color: #fff;
+  opacity: 0.85;
+  text-decoration: none;
+}
+
+.extra a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.extra span {
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .quick-actions {

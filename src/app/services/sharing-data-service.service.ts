@@ -12,6 +12,7 @@ export type ClientInfoState = {
 export class SharingDataServiceService {
   private readonly KEY = 'editClientId';
   private readonly KEYINFO = 'editClientInfoId';
+  private readonly KEYUSER= 'crudUser';
 
   private editClientIdSubject = new BehaviorSubject<string>(
     sessionStorage.getItem(this.KEY) ?? ''
@@ -21,8 +22,13 @@ export class SharingDataServiceService {
     this.readClientInfoState()
   );
 
+    private crudUser = new BehaviorSubject<ClientInfoState>(
+    this.readUserClientInfoState()
+  );
+
   editClientId$ = this.editClientIdSubject.asObservable();
   editClientInfoId$ = this.editClientInfoIdSubject.asObservable();
+  userCrud$ = this.crudUser.asObservable();
 
   // ✅ Solo ID (si querés mantenerlo)
   emitUpdateClient(id: string) {
@@ -44,7 +50,7 @@ export class SharingDataServiceService {
   emitUpdateClientInfo(obj: ClientInfoState) {
     const safe: ClientInfoState = {
       id: String(obj?.id ?? ''),
-      mode: (obj?.mode ?? 'create') as Mode, // ✅ ya NO forces edit/create
+      mode: (obj?.mode ?? 'create') as Mode,
     };
 
     sessionStorage.setItem(this.KEYINFO, JSON.stringify(safe));
@@ -77,4 +83,45 @@ export class SharingDataServiceService {
       return { id: '', mode: 'create' };
     }
   }
+
+
+
+
+  emitUserId(obj: ClientInfoState) {
+    const safe: ClientInfoState = {
+      id: String(obj?.id ?? ''),
+      mode: (obj?.mode ?? 'create') as Mode,
+    };
+
+    sessionStorage.setItem(this.KEYUSER, JSON.stringify(safe));
+    this.crudUser.next(safe);
+  }
+
+  clearUserId() {
+    sessionStorage.removeItem(this.KEYUSER);
+    this.crudUser.next({ id: '', mode: 'create' });
+  }
+
+  getUserInfo(): ClientInfoState {
+    return this.crudUser.value;
+  }
+
+  private readUserClientInfoState(): ClientInfoState {
+    const raw = sessionStorage.getItem(this.KEYUSER);
+    if (!raw) return { id: '', mode: 'create' };
+
+    try {
+      const parsed = JSON.parse(raw);
+      const mode = parsed?.mode as Mode;
+
+      return {
+        id: String(parsed?.id ?? ''),
+        mode: (mode === 'edit' || mode === 'view' || mode === 'create') ? mode : 'create',
+      };
+    } catch {
+      sessionStorage.removeItem(this.KEYUSER);
+      return { id: '', mode: 'create' };
+    }
+  }
+  
 }

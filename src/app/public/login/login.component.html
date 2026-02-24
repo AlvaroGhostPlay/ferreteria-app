@@ -1,15 +1,48 @@
-<form (ngSubmit)="onSubmit()" #f="ngForm" class="login contenedor-login">
-  <h2 class="color-blanco margin">Login</h2>
+<div class="login-page">
+  <div class="login-card">
+    <div class="brand">
+      <div class="logo">F</div>
+      <div class="title">
+        <h1>Bienvenido</h1>
+        <p>Inicia sesión para continuar</p>
+      </div>
+    </div>
 
-  <label class="color-blanco margin">Usuario</label>
-  <input class="margin" name="username" [(ngModel)]="username" required />
+    <form (ngSubmit)="onSubmit()" #f="ngForm" class="form" autocomplete="off">
+      <label>Usuario</label>
+      <input
+        name="username"
+        [(ngModel)]="username"
+        required
+        autocomplete="username"
+        placeholder="tu.usuario"
+        autocomplete="off"
+        autocapitalize="off"
+        autocorrect="off"
+        spellcheck="false"
+      />
 
-  <label class="color-blanco margin">Contraseña</label>
-  <input class="margin" name="password" [(ngModel)]="password" type="password" required />
+      <label>Contraseña</label>
+      <input
+        name="password"
+        [(ngModel)]="password"
+        type="password"
+        required
+        autocomplete="current-password"
+        placeholder="••••••••"
+      />
 
-  <button class="margin" type="submit">Entrar</button>
+      <button type="submit" [disabled]="f.invalid">Entrar</button>
 
-  @if (error) {
-    <p style="color:red">{{ error }}</p>
-  }
-</form>
+      @if (error) {
+        <p class="error">{{ error }}</p>
+      }
+    </form>
+
+    <div class="extra">
+      <a href="#" (click)="$event.preventDefault()">¿Olvidaste tu contraseña?</a>
+      <span>•</span>
+      <a href="#" (click)="$event.preventDefault()">Soporte</a>
+    </div>
+  </div>
+</div>

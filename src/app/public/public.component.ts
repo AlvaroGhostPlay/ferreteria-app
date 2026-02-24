@@ -5,7 +5,8 @@ import { NadvarComponent } from '../admin-layout/nadvar/nadvar.component';
 
 @Component({
   selector: 'app-public',
-  imports: [RouterOutlet, NadvarComponent, FooterAdminComponent],
+  standalone: true,
+  imports: [RouterOutlet,],
   templateUrl: './public.component.html'
 })
 export class PublicComponent {
