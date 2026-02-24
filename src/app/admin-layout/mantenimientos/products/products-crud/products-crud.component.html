@@ -1,51 +1,24 @@
 <div class="contenedor">
   <div class="header">
     @if (mode === 'create') {
-    <h1 class="color-blanco cliente-titulo">Crear Usuario</h1>
+    <h1 class="color-blanco cliente-titulo">Crear Producto</h1>
     } @else if (mode === 'edit') {
-    <h1 class="color-blanco cliente-titulo">Editar Usuario</h1>
+    <h1 class="color-blanco cliente-titulo">Editar Producto</h1>
     } @else {
-    <h1 class="color-blanco cliente-titulo">Ver Usuario</h1>
+    <h1 class="color-blanco cliente-titulo">Ver Producto</h1>
     }
   </div>
 
 
   <div class="shadow-box">
     <div class="block-form-person-type">
-      <div class="campos autocomplete campos span-2">
-        <label class="color-blanco">Buscar Cliente</label>
-
-        <input type="text" placeholder="Escriba nombre o documento" [(ngModel)]="searchTerm" (input)="onSearchClient()"
-          (focus)="showDropdown = true" (ngModelChange)="onDeselect($event)" />
-
-        @if (showDropdown && clients.length > 0) {
-        <div class="dropdown-table">
-          <table>
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Documento</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (c of clients; track c.personId) {
-              <tr (click)="selectClient(c)">
-                <td>{{ c.name }}</td>
-                <td>{{ c.documentPerson }}</td>
-              </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-        }
-      </div>
-      @if (user.userId !== '' && user.userId !== ' ') {
+      @if (product.id !== '' && product.id !== ' ') {
       <div class="campos">
         <div>
           <label class="color-blanco">Tipo de Documento</label>
         </div>
         <div class="campo-input">
-          <input [(ngModel)]="person.documentType.documentType" type="documentTypePerson" [readonly]="true">
+          <input [(ngModel)]="product.price" type="documentTypePerson" [readonly]="true">
         </div>
       </div>
       <div class="campos">
@@ -53,7 +26,7 @@
           <label class="color-blanco">Documento</label>
         </div>
         <div class="campo-input">
-          <input [(ngModel)]="person.documentPerson" type="document" [readonly]="true">
+          <input [(ngModel)]="product.price" type="document" [readonly]="true">
         </div>
       </div>
             <div class="campos span-2">
@@ -61,7 +34,7 @@
           <label class="color-blanco">User ID</label>
         </div>
         <div class="campo-input">
-          <input [(ngModel)]="user.userId" type="userId" [disabled]="true">
+          <input [(ngModel)]="product.price" type="userId" [disabled]="true">
         </div>
       </div>
       }
@@ -70,22 +43,7 @@
           <label class="color-blanco">Username</label>
         </div>
         <div class="campo-input">
-          <input [(ngModel)]="user.username" type="username" [readonly]="!canEdit('username')">
-        </div>
-      </div>
-      <div class="campos">
-        <div>
-          <label class="color-blanco" for="">Roles</label>
-
-        </div>
-        <div class="campo-input">
-          <select class="form-select" name="role" [(ngModel)]="selectedRoleId" (ngModelChange)="onRoleSelected($event)"
-            required [disabled]="!canEdit('')">
-            <option value="" disabled>Seleccione opción</option>
-            @for (role of roles; track role.roleId) {
-            <option [value]="role.roleId">{{ role.roleName }}</option>
-            }
-          </select>
+          <input [(ngModel)]="product.price" type="username" [readonly]="!canEdit('username')">
         </div>
       </div>
       <div class="campos">
@@ -93,7 +51,7 @@
           <label class="color-blanco">Fecha de Creación</label>
         </div>
         <div class="campo-input">
-          <input [(ngModel)]="user.createdAt" type="text" [disabled]="!canEdit('createdAt')">
+          <input [(ngModel)]="product.price" type="text" [disabled]="!canEdit('createdAt')">
         </div>
       </div>
 
@@ -104,7 +62,7 @@
 
         </div>
         <div class="campo-input">
-          <input [(ngModel)]="user.passUpdateAt" type="text" [disabled]="!canEdit('updateDate')">
+          <input [(ngModel)]="product.price" type="text" [disabled]="!canEdit('updateDate')">
         </div>
       </div>
 
@@ -114,7 +72,7 @@
           <label class="color-blanco" class="color-blanco">Necesita Cambiar Contraseña</label>
         </div>
         <div class="campo-input">
-          <select class="form-select" name="enabled" [disabled]="!canEdit('')" [(ngModel)]="user.mostChangePass"
+          <select class="form-select" name="enabled" [disabled]="!canEdit('')" [(ngModel)]="product.price"
             (ngModelChange)="onEnabledChange($event)" required>
             <!-- Placeholder: seleccionado solo cuando el valor es '' -->
             <option value="" disabled>
@@ -136,7 +94,7 @@
           <label class="color-blanco" class="color-blanco">Habilitado</label>
         </div>
         <div class="campo-input">
-          <select class="form-select" name="enabled" [disabled]="!canEdit('')" [(ngModel)]="user.enabled"
+          <select class="form-select" name="enabled" [disabled]="!canEdit('')" [(ngModel)]="product.price"
             (ngModelChange)="onEnabledChange($event)" required>
             <!-- Placeholder: seleccionado solo cuando el valor es '' -->
             <option value="" disabled>

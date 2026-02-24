@@ -82,3 +82,43 @@
   margin-top: 6rem;
   text-align: center;
 }
+
+.autocomplete {
+  position: relative;
+}
+
+.dropdown-table {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+
+  max-height: 200px; /* ~5 filas */
+  overflow-y: auto;
+
+  background: #1f2430;
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 10px;
+  margin-top: 6px;
+  z-index: 1000;
+}
+
+.dropdown-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dropdown-table th,
+.dropdown-table td {
+  padding: 10px;
+  color: #fff;
+  font-size: 13px;
+}
+
+.dropdown-table tr {
+  cursor: pointer;
+}
+
+.dropdown-table tr:hover {
+  background: rgba(255,255,255,.08);
+}

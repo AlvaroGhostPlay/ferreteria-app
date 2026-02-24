@@ -13,10 +13,10 @@ export class UserService {
     private httpClient: HttpClient
   ) { }
 
-  uri: string = 'http://localhost:8090/api/users/';
+  uri: string = 'http://localhost:8090/api/users';
 
     getUsers(page: string): Observable<any>{
-      return this.httpClient.get<any>(this.uri+'page/'+page);
+      return this.httpClient.get<any>(this.uri+'/page/'+page);
     }
 
     getUser(id: string): Observable<User>{
@@ -24,10 +24,17 @@ export class UserService {
     }
 
     getRoles():Observable<Role[]>{
-      return this.httpClient.get<Role[]>(this.uri+"role");
+      return this.httpClient.get<Role[]>(this.uri+"/role");
     }
 
     saveUser(user: User, id: string):Observable<User>{
-return this.httpClient.get<User>(this.uri+id);
+      if (id !== '' && id !== ' '){
+        return this.httpClient.put<User>(this.uri+"/id",user);
+      }
+      return this.httpClient.post<User>(this.uri,user);
+    }
+
+    deleteUser(id: string) :Observable<User>{
+      return this.httpClient.delete<User>(this.uri+"/id");
     }
 }

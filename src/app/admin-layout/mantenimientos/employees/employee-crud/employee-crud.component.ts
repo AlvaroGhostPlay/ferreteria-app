@@ -10,11 +10,11 @@ import { PersonService } from '../../../../services/person.service';
 import { Person } from '../../../../entitie/person';
 
 @Component({
-  selector: 'app-usuarios-crud',
+  selector: 'app-employee-crud',
   imports: [FormsModule],
-  templateUrl: './usuarios-crud.component.html'
+  templateUrl: './employee-crud.component.html'
 })
-export class UsuariosCrudComponent {
+export class EmployeeCrudComponent {
 
   hoy: Date = new Date();
   userId: string = '';

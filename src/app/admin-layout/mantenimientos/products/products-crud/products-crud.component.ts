@@ -1,32 +1,29 @@
 import { Component } from '@angular/core';
 import { Mode, SharingDataServiceService } from '../../../../services/sharing-data-service.service';
 import { filter, Subject, takeUntil } from 'rxjs';
-import { UserService } from '../../../../services/user.service';
-import { User } from '../../../../entitie/user';
 import { NavigationStart, Router } from '@angular/router';
-import { Role } from '../../../../entitie/role';
-import { FormsModule } from '@angular/forms';
 import { PersonService } from '../../../../services/person.service';
 import { Person } from '../../../../entitie/person';
+import { Product } from '../../../../entitie/product';
+import { ProductService } from '../../../../services/product.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-usuarios-crud',
+  selector: 'app-products-crud',
   imports: [FormsModule],
-  templateUrl: './usuarios-crud.component.html'
+  templateUrl: './products-crud.component.html'
 })
-export class UsuariosCrudComponent {
+
+export class ProductCrudComponent {
 
   hoy: Date = new Date();
-  userId: string = '';
+  productId: string = '';
   mode: Mode = 'create';
   private destroy$ = new Subject<void>();
 
   types: boolean[] = [true, false]
 
-  user: User = new User();
-  person: Person = new Person();
-  roles: Role[] = [];
-
+  product: Product = new Product();
   selectedRoleId: string = '';
   searchTerm = '';
   clients: Person[] = [];
@@ -34,7 +31,7 @@ export class UsuariosCrudComponent {
 
   constructor(
     private sharingDataService: SharingDataServiceService,
-    private userServie: UserService,
+    private productService: ProductService,
     private router: Router,
     private clientService: PersonService
   ) { }
@@ -42,26 +39,15 @@ export class UsuariosCrudComponent {
   ngOnInit() {
     this.sharingDataService.userCrud$
       .subscribe((obj: any) => {
-        this.userId = obj.id;
+        this.productId = obj.id;
         this.mode = obj.mode;
-        console.log(this.user.userId)
+        console.log(this.product.id)
 
 
-        this.userServie.getUser(this.userId).subscribe({
-          next: user => {
-            this.user = user;
+        this.productService.getProduct(this.productId).subscribe({
+          next: product => {
+            this.product = product;
             this.syncSelectedRoleFromUser();
-
-            this.userServie.getRoles().subscribe({
-              next: roles => {
-                this.roles = roles;
-                console.log(roles)
-                this.syncSelectedRoleFromUser();
-                if (this.userId === '') {
-                  this.selectedRoleId = '';
-                }
-              }
-            })
           },
           error: error => console.log(error)
         })
@@ -92,12 +78,12 @@ export class UsuariosCrudComponent {
 
   onRoleSelected(id: string) {
     this.selectedRoleId = id;
-    this.user.roles[0].roleId = id // lo dejas listo para el request
+    //this.user.roles[0].roleId = id // lo dejas listo para el request
     console.log('Selected role Id:', id);
   }
 
   get isEdit(): boolean {
-    return (this.userId ?? '').trim().length > 0;
+    return (this.productId ?? '').trim().length > 0;
   }
 
   hasValue(v: unknown): boolean {
@@ -105,27 +91,27 @@ export class UsuariosCrudComponent {
   }
 
   onEnabledChange(value: boolean) {
-    this.user.enabled = value;
+    //this.product.enabled = value;
     console.log('Enabled value:', value);
   }
 
   onPassChange(value: boolean) {
-    this.user.mostChangePass = value;
+   // this.user.mostChangePass = value;
     console.log('Enabled value:', value);
   }
 
   save() {
     this.createUserRequest();
-    this.userServie.saveUser(new User, this.userId).subscribe({
+    this.productService.saveProduct(this.product, this.productId).subscribe({
       next: (res) => {
-        this.user = res;
+        this.product = res;
         if (this.mode === 'create') {
           // no cambies a edit
         }
         this.saveState();
-        this.userServie.saveUser(this.user, this.userId ).subscribe({
+        this.productService.saveProduct(this.product, this.productId ).subscribe({
           next: ok =>{
-            this.router.navigate(['/auth/mantenimientos/user'])
+            this.router.navigate(['/auth/mantenimientos/productos'])
           }
         });
       },
@@ -134,9 +120,9 @@ export class UsuariosCrudComponent {
   }
 
   delete(id:string){
-    this.userServie.deleteUser(id).subscribe({
+    this.productService.deleteProduct(id).subscribe({
       next: ok => {
-        this.router.navigate(['/auth/mantenimientos/user'])
+        this.router.navigate(['/auth/mantenimientos/productos'])
       },
       error : err => {
         console.log(err)
@@ -145,52 +131,20 @@ export class UsuariosCrudComponent {
   }
 
   createUserRequest() {
-    this.user = {
-      userId: this.user.userId,
-      username: this.user.username,
-      roles: [
-        {
-          roleId:this.user.roles[0].roleId,
-          roleName:this.user.roles[0].roleName
-        }
-      ],
-      enabled: this.user.enabled,
-      createdAt: this.hoy,
-      mostChangePass: true,
-      passUpdateAt: this.hoy
-    }
   }
 
   private saveState() {
     const state = {
       mode: this.mode,
-      personId: this.user?.userId ?? ''
+      personId: this.product?.id ?? ''
     };
-
   }
 
   private syncSelectedRoleFromUser() {
-    const roleId = this.user?.roles?.[0]?.roleId ?? '';
-    this.selectedRoleId = roleId ? String(roleId) : '';
+    //const roleId = this.product?.roles?.[0]?.roleId ?? '';
+    //this.selectedRoleId = roleId ? String(roleId) : '';
   }
 
-  private loadUserAndRoles() {
-    this.userServie.getUser(this.userId).subscribe({
-      next: user => {
-        this.user = user;
-        this.syncSelectedRoleFromUser();
-      },
-      error: err => console.log(err)
-    });
-
-    this.userServie.getRoles().subscribe({
-      next: roles => {
-        this.roles = roles;
-        this.syncSelectedRoleFromUser();
-      },
-      error: err => console.log(err)
-    });
-  }
 
   get isView(): boolean {
     return this.mode === 'view';
@@ -236,35 +190,5 @@ export class UsuariosCrudComponent {
         console.log(this.clients)
       });
   }
-
-  selectClient(client: Person) {
-  this.user.userId = client.personId;   // 👉 asignar ID
-  this.searchTerm = client.name;                 // 👉 limpiar input
-  this.showDropdown = false;            // 👉 cerrar dropdown
-  this.clients = [];     
-  this.person = client;
-  }
-
-  onDeselect(nada:string){
-      if (!nada || nada.trim() === '') {
-
-    // Limpiar búsqueda
-    this.searchTerm = '';
-
-    // Limpiar usuario
-    this.user.userId = '';
-    this.user.username = '';
-    this.user.roles = [];
-
-    // Limpiar persona
-    this.person = new Person();
-
-    // Limpiar dropdown
-    this.clients = [];
-    this.showDropdown = false;
-
-    // Limpiar rol seleccionado
-    this.selectedRoleId = '';
-  }
-  }
 }
+

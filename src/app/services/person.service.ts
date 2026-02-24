@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { PersonName } from '../dto/person-name';
 import { Client } from '../entitie/client';
 import { PersonCudDTO } from '../dto/client-request';
+import { Person } from '../entitie/person';
 
 @Injectable({
   providedIn: 'root'
@@ -39,4 +40,11 @@ export class PersonService {
       return this.http.post<Client>(this.uri2, client);
     }
   }
+
+  searchClients(term: string): Observable<Person[]> {
+  console.log('Entro')
+  return this.http.get<Person[]>(
+    `${this.uri2}/searchClients?term=${term}`
+  );
+}
 }

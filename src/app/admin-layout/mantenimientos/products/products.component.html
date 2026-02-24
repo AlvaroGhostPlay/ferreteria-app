@@ -1,1 +1,61 @@
-<p>products works!</p>
+<div class="contenedor">
+    <div class="header">
+      <h1 class="color-blanco cliente-titulo">Mantenimiento de Usuarios</h1>
+      <div class="bnt-rigth">
+        <button class="btn btn-primary" type="button" (click)="create('')">
+        Agregar Usuario
+      </button>
+      </div>
+  </div>
+
+<div class="page">
+  <div class="card">
+
+    <div class="table-wrapper">
+      <table class="table">
+        <thead class="table-header">
+          <tr>
+            <th class="color-blanco">Producto</th>
+            <th class="color-blanco">Precio</th>
+            <th class="color-blanco">Código</th>
+            <th class="color-blanco">IVA</th>
+            <th class="color-blanco">Stock</th>
+            <th class="color-blanco">Editar</th>
+            <th class="color-blanco">Eliminar</th>
+          </tr>
+        </thead>
+
+        <tbody>
+            @for(p of products; track p) {
+                <tr class="cursor" (click)="view(p.id)">
+                    <td class="color-blanco">{{ p.name }}</td>
+                    <td class="color-blanco">{{ p.price }}</td>
+                    <td class="color-blanco">{{p.code}}</td>
+                    <td class="color-blanco">{{ p.iva }}</td>
+                    <td class="color-blanco">{{ p.stock}}</td>
+                    <td class="actions">
+                    <button class="btn btn-success" type="button" (click)="update(p.id)">
+                     Editar
+                    </button>
+                    </td>
+                    <td>
+                         <button class="btn btn-danger" type="button" (click)="deleteUser(p.id)">
+                     Eliminar
+                    </button>
+                    </td>     
+          </tr>
+            }
+          
+            @if (products.length === 0) {
+                <tr>
+            <td colspan="7" class="empty">No hay Productos registrados.</td>
+                </tr> 
+            }
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<auth-paginator [paginator]="paginator" [url]="url"></auth-paginator>
+</div>

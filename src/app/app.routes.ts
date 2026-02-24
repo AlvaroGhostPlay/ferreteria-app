@@ -29,6 +29,9 @@ import { PublicComponent } from './public/public.component';
 import { ShellLayoutComponent } from './public/shell-layout/shell-layout.component';
 import { authUnknownRouteGuardGuard } from './auth/auth-unknown-route-guard.guard';
 import { redirectGuard } from './auth/redirect.guard';
+import { ProductCrudComponent } from './admin-layout/mantenimientos/products/products-crud/products-crud.component';
+import { EmployeeCrudComponent } from './admin-layout/mantenimientos/employees/employee-crud/employee-crud.component';
+import { EmployeesComponent } from './admin-layout/mantenimientos/employees/employees.component';
 
 export const routes: Routes = [
 
@@ -59,41 +62,53 @@ export const routes: Routes = [
     children: [
       { path: 'inicio', component: DashboardComponent },
 
-      { path: 'productos', component: ProductsComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE'] } },
+      { path: 'productos', component: ProductsComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_ROLE_EMPLEADO'] } },
 
-      { path: 'mantenimientos', component: MantenimientosComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN'] } },
-      { path: 'mantenimientos/usuarios', component: UsersComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN'] } },
-      { path: 'mantenimientos/usuarios/page/:page', component: UsersComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN'] } },
-      { path: 'mantenimientos/usuarios/create', component: UsuariosCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN'] } },
-      { path: 'mantenimientos/usuarios/edit', component: UsuariosCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN'] } },
-      { path: 'mantenimientos/usuarios/info', component: UsuariosCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN'] } },
+      { path: 'mantenimientos', component: MantenimientosComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'mantenimientos/usuarios', component: UsersComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'mantenimientos/usuarios/page/:page', component: UsersComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'mantenimientos/usuarios/create', component: UsuariosCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'mantenimientos/usuarios/edit', component: UsuariosCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'mantenimientos/usuarios/info', component: UsuariosCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
 
-      { path: 'mantenimientos/roles', component: RolesComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN'] } },
-      { path: 'mantenimientos/roles/page/:page', component: RolesComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN'] } },
-      { path: 'mantenimientos/roles/create', component: RolesCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN'] } },
-      { path: 'mantenimientos/roles/edit/:id', component: RolesCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN'] } },
-      { path: 'mantenimientos/catalogos', component: CatalogoComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN'] } },
+      { path: 'mantenimientos/roles', component: RolesComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'mantenimientos/roles/page/:page', component: RolesComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'mantenimientos/roles/create', component: RolesCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'mantenimientos/roles/edit/:id', component: RolesCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'mantenimientos/catalogos', component: CatalogoComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
 
-      { path: 'ventas', component: VentasComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE'] } },
-      { path: 'ventas/venta', component: VentaComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE'] } },
-      { path: 'ventas/pedido', component: PedidoComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE'] } },
-      { path: 'ventas/historial', component: HistorialComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE'] } },
-      { path: 'ventas/historial/:id', component: HistorialVistaComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE'] } },
+      { path: 'mantenimientos/productos', component: ProductsComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'mantenimientos/productos/page/:page', component: ProductsComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'mantenimientos/productos/edit', component: ProductCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'mantenimientos/productos/create', component: ProductCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'mantenimientos/productos/view', component: ProductCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
 
-      { path: 'ventas/clientes', component: ClientesComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE'] } },
-      { path: 'ventas/clientes/page/:page', component: ClientesComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE'] } },
-      { path: 'ventas/clientes/edit', component: ClienteCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE'] } },
-      { path: 'ventas/clientes/create', component: ClienteCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE'] } },
-      { path: 'ventas/clientes/info', component: ClienteCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE'] } },
-      { path: 'ventas/clientes/address/create', component: InfoClientsCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE'] } },
-      { path: 'ventas/clientes/address/edit', component: InfoClientsCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE'] } },
+      { path: 'mantenimientos/empleados', component: EmployeesComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'mantenimientos/empleados/page/:page', component: EmployeesComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'mantenimientos/empleados/edit', component: EmployeeCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'mantenimientos/empleados/create', component: EmployeeCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'mantenimientos/empleados/view', component: EmployeeCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
 
-      { path: 'ventas/devoluciones', component: DevolucionesComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE'] } },
-      { path: 'ventas/devoluciones/new', component: NewDevolucionComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE'] } },
-      { path: 'ventas/devoluciones/view/:id', component: NewDevolucionComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE'] } },
+      { path: 'ventas', component: VentasComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'ventas/venta', component: VentaComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'ventas/pedido', component: PedidoComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'ventas/historial', component: HistorialComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'ventas/historial/:id', component: HistorialVistaComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_ROLE_EMPLEADO'] } },
+
+      { path: 'ventas/clientes', component: ClientesComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'ventas/clientes/page/:page', component: ClientesComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'ventas/clientes/edit', component: ClienteCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'ventas/clientes/create', component: ClienteCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'ventas/clientes/info', component: ClienteCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'ventas/clientes/address/create', component: InfoClientsCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'ventas/clientes/address/edit', component: InfoClientsCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_ROLE_EMPLEADO'] } },
+
+      { path: 'ventas/devoluciones', component: DevolucionesComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'ventas/devoluciones/new', component: NewDevolucionComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'ventas/devoluciones/view/:id', component: NewDevolucionComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_ROLE_EMPLEADO'] } },
 
       // ✅ wildcard de /auth al final (opcional)
-      { path: '**', redirectTo: 'inicio' }
+      //  { path: '**', redirectTo: 'inicio' }
     ],
   },
 

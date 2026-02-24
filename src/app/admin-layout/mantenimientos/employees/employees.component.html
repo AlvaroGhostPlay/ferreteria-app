@@ -1,1 +1,63 @@
-<p>employees works!</p>
+<div class="contenedor">
+    <div class="header">
+      <h1 class="color-blanco cliente-titulo">Mantenimiento de Usuarios</h1>
+      <div class="bnt-rigth">
+        <button class="btn btn-primary" type="button" (click)="create('')">
+        Agregar Usuario
+      </button>
+      </div>
+  </div>
+
+<div class="page">
+  <div class="card">
+
+    <div class="table-wrapper">
+      <table class="table">
+        <thead class="table-header">
+          <tr>
+            <th class="color-blanco">Usuario</th>
+            <th class="color-blanco">Habilitado</th>
+            <th class="color-blanco">Roles</th>
+            <th class="color-blanco">Fecha de Actuzalización</th>
+            <th class="color-blanco">Editar</th>
+            <th class="color-blanco">Eliminar</th>
+          </tr>
+        </thead>
+
+        <tbody>
+            @for(u of users; track u) {
+                <tr class="cursor" (click)="view(u.userId)">
+                    <td class="color-blanco">{{ u.username }}</td>
+                    <td class="color-blanco">{{ u.enabled }}</td>
+                    <td class="color-blanco">
+                      @for(role of u.roles; track role){
+                        <div>{{ role.roleName }}</div>
+                      }
+                    </td>
+                    <td class="color-blanco">{{ u.passUpdateAt }}</td>
+                    <td class="actions">
+                    <button class="btn btn-success" type="button" (click)="update(u.userId)">
+                     Editar
+                    </button>
+                    </td>
+                    <td>
+                         <button class="btn btn-danger" type="button" (click)="deleteUser(u.userId)">
+                     Eliminar
+                    </button>
+                    </td>     
+          </tr>
+            }
+          
+            @if (users.length === 0) {
+                <tr>
+            <td colspan="6" class="empty">No hay clientes registrados.</td>
+                </tr> 
+            }
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<auth-paginator [paginator]="paginator" [url]="url"></auth-paginator>
+</div>
