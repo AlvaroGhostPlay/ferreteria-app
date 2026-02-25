@@ -12,64 +12,59 @@
 
   <div class="shadow-box">
     <div class="block-form-person-type">
-      @if (product.id !== '' && product.id !== ' ') {
+      @if (product.productId !== '' && product.productId !== ' ') {
       <div class="campos">
         <div>
-          <label class="color-blanco">Tipo de Documento</label>
+          <label class="color-blanco">Categoria</label>
         </div>
         <div class="campo-input">
-          <input [(ngModel)]="product.price" type="documentTypePerson" [readonly]="true">
+          <input [(ngModel)]="product.price" type="category" [readonly]="true">
         </div>
       </div>
       <div class="campos">
         <div>
-          <label class="color-blanco">Documento</label>
+          <label class="color-blanco">Marca</label>
         </div>
         <div class="campo-input">
-          <input [(ngModel)]="product.price" type="document" [readonly]="true">
+          <input [(ngModel)]="product.price" type="brand" [readonly]="true">
         </div>
       </div>
-            <div class="campos span-2">
+      <div class="campos span-2">
         <div>
-          <label class="color-blanco">User ID</label>
+          <label class="color-blanco">Producto ID</label>
         </div>
         <div class="campo-input">
-          <input [(ngModel)]="product.price" type="userId" [disabled]="true">
+          <input [(ngModel)]="product.price" type="productId" [disabled]="true">
         </div>
       </div>
       }
       <div class="campos">
         <div>
-          <label class="color-blanco">Username</label>
+          <label class="color-blanco">Nombre Producto</label>
         </div>
         <div class="campo-input">
-          <input [(ngModel)]="product.price" type="username" [readonly]="!canEdit('username')">
+          <input [(ngModel)]="product.price" [readonly]="!canEdit('productName')">
         </div>
       </div>
       <div class="campos">
         <div>
-          <label class="color-blanco">Fecha de Creación</label>
+          <label class="color-blanco">Fecha de Vencimiento</label>
         </div>
         <div class="campo-input">
           <input [(ngModel)]="product.price" type="text" [disabled]="!canEdit('createdAt')">
         </div>
       </div>
-
-
-      <div class="campos">
+            <div class="campos span-2">
         <div>
-          <label class="color-blanco">Fecha de Ultima Actualización</label>
-
+          <label class="color-blanco">Descripción</label>
         </div>
         <div class="campo-input">
-          <input [(ngModel)]="product.price" type="text" [disabled]="!canEdit('updateDate')">
+          <input [(ngModel)]="product.price" type="descri">
         </div>
       </div>
-
-
       <div class="campos">
         <div>
-          <label class="color-blanco" class="color-blanco">Necesita Cambiar Contraseña</label>
+          <label class="color-blanco" class="color-blanco">Código SKU</label>
         </div>
         <div class="campo-input">
           <select class="form-select" name="enabled" [disabled]="!canEdit('')" [(ngModel)]="product.price"

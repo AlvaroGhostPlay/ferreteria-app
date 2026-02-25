@@ -20,7 +20,7 @@ export class ProductsComponent {
   url:string = '/auth/mantenimientos/productos/page/:page';
 
   constructor(
-        private router: Router,
+    private router: Router,
     private productService: ProductService,
     private route :ActivatedRoute,
     private sharingDataService: SharingDataServiceService
@@ -39,6 +39,7 @@ export class ProductsComponent {
                 totalPages: productsDb.totalPages,
                 number: productsDb.number, // mejor esto
               };
+              console.log(productsDb)
         },
         error: err => console.log(err)
       })
@@ -47,7 +48,7 @@ export class ProductsComponent {
   }
 
   deleteUser(id: string){
-    this.products = [...this.products.filter(p => p.id !== id)];
+    this.products = [...this.products.filter(p => p.productId !== id)];
 }
 
 view(id: string) {

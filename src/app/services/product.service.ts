@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Product } from '../entitie/product';
+import { ProductRequest } from '../dto/product-request';
 
 @Injectable({
   providedIn: 'root'
@@ -11,17 +12,17 @@ export class ProductService {
     private httpClient: HttpClient
   ) { }
 
-  uri: string = 'http://localhost:8090/api/product';
+  uri: string = 'http://localhost:8090/api/products-invoices';
 
   getProducts(page: string): Observable<any> {
-    return this.httpClient.get<any>(this.uri + '/page/' + page);
+    return this.httpClient.get<any>(this.uri + '/product/page/' + page);
   }
 
   getProduct(id: string): Observable<Product> {
     return this.httpClient.get<Product>(this.uri + '/' + id);
   }
 
-  saveProduct(product: Product, productId: string): Observable<Product> {
+  saveProduct(product: ProductRequest, productId: string): Observable<Product> {
     console.log(product)
     console.log(productId)
     if (productId && productId !== '') {

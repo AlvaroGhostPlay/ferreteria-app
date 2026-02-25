@@ -1,9 +1,9 @@
 <div class="contenedor">
     <div class="header">
-      <h1 class="color-blanco cliente-titulo">Mantenimiento de Usuarios</h1>
+      <h1 class="color-blanco cliente-titulo">Mantenimiento de Productos</h1>
       <div class="bnt-rigth">
         <button class="btn btn-primary" type="button" (click)="create('')">
-        Agregar Usuario
+        Agregar Producto
       </button>
       </div>
   </div>
@@ -17,7 +17,6 @@
           <tr>
             <th class="color-blanco">Producto</th>
             <th class="color-blanco">Precio</th>
-            <th class="color-blanco">Código</th>
             <th class="color-blanco">IVA</th>
             <th class="color-blanco">Stock</th>
             <th class="color-blanco">Editar</th>
@@ -27,19 +26,18 @@
 
         <tbody>
             @for(p of products; track p) {
-                <tr class="cursor" (click)="view(p.id)">
-                    <td class="color-blanco">{{ p.name }}</td>
+                <tr class="cursor" (click)="view(p.productId)">
+                    <td class="color-blanco">{{ p.productName }}</td>
                     <td class="color-blanco">{{ p.price }}</td>
-                    <td class="color-blanco">{{p.code}}</td>
                     <td class="color-blanco">{{ p.iva }}</td>
                     <td class="color-blanco">{{ p.stock}}</td>
                     <td class="actions">
-                    <button class="btn btn-success" type="button" (click)="update(p.id)">
+                    <button class="btn btn-success" type="button" (click)="update(p.productId)">
                      Editar
                     </button>
                     </td>
                     <td>
-                         <button class="btn btn-danger" type="button" (click)="deleteUser(p.id)">
+                         <button class="btn btn-danger" type="button" (click)="deleteUser(p.productId)">
                      Eliminar
                     </button>
                     </td>     
@@ -48,7 +46,7 @@
           
             @if (products.length === 0) {
                 <tr>
-            <td colspan="7" class="empty">No hay Productos registrados.</td>
+            <td colspan="6" class="empty">No hay Productos registrados.</td>
                 </tr> 
             }
           

@@ -7,6 +7,7 @@ import { Person } from '../../../../entitie/person';
 import { Product } from '../../../../entitie/product';
 import { ProductService } from '../../../../services/product.service';
 import { FormsModule } from '@angular/forms';
+import { ProductRequest } from '../../../../dto/product-request';
 
 @Component({
   selector: 'app-products-crud',
@@ -27,7 +28,7 @@ export class ProductCrudComponent {
   selectedRoleId: string = '';
   searchTerm = '';
   clients: Person[] = [];
-  showDropdown = false;
+  productRequest!: ProductRequest; 
 
   constructor(
     private sharingDataService: SharingDataServiceService,
@@ -41,7 +42,7 @@ export class ProductCrudComponent {
       .subscribe((obj: any) => {
         this.productId = obj.id;
         this.mode = obj.mode;
-        console.log(this.product.id)
+        console.log(this.product.productId)
 
 
         this.productService.getProduct(this.productId).subscribe({
@@ -102,14 +103,14 @@ export class ProductCrudComponent {
 
   save() {
     this.createUserRequest();
-    this.productService.saveProduct(this.product, this.productId).subscribe({
+    this.productService.saveProduct(this.productRequest, this.productId).subscribe({
       next: (res) => {
         this.product = res;
         if (this.mode === 'create') {
           // no cambies a edit
         }
         this.saveState();
-        this.productService.saveProduct(this.product, this.productId ).subscribe({
+        this.productService.saveProduct(this.productRequest, this.productId ).subscribe({
           next: ok =>{
             this.router.navigate(['/auth/mantenimientos/productos'])
           }
@@ -131,12 +132,24 @@ export class ProductCrudComponent {
   }
 
   createUserRequest() {
+    this.productRequest = {
+      productId: null,
+      productName: this.product.productName,
+      descriptionProduct: this.product.descriptionProduct,
+      idCategory: this.product.category.categoryId, 
+      price: this.product.price,
+      iva: this.product.iva,
+      stock: this.product.stock,
+      idBrand: this.product.brand.brandId,
+      expirationDate: this.product.expirationDate,
+      image: this.product.image
+    }
   }
 
   private saveState() {
     const state = {
       mode: this.mode,
-      personId: this.product?.id ?? ''
+      personId: this.product?.productId ?? ''
     };
   }
 

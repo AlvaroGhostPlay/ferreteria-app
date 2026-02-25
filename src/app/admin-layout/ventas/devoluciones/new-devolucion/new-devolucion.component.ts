@@ -19,6 +19,7 @@ export class NewDevolucionComponent {
 
   id!: number;
   movimiento!: Movimient;
+  hoy: Date = new Date();
 
   constructor(private route: ActivatedRoute) {}
 
@@ -36,12 +37,23 @@ export class NewDevolucionComponent {
     cart: Cart[] =[
     {
       product: {
-        id: 1,
+        productId: '1',
         code: 7802800716777,
-        name: 'Zuko Emoliente',
+        productName: 'Zuko Emoliente',
         stock: 50,
         price: 1.00,
-        iva: 0.05
+        iva: 0.05,
+                category: {
+          categoryId: '',
+          category: ''
+        },
+        brand: {
+          brand: '',
+          brandId: ''
+        },
+        image: '',
+        expirationDate: this.hoy,
+        descriptionProduct: ''
       },
       qty: 1,
       iva: 0,
@@ -50,12 +62,23 @@ export class NewDevolucionComponent {
     },
     {
       product: {
-        id: 2,
+        productId: '2',
         code: 7750182220378,
-        name: 'Fanta Naranja 500ml',
+        productName: 'Fanta Naranja 500ml',
         stock: 30,
         price: 1.80,
-        iva: 0.05
+        iva: 0.05,
+                category: {
+          categoryId: '',
+          category: ''
+        },
+        brand: {
+          brand: '',
+          brandId: ''
+        },
+        image: '',
+        expirationDate: this.hoy,
+        descriptionProduct: ''
       },
       qty: 1,
       iva: 0,
@@ -64,12 +87,23 @@ export class NewDevolucionComponent {
     },
     {
       product: {
-        id: 3,
+        productId: '3',
         code: 7501006559019,
-        name: 'Canchita mantequilla',
+        productName: 'Canchita mantequilla',
         stock: 25,
         price: 3.50,
-        iva: 0.05
+        iva: 0.05,
+                category: {
+          categoryId: '',
+          category: ''
+        },
+        brand: {
+          brand: '',
+          brandId: ''
+        },
+        image: '',
+        expirationDate: this.hoy,
+        descriptionProduct: ''
       },
       qty: 1,
       iva: 0,
@@ -78,12 +112,23 @@ export class NewDevolucionComponent {
     },
     {
       product: {
-        id: 4,
+        productId: '12123',
         code: 7751271021999,
-        name: 'Gloria evaporada light 400g',
+        productName: 'Gloria evaporada light 400g',
         stock: 45,
         price: 5.00,
-        iva: 0.05
+        iva: 0.05,
+        category: {
+          categoryId: '',
+          category: ''
+        },
+        brand: {
+          brand: '',
+          brandId: ''
+        },
+        image: '',
+        expirationDate: this.hoy,
+        descriptionProduct: ''
       },
       qty: 1,
       subtotal: 0,
