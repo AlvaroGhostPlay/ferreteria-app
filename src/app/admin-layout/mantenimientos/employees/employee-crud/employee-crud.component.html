@@ -1,164 +1,228 @@
 <div class="contenedor">
   <div class="header">
     @if (mode === 'create') {
-    <h1 class="color-blanco cliente-titulo">Crear Usuario</h1>
+      <h1 class="color-blanco cliente-titulo">
+        Crear
+        @if (kind === 'clientes') { Cliente }
+        @else if (kind === 'empleados') { Empleado }
+        @else { Proveedor }
+      </h1>
     } @else if (mode === 'edit') {
-    <h1 class="color-blanco cliente-titulo">Editar Usuario</h1>
+      <h1 class="color-blanco cliente-titulo">
+        Editar
+        @if (kind === 'clientes') { Cliente }
+        @else if (kind === 'empleados') { Empleado }
+        @else { Proveedor }
+      </h1>
     } @else {
-    <h1 class="color-blanco cliente-titulo">Ver Usuario</h1>
+      <h1 class="color-blanco cliente-titulo">
+        Ver
+        @if (kind === 'clientes') { Cliente }
+        @else if (kind === 'empleados') { Empleado }
+        @else { Proveedor }
+      </h1>
     }
   </div>
 
-
   <div class="shadow-box">
+
+    <!-- =========================
+         DATOS GENERALES
+    ========================== -->
     <div class="block-form-person-type">
-      <div class="campos autocomplete campos span-2">
-        <label class="color-blanco">Buscar Cliente</label>
 
-        <input type="text" placeholder="Escriba nombre o documento" [(ngModel)]="searchTerm" (input)="onSearchClient()"
-          (focus)="showDropdown = true" (ngModelChange)="onDeselect($event)" />
-
-        @if (showDropdown && clients.length > 0) {
-        <div class="dropdown-table">
-          <table>
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Documento</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (c of clients; track c.personId) {
-              <tr (click)="selectClient(c)">
-                <td>{{ c.name }}</td>
-                <td>{{ c.documentPerson }}</td>
-              </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-        }
-      </div>
-      @if (user.userId !== '' && user.userId !== ' ') {
       <div class="campos">
         <div>
           <label class="color-blanco">Tipo de Documento</label>
         </div>
         <div class="campo-input">
-          <input [(ngModel)]="person.documentType.documentType" type="documentTypePerson" [readonly]="true">
+          <select class="form-select"
+                  name="documentTypeId"
+                  [(ngModel)]="documentTypeSelected"
+                  (ngModelChange)="onDocumentTypeChange($event)"
+                  [disabled]="mode === 'view' || (isEdit && hasValue(documentTypeSelected))"
+                  required>
+            <option value="" disabled>Seleccione opción</option>
+
+            @for (dt of documentTypes; track dt.documentTypeId) {
+              <option [value]="dt.documentTypeId">{{ dt.documentType }}</option>
+            }
+          </select>
         </div>
       </div>
+
       <div class="campos">
         <div>
           <label class="color-blanco">Documento</label>
         </div>
         <div class="campo-input">
-          <input [(ngModel)]="person.documentPerson" type="document" [readonly]="true">
+          <input [(ngModel)]="client.person.documentPerson"
+                 type="text"
+                 [readonly]="mode === 'view' || (isEdit && hasValue(client.person.documentPerson))">
         </div>
       </div>
-            <div class="campos span-2">
-        <div>
-          <label class="color-blanco">User ID</label>
-        </div>
-        <div class="campo-input">
-          <input [(ngModel)]="user.userId" type="userId" [disabled]="true">
-        </div>
-      </div>
-      }
-      <div class="campos">
-        <div>
-          <label class="color-blanco">Username</label>
-        </div>
-        <div class="campo-input">
-          <input [(ngModel)]="user.username" type="username" [readonly]="!canEdit('username')">
-        </div>
-      </div>
-      <div class="campos">
-        <div>
-          <label class="color-blanco" for="">Roles</label>
 
+      <div class="campos span-2">
+        <div>
+          <label class="color-blanco">Email</label>
         </div>
         <div class="campo-input">
-          <select class="form-select" name="role" [(ngModel)]="selectedRoleId" (ngModelChange)="onRoleSelected($event)"
-            required [disabled]="!canEdit('')">
+          <input [(ngModel)]="client.person.email"
+                 type="email"
+                 [readonly]="mode === 'view'">
+        </div>
+      </div>
+
+      <div class="campos">
+        <div>
+          <label class="color-blanco">Tipo de Persona</label>
+        </div>
+        <div class="campo-input">
+          <select class="form-select"
+                  name="personTypeId"
+                  [(ngModel)]="selectedPersonTypeId"
+                  (ngModelChange)="onPersonTypeChange($event)"
+                  [disabled]="mode === 'view' || (isEdit && hasValue(selectedPersonTypeId))"
+                  required>
             <option value="" disabled>Seleccione opción</option>
-            @for (role of roles; track role.roleId) {
-            <option [value]="role.roleId">{{ role.roleName }}</option>
-            }
-          </select>
-        </div>
-      </div>
-      <div class="campos">
-        <div>
-          <label class="color-blanco">Fecha de Creación</label>
-        </div>
-        <div class="campo-input">
-          <input [(ngModel)]="user.createdAt" type="text" [disabled]="!canEdit('createdAt')">
-        </div>
-      </div>
 
-
-      <div class="campos">
-        <div>
-          <label class="color-blanco">Fecha de Ultima Actualización</label>
-
-        </div>
-        <div class="campo-input">
-          <input [(ngModel)]="user.passUpdateAt" type="text" [disabled]="!canEdit('updateDate')">
-        </div>
-      </div>
-
-
-      <div class="campos">
-        <div>
-          <label class="color-blanco" class="color-blanco">Necesita Cambiar Contraseña</label>
-        </div>
-        <div class="campo-input">
-          <select class="form-select" name="enabled" [disabled]="!canEdit('')" [(ngModel)]="user.mostChangePass"
-            (ngModelChange)="onEnabledChange($event)" required>
-            <!-- Placeholder: seleccionado solo cuando el valor es '' -->
-            <option value="" disabled>
-              Seleccione opción
-            </option>
-
-            <!-- Opciones reales -->
-            @for (pt of types; track pt) {
-            <option [value]="pt">
-              {{ pt ? 'Sí' : 'No' }}
-            </option>
+            @for (pt of personTypes; track pt.personTypeId) {
+              <option [value]="pt.personTypeId">{{ pt.personType }}</option>
             }
           </select>
         </div>
       </div>
 
-      <div class="campos">
-        <div>
-          <label class="color-blanco" class="color-blanco">Habilitado</label>
-        </div>
-        <div class="campo-input">
-          <select class="form-select" name="enabled" [disabled]="!canEdit('')" [(ngModel)]="user.enabled"
-            (ngModelChange)="onEnabledChange($event)" required>
-            <!-- Placeholder: seleccionado solo cuando el valor es '' -->
-            <option value="" disabled>
-              Seleccione opción
-            </option>
+    </div>
 
-            <!-- Opciones reales -->
+    <!-- =========================
+         NATURAL / JURIDICA
+    ========================== -->
+    <div class="block-form">
+
+      @if (selectedPersonTypeId === 'N') {
+
+        <div class="campos">
+          <div><label class="color-blanco">Primer Nombre</label></div>
+          <div class="campo-input">
+            <input [(ngModel)]="client.personNatural.firstName" type="text" [readonly]="mode === 'view'">
+          </div>
+        </div>
+
+        <div class="campos">
+          <div><label class="color-blanco">Segundo Nombre</label></div>
+          <div class="campo-input">
+            <input [(ngModel)]="client.personNatural.middleName" type="text" [readonly]="mode === 'view'">
+          </div>
+        </div>
+
+        <div class="campos">
+          <div><label class="color-blanco">Tercer Nombre</label></div>
+          <div class="campo-input">
+            <input [(ngModel)]="client.personNatural.thirdName" type="text" [readonly]="mode === 'view'">
+          </div>
+        </div>
+
+        <div class="campos">
+          <div><label class="color-blanco">Apellido Paterno</label></div>
+          <div class="campo-input">
+            <input [(ngModel)]="client.personNatural.lastName" type="text" [readonly]="mode === 'view'">
+          </div>
+        </div>
+
+        <div class="campos">
+          <div><label class="color-blanco">Apellido Materno</label></div>
+          <div class="campo-input">
+            <input [(ngModel)]="client.personNatural.seccondLastName" type="text" [readonly]="mode === 'view'">
+          </div>
+        </div>
+
+        <div class="campos">
+          <div><label class="color-blanco">Género</label></div>
+          <div class="campo-input">
+            <select name="genero"
+                    [(ngModel)]="generSelected"
+                    (ngModelChange)="onGenerChange($event)"
+                    [disabled]="mode === 'view' || (isEdit && hasValue(generSelected))"
+                    required>
+              <option value="" disabled>Seleccione opción</option>
+
+              @for (g of geners; track g.generId) {
+                <option [value]="g.generId">{{ g.gener }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        @if (client.personNatural.gener.generId !== 'M') {
+          <div class="campos">
+            <div><label class="color-blanco">Apellido de Casada</label></div>
+            <div class="campo-input">
+              <input [(ngModel)]="client.personNatural.marriedLastName" type="text" [readonly]="mode === 'view'">
+            </div>
+          </div>
+        }
+
+        <div class="campos">
+          <div><label class="color-blanco">Estatus Social</label></div>
+          <div class="campo-input">
+            <select class="form-select"
+                    name="socialStatus"
+                    [(ngModel)]="socialStatusSelected"
+                    (ngModelChange)="onSocialStatusChange($event)"
+                    [disabled]="mode === 'view'"
+                    required>
+              <option value="" disabled>Seleccione opción</option>
+
+              @for (pt of statusSocials; track pt.socialStatusId) {
+                <option [value]="pt.socialStatusId">{{ pt.socialStatus }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+      } @else {
+        <!-- Si es Jurídica, poné aquí tus campos (razón social, etc) -->
+      }
+
+    </div>
+
+    <!-- =========================
+         ESTADO / ENABLED
+    ========================== -->
+    <div class="block-form-person-type">
+      <div class="campos">
+        <div><label class="color-blanco">Habilitado</label></div>
+        <div class="campo-input">
+          <select class="form-select"
+                  name="enabled"
+                  [(ngModel)]="enabled"
+                  (ngModelChange)="onEnabledChange($event)"
+                  [disabled]="mode === 'view'"
+                  required>
+            <option value="" disabled>Seleccione opción</option>
+
             @for (pt of types; track pt) {
-            <option [value]="pt">
-              {{ pt ? 'Sí' : 'No' }}
-            </option>
+              <option [value]="pt">{{ pt ? 'Sí' : 'No' }}</option>
             }
           </select>
         </div>
       </div>
     </div>
-    @if(mode !== 'view') {
-    <div class="flex">
-      <div class="btn-right">
-        <button class="btn btn-primary" (click)="save()">Guardar</button>
+
+    <!-- GUARDAR -->
+    @if (mode !== 'view') {
+      <div class="flex">
+        <div class="btn-right">
+          <button class="btn btn-primary" (click)="save()">Guardar</button>
+        </div>
       </div>
-    </div>
     }
+
   </div>
 </div>
+
+<!-- ✅ Igual que tu patrón: al ver, mostramos el CRUD de direcciones/teléfonos -->
+@if (mode === 'view') {
+  <info-clients-crud></info-clients-crud>
+}

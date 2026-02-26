@@ -12,13 +12,25 @@
 
   <div class="shadow-box">
     <div class="block-form-person-type">
-      @if (product.productId !== '' && product.productId !== ' ') {
       <div class="campos">
         <div>
           <label class="color-blanco">Categoria</label>
         </div>
         <div class="campo-input">
-          <input [(ngModel)]="product.price" type="category" [readonly]="true">
+          <select class="form-select" [disabled]="!canEdit('category')" [(ngModel)]="selectedCategory"
+            (ngModelChange)="onCategorySelected($event)" required>
+            <!-- Placeholder: seleccionado solo cuando el valor es '' -->
+            <option value="" disabled>
+              Seleccione opción
+            </option>
+
+            <!-- Opciones reales -->
+            @for (pt of categories; track pt) {
+            <option [value]="pt.categoryId">
+              {{ pt.category}}
+            </option>
+            }
+          </select>
         </div>
       </div>
       <div class="campos">
@@ -26,15 +38,29 @@
           <label class="color-blanco">Marca</label>
         </div>
         <div class="campo-input">
-          <input [(ngModel)]="product.price" type="brand" [readonly]="true">
+          <select class="form-select" name="enabled" [disabled]="!canEdit('brand')" [(ngModel)]="selectedBrand"
+            (ngModelChange)="onBrandSelected($event)" required>
+            <!-- Placeholder: seleccionado solo cuando el valor es '' -->
+            <option value="" disabled>
+              Seleccione opción
+            </option>
+
+            <!-- Opciones reales -->
+            @for (pt of brans; track pt) {
+            <option [value]="pt.brandId">
+              {{ pt.brand }}
+            </option>
+            }
+          </select>
         </div>
       </div>
+      @if (mode !== 'create') {
       <div class="campos span-2">
         <div>
           <label class="color-blanco">Producto ID</label>
         </div>
         <div class="campo-input">
-          <input [(ngModel)]="product.price" type="productId" [disabled]="true">
+          <input [(ngModel)]="product.productId" type="productId" [disabled]="true">
         </div>
       </div>
       }
@@ -43,7 +69,7 @@
           <label class="color-blanco">Nombre Producto</label>
         </div>
         <div class="campo-input">
-          <input [(ngModel)]="product.price" [readonly]="!canEdit('productName')">
+          <input [(ngModel)]="product.productName" [readonly]="!canEdit('productName')">
         </div>
       </div>
       <div class="campos">
@@ -51,15 +77,15 @@
           <label class="color-blanco">Fecha de Vencimiento</label>
         </div>
         <div class="campo-input">
-          <input [(ngModel)]="product.price" type="text" [disabled]="!canEdit('createdAt')">
+          <input [(ngModel)]="product.expirationDate" type="text" [disabled]="!canEdit('createdAt')">
         </div>
       </div>
-            <div class="campos span-2">
+      <div class="campos span-2">
         <div>
           <label class="color-blanco">Descripción</label>
         </div>
         <div class="campo-input">
-          <input [(ngModel)]="product.price" type="descri">
+          <input [(ngModel)]="product.descriptionProduct" type="descri" [disabled]="!canEdit('')">
         </div>
       </div>
       <div class="campos">
@@ -67,42 +93,39 @@
           <label class="color-blanco" class="color-blanco">Código SKU</label>
         </div>
         <div class="campo-input">
-          <select class="form-select" name="enabled" [disabled]="!canEdit('')" [(ngModel)]="product.price"
-            (ngModelChange)="onEnabledChange($event)" required>
-            <!-- Placeholder: seleccionado solo cuando el valor es '' -->
-            <option value="" disabled>
-              Seleccione opción
-            </option>
-
-            <!-- Opciones reales -->
-            @for (pt of types; track pt) {
-            <option [value]="pt">
-              {{ pt ? 'Sí' : 'No' }}
-            </option>
-            }
-          </select>
+          <input [(ngModel)]="product.code" type="code" [disabled]="!canEdit('code')">
         </div>
       </div>
-
       <div class="campos">
         <div>
-          <label class="color-blanco" class="color-blanco">Habilitado</label>
+          <label class="color-blanco" class="color-blanco">Precio</label>
         </div>
         <div class="campo-input">
-          <select class="form-select" name="enabled" [disabled]="!canEdit('')" [(ngModel)]="product.price"
-            (ngModelChange)="onEnabledChange($event)" required>
-            <!-- Placeholder: seleccionado solo cuando el valor es '' -->
-            <option value="" disabled>
-              Seleccione opción
-            </option>
-
-            <!-- Opciones reales -->
-            @for (pt of types; track pt) {
-            <option [value]="pt">
-              {{ pt ? 'Sí' : 'No' }}
-            </option>
-            }
-          </select>
+          <input [(ngModel)]="product.price" type="code" [disabled]="!canEdit('')">
+        </div>
+      </div>
+      <div class="campos">
+        <div>
+          <label class="color-blanco" class="color-blanco">IVA %</label>
+        </div>
+        <div class="campo-input">
+          <input [(ngModel)]="product.iva" type="code" [disabled]="!canEdit('')">
+        </div>
+      </div>
+      <div class="campos">
+        <div>
+          <label class="color-blanco" class="color-blanco">Stock</label>
+        </div>
+        <div class="campo-input">
+          <input [(ngModel)]="product.stock" type="code" [disabled]="!canEdit('')">
+        </div>
+      </div>
+            <div class="campos span-2">
+        <div>
+          <label class="color-blanco">Imagen</label>
+        </div>
+        <div class="campo-input">
+          <input [(ngModel)]="product.image" [disabled]="!canEdit('')">
         </div>
       </div>
     </div>

@@ -8,6 +8,8 @@ import { SocuialStatus } from '../entitie/status-social';
 import { DocumentType } from '../entitie/document-type';
 import { AddressType } from '../entitie/address-type';
 import { PhoneType } from '../entitie/phone-type';
+import { Brand } from '../entitie/brand';
+import { Category } from '../entitie/category';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +42,14 @@ export class CatalogService {
 
   getPhonesType(): Observable<PhoneType[]>{
     return this.http.get<PhoneType[]>(this.uri+'phone-type');
+  }
+
+  getBrandType(): Observable<Brand[]>{
+    return this.http.get<Brand[]>(this.uri+'brand');
+  }
+
+  getCategory(): Observable<Category[]>{
+    return this.http.get<Category[]>(this.uri+'category');
   }
 
 }

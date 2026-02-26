@@ -89,6 +89,11 @@ export const routes: Routes = [
       { path: 'mantenimientos/empleados/create', component: EmployeeCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
       { path: 'mantenimientos/empleados/view', component: EmployeeCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
 
+      { path: 'mantenimientos/:kind', component: EmployeesComponent, canActivate: [roleGuard] },
+      { path: 'mantenimientos/:kind/page/:page', component: EmployeesComponent, canActivate: [roleGuard] },
+      { path: 'mantenimientos/:kind/:mode', component: EmployeeCrudComponent, canActivate: [roleGuard] },
+      { path: 'mantenimientos/:kind/address/:mode', component: InfoClientsCrudComponent, canActivate: [roleGuard] },
+
       { path: 'ventas', component: VentasComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_ROLE_EMPLEADO'] } },
       { path: 'ventas/venta', component: VentaComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_ROLE_EMPLEADO'] } },
       { path: 'ventas/pedido', component: PedidoComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_ROLE_EMPLEADO'] } },

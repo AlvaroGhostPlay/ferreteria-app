@@ -5,6 +5,7 @@ import { PersonName } from '../dto/person-name';
 import { Client } from '../entitie/client';
 import { PersonCudDTO } from '../dto/client-request';
 import { Person } from '../entitie/person';
+import { PersonKind } from './sharing-data-service.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,15 @@ export class PersonService {
 
   uri: string = 'http://localhost:8090/api/persons/person-clients/';
   uri2: string = 'http://localhost:8090/api/persons';
+
+  private api = 'http://localhost:8090/api/persons';
+
+  // 👇 Ajustá estas rutas a tu backend real
+  private listUrlByKind: Record<PersonKind, string> = {
+    clientes:   `${this.api}/person-clients/`,
+    empleados:  `${this.api}/person-employees/`,
+    proveedores:`${this.api}/person-suppliers/`,
+  };
 
   constructor(private http:HttpClient) { }
 
@@ -47,4 +57,24 @@ export class PersonService {
     `${this.uri2}/searchClients?term=${term}`
   );
 }
+
+  getPersons(kind: PersonKind, page: string): Observable<any> {
+    return this.http.get<any>(this.listUrlByKind[kind] + page);
+  }
+
+  getPerson(kind: PersonKind, id: string): Observable<Person> {
+    // si tu backend usa el mismo endpoint para obtener por id:
+    return this.http.get<Person>(`${this.api}/${id}`);
+  }
+
+  savePerson(kind: PersonKind, body: any, id: string): Observable<Person> {
+    if (id && id.trim() !== '') {
+      return this.http.put<Person>(`${this.api}/${id}`, body);
+    }
+    return this.http.post<Person>(`${this.api}`, body);
+  }
+
+  deletePerson(kind: PersonKind, id: string): Observable<any> {
+    return this.http.delete(`${this.api}/${id}`);
+  }
 }

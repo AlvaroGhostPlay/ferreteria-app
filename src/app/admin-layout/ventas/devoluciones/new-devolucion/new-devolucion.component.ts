@@ -21,10 +21,10 @@ export class NewDevolucionComponent {
   movimiento!: Movimient;
   hoy: Date = new Date();
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.id = Number(this.route.snapshot.paramMap.get('id'))?? null;
+    this.id = Number(this.route.snapshot.paramMap.get('id')) ?? null;
   }
   search = signal('');
   docType = signal<DocType>('Boleta');
@@ -34,16 +34,16 @@ export class NewDevolucionComponent {
   efectivoRecibido = signal<number>(0);
   efectivoExacto = signal(true);
 
-    cart: Cart[] =[
+  cart: Cart[] = [
     {
       product: {
         productId: '1',
-        code: 7802800716777,
+        code: '7802800716777',
         productName: 'Zuko Emoliente',
         stock: 50,
         price: 1.00,
         iva: 0.05,
-                category: {
+        category: {
           categoryId: '',
           category: ''
         },
@@ -58,17 +58,17 @@ export class NewDevolucionComponent {
       qty: 1,
       iva: 0,
       subtotal: 0,
-      total:0
+      total: 0
     },
     {
       product: {
         productId: '2',
-        code: 7750182220378,
+        code: '7750182220378',
         productName: 'Fanta Naranja 500ml',
         stock: 30,
         price: 1.80,
         iva: 0.05,
-                category: {
+        category: {
           categoryId: '',
           category: ''
         },
@@ -83,17 +83,17 @@ export class NewDevolucionComponent {
       qty: 1,
       iva: 0,
       subtotal: 0,
-      total:0
+      total: 0
     },
     {
       product: {
         productId: '3',
-        code: 7501006559019,
+        code: '7501006559019',
         productName: 'Canchita mantequilla',
         stock: 25,
         price: 3.50,
         iva: 0.05,
-                category: {
+        category: {
           categoryId: '',
           category: ''
         },
@@ -108,12 +108,12 @@ export class NewDevolucionComponent {
       qty: 1,
       iva: 0,
       subtotal: 0,
-      total:0
+      total: 0
     },
     {
       product: {
         productId: '12123',
-        code: 7751271021999,
+        code: '7751271021999',
         productName: 'Gloria evaporada light 400g',
         stock: 45,
         price: 5.00,
@@ -133,7 +133,7 @@ export class NewDevolucionComponent {
       qty: 1,
       subtotal: 0,
       iva: 0,
-      total:0
+      total: 0
     }
   ];
 
@@ -200,11 +200,11 @@ export class NewDevolucionComponent {
   }
 
   getTotalGeneralTemp() {
-      return this.cart.reduce((acc, it) => acc + it.product.price * it.qty + ( it.product.price * 0.05 * it.qty), 0).toFixed(2);
-    }
+    return this.cart.reduce((acc, it) => acc + it.product.price * it.qty + (it.product.price * 0.05 * it.qty), 0).toFixed(2);
+  }
 
   getIvaGeneralTemp() {
-    return this.cart.reduce((acc, it) => acc + ( it.product.price * 0.05 * it.qty), 0).toFixed(2);
+    return this.cart.reduce((acc, it) => acc + (it.product.price * 0.05 * it.qty), 0).toFixed(2);
   }
 
   getSubtotalGeneralTemp() {
@@ -212,18 +212,18 @@ export class NewDevolucionComponent {
   }
 
   montoRecibido(): number {
-  return this.efectivoExacto() ? +this.getTotalGeneralTemp() : this.efectivoRecibido();
-}
+    return this.efectivoExacto() ? +this.getTotalGeneralTemp() : this.efectivoRecibido();
+  }
 
-vuelto(): number {
-  const total = +this.getTotalGeneralTemp();
-  const recibido = this.montoRecibido();
-  return Math.max(0, +(recibido - total).toFixed(2));
-}
+  vuelto(): number {
+    const total = +this.getTotalGeneralTemp();
+    const recibido = this.montoRecibido();
+    return Math.max(0, +(recibido - total).toFixed(2));
+  }
 
-faltante(): number {
-  const total = +this.getTotalGeneralTemp();
-  const recibido = this.montoRecibido();
-  return Math.max(0, +(total - recibido).toFixed(2));
-}
+  faltante(): number {
+    const total = +this.getTotalGeneralTemp();
+    const recibido = this.montoRecibido();
+    return Math.max(0, +(total - recibido).toFixed(2));
+  }
 }

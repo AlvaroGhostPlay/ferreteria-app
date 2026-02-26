@@ -1,88 +1,196 @@
 import { Component } from '@angular/core';
-import { Mode, SharingDataServiceService } from '../../../../services/sharing-data-service.service';
-import { filter, Subject, takeUntil } from 'rxjs';
-import { UserService } from '../../../../services/user.service';
-import { User } from '../../../../entitie/user';
+import { SharingDataServiceService, Mode, PersonKind, CrudState } from '../../../../services/sharing-data-service.service';
 import { NavigationStart, Router } from '@angular/router';
-import { Role } from '../../../../entitie/role';
-import { FormsModule } from '@angular/forms';
 import { PersonService } from '../../../../services/person.service';
-import { Person } from '../../../../entitie/person';
+import { Client } from '../../../../entitie/client';
+import { filter, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { FormsModule } from '@angular/forms';
+import { PersonType } from '../../../../entitie/person-type';
+import { CatalogService } from '../../../../services/catalog.service';
+import { Gener } from '../../../../entitie/gener';
+import { PersonCudDTO } from '../../../../dto/client-request';
+import { SocuialStatus } from '../../../../entitie/status-social';
+import { DocumentType } from '../../../../entitie/document-type';
+import { InfoClientsCrudComponent } from '../../../ventas/clientes/info-clients-crud/info-clients-crud.component';
 
 @Component({
   selector: 'app-employee-crud',
-  imports: [FormsModule],
+  imports: [FormsModule, InfoClientsCrudComponent],
   templateUrl: './employee-crud.component.html'
 })
 export class EmployeeCrudComponent {
 
-  hoy: Date = new Date();
-  userId: string = '';
+  // ===== helpers =====
+  get isEdit(): boolean {
+    return (this.id ?? '').trim().length > 0;
+  }
+
+  hasValue(v: unknown): boolean {
+    return v !== null && v !== undefined && String(v).trim().length > 0;
+  }
+
+  // ===== state =====
+  id: string = '';
   mode: Mode = 'create';
+  kind: PersonKind = 'clientes';
+
+  personTypes: PersonType[] = [];
+  geners: Gener[] = [];
+  statusSocials: SocuialStatus[] = [];
+  documentTypes: DocumentType[] = [];
+  types: boolean[] = [true, false];
+
+  selectedPersonTypeId: string = '';
+  socialStatusSelected: string = '';
+  generSelected: string = '';
+  documentTypeSelected: string = '';
+  enabled: boolean = false;
+
+  clientRequest!: PersonCudDTO;
+
+  client: Client = {
+    person: {
+      phones: [] as any,
+      documentPerson: '',
+      documentType: { documentType: '', documentTypeId: '' },
+      email: '',
+      enabled: false,
+      name: '',
+      person: { personType: '', personTypeId: '' },
+      personId: ''
+    },
+    personLegal: {
+      person: null as any,
+      legalName: '',
+      comercialName: '',
+      documentType: { documentType: '', documentTypeId: '' },
+      documentRepresentative: ''
+    },
+    personNatural: {
+      person: null as any,
+      firstName: '',
+      middleName: '',
+      thirdName: '',
+      lastName: '',
+      seccondLastName: '',
+      marriedLastName: '',
+      gener: { gener: '', generId: '' },
+      statusSocial: { socialStatus: '', socialStatusId: '' }
+    }
+  };
+
   private destroy$ = new Subject<void>();
-
-  types: boolean[] = [true, false]
-
-  user: User = new User();
-  person: Person = new Person();
-  roles: Role[] = [];
-
-  selectedRoleId: string = '';
-  searchTerm = '';
-  clients: Person[] = [];
-  showDropdown = false;
 
   constructor(
     private sharingDataService: SharingDataServiceService,
-    private userServie: UserService,
     private router: Router,
-    private clientService: PersonService
+    private personService: PersonService,
+    private catalogService: CatalogService
   ) { }
 
   ngOnInit() {
-    this.sharingDataService.userCrud$
-      .subscribe((obj: any) => {
-        this.userId = obj.id;
-        this.mode = obj.mode;
-        console.log(this.user.userId)
+    this.clientRequest = new PersonCudDTO();
 
+    // ✅ 1) Escuchar el estado genérico (id + mode + kind)
+    this.sharingDataService.personCrud$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter((state: CrudState) => !!state && (state.mode === 'create' || (state.id ?? '').trim().length > 0))
+      )
+      .subscribe((state: CrudState) => {
+        this.id = state.id;
+        this.mode = state.mode;
+        this.kind = state.kind;
 
-        this.userServie.getUser(this.userId).subscribe({
-          next: user => {
-            this.user = user;
-            this.syncSelectedRoleFromUser();
+        // create => limpiar formulario
+        if (this.mode === 'create') {
+          this.resetForm();
+          return;
+        }
 
-            this.userServie.getRoles().subscribe({
-              next: roles => {
-                this.roles = roles;
-                console.log(roles)
-                this.syncSelectedRoleFromUser();
-                if (this.userId === '') {
-                  this.selectedRoleId = '';
-                }
-              }
-            })
+        // edit/view => traer data
+        this.personService.getClient(this.id).subscribe({
+          next: (c) => {
+            this.client = c;
+
+            this.selectedPersonTypeId = String(this.client.person.person.personTypeId ?? '');
+            this.socialStatusSelected = String(this.client.personNatural.statusSocial.socialStatusId ?? '');
+            this.generSelected = String(this.client.personNatural.gener.generId ?? '');
+            this.documentTypeSelected = String(this.client.person.documentType.documentTypeId ?? '');
+            this.enabled = !!this.client.person.enabled;
           },
-          error: error => console.log(error)
-        })
+          error: console.log
+        });
       });
 
+    // ✅ 2) catálogos
+    this.catalogService.getDocumentType().subscribe({
+      next: (data) => this.documentTypes = data,
+      error: console.log
+    });
+
+    this.catalogService.getPersonType().subscribe({
+      next: (data) => this.personTypes = data,
+      error: console.log
+    });
+
+    this.catalogService.getGener().subscribe({
+      next: (data) => this.geners = data,
+      error: console.log
+    });
+
+    this.catalogService.getStatusSocialType().subscribe({
+      next: (data) => this.statusSocials = data,
+      error: console.log
+    });
+
+    // ✅ 3) limpiar state al salir del módulo mantenimientos
     this.router.events
       .pipe(
         takeUntil(this.destroy$),
         filter((e): e is NavigationStart => e instanceof NavigationStart)
       )
       .subscribe(e => {
-        const goingToUsers = e.url.startsWith('/auth/mantenimientos/usuarios');
-        if (!goingToUsers) {
-          this.sharingDataService.clearUserId();
+        const stayIn = e.url.startsWith(`/auth/mantenimientos/${this.kind}`);
+        if (!stayIn) {
+          this.sharingDataService.clearPersonCrud();
         }
       });
   }
 
+  // =========================================================
+  // SAVE
+  // =========================================================
+  save() {
+    this.createPersonRequest();
+
+    // 👇 IMPORTANTE: usa el mismo método del service
+    this.personService.saveClient(this.clientRequest, this.client.person.personId).subscribe({
+      next: (res) => {
+        this.client = res;
+        this.id = res.person.personId;
+
+        // mantener el estado (no lo cambies si querés)
+        this.sharingDataService.emitPersonCrud({ id: this.id, mode: this.mode, kind: this.kind });
+
+        // navegar a address según modo + kind
+        if (this.mode === 'create') {
+          this.router.navigate([`/auth/mantenimientos/${this.kind}/address/create`]);
+        } else if (this.mode === 'edit') {
+          this.router.navigate([`/auth/mantenimientos/${this.kind}/address/edit`]);
+        } else {
+          // view no debería guardar, pero por si acaso:
+          this.router.navigate([`/auth/mantenimientos/${this.kind}`]);
+        }
+      },
+      error: (err) => console.log('Error al guardar persona:', err)
+    });
+  }
+
   cancel() {
-    this.sharingDataService.clearUserId();
-    this.router.navigate(['/auth/mantenimientos']);
+    this.sharingDataService.clearPersonCrud();
+    this.router.navigate([`/auth/mantenimientos/${this.kind}`]);
   }
 
   ngOnDestroy() {
@@ -90,181 +198,128 @@ export class EmployeeCrudComponent {
     this.destroy$.complete();
   }
 
-  onRoleSelected(id: string) {
-    this.selectedRoleId = id;
-    this.user.roles[0].roleId = id // lo dejas listo para el request
-    console.log('Selected role Id:', id);
+  // =========================================================
+  // SELECTS
+  // =========================================================
+  onPersonTypeChange(id: string) {
+    this.selectedPersonTypeId = id;
+    this.client.person.person.personTypeId = id;
   }
 
-  get isEdit(): boolean {
-    return (this.userId ?? '').trim().length > 0;
+  onSocialStatusChange(id: string) {
+    this.socialStatusSelected = id;
+    this.client.personNatural.statusSocial.socialStatusId = id;
   }
 
-  hasValue(v: unknown): boolean {
-    return v !== null && v !== undefined && String(v).trim().length > 0;
+  onGenerChange(id: string) {
+    this.generSelected = id;
+    this.client.personNatural.gener.generId = id;
+  }
+
+  onDocumentTypeChange(id: string) {
+    this.documentTypeSelected = id;
+    this.client.person.documentType.documentTypeId = id;
   }
 
   onEnabledChange(value: boolean) {
-    this.user.enabled = value;
-    console.log('Enabled value:', value);
+    this.enabled = value;
+    this.client.person.enabled = value;
   }
 
-  onPassChange(value: boolean) {
-    this.user.mostChangePass = value;
-    console.log('Enabled value:', value);
-  }
+  // =========================================================
+  // REQUEST (GENÉRICO)
+  // =========================================================
+  private createPersonRequest(): void {
+    // kind NATURAL/LEGAL por el tipo
+    const personTypeId = this.client.person.person.personTypeId;
+    this.clientRequest.kind = (personTypeId === 'N') ? 'NATURAL' : 'LEGAL';
+    this.clientRequest.idPersonType = personTypeId;
 
-  save() {
-    this.createUserRequest();
-    this.userServie.saveUser(new User, this.userId).subscribe({
-      next: (res) => {
-        this.user = res;
-        if (this.mode === 'create') {
-          // no cambies a edit
-        }
-        this.saveState();
-        this.userServie.saveUser(this.user, this.userId ).subscribe({
-          next: ok =>{
-            this.router.navigate(['/auth/mantenimientos/user'])
-          }
-        });
-      },
-      error: (err) => console.log('Error al guardar cliente:', err)
-    });
-  }
+    // ✅ flags según kind
+    this.clientRequest.client = (this.kind === 'clientes');
+    this.clientRequest.employee = (this.kind === 'empleados');
+    this.clientRequest.supplier = (this.kind === 'proveedores');
 
-  delete(id:string){
-    this.userServie.deleteUser(id).subscribe({
-      next: ok => {
-        this.router.navigate(['/auth/mantenimientos/user'])
-      },
-      error : err => {
-        console.log(err)
-      }
-    })
-  }
+    this.clientRequest.enabled = this.client.person.enabled;
+    this.clientRequest.email = this.client.person.email;
+    this.clientRequest.idDocumentType = this.client.person.documentType.documentTypeId;
+    this.clientRequest.documentType = this.client.person.documentPerson;
 
-  createUserRequest() {
-    this.user = {
-      userId: this.user.userId,
-      username: this.user.username,
-      roles: [
-        {
-          roleId:this.user.roles[0].roleId,
-          roleName:this.user.roles[0].roleName
-        }
-      ],
-      enabled: this.user.enabled,
-      createdAt: this.hoy,
-      mostChangePass: true,
-      passUpdateAt: this.hoy
+    if (this.clientRequest.kind === 'NATURAL') {
+      const t3 = (this.client.personNatural.thirdName ?? '').trim();
+      const casada = (this.client.personNatural.marriedLastName ?? '').trim();
+
+      this.clientRequest.name =
+        `${this.client.personNatural.firstName} ${this.client.personNatural.middleName} ${t3 ? t3 + ' ' : ''}${this.client.personNatural.lastName} ${this.client.personNatural.seccondLastName} ${casada}`.trim();
+
+      this.clientRequest.personNaturalData = {
+        firstName: this.client.personNatural.firstName,
+        lastName: this.client.personNatural.lastName,
+        idGener: this.client.personNatural.gener.generId,
+        middleName: this.client.personNatural.middleName,
+        secondLastName: this.client.personNatural.seccondLastName,
+        idSocialStatus: this.client.personNatural.statusSocial.socialStatusId,
+        thirdName: this.client.personNatural.thirdName,
+        marriedLastName: this.client.personNatural.marriedLastName
+      };
+
+      this.clientRequest.personLegalData = undefined;
+    } else {
+      this.clientRequest.name = this.client.personLegal.legalName;
+
+      this.clientRequest.personLegalData = {
+        legalName: this.client.personLegal.legalName,
+        comercialName: this.client.personLegal.comercialName,
+        idDocumentTypeRepresentative: this.client.personLegal.documentType.documentTypeId,
+        representativeLegalDocument: this.client.personLegal.documentRepresentative
+      };
+
+      this.clientRequest.personNaturalData = undefined;
     }
   }
 
-  private saveState() {
-    const state = {
-      mode: this.mode,
-      personId: this.user?.userId ?? ''
+  // =========================================================
+  // RESET
+  // =========================================================
+  private resetForm() {
+    this.id = '';
+
+    this.client = {
+      person: {
+        phones: [] as any,
+        documentPerson: '',
+        documentType: { documentType: '', documentTypeId: '' },
+        email: '',
+        enabled: false,
+        name: '',
+        person: { personType: '', personTypeId: '' },
+        personId: ''
+      },
+      personLegal: {
+        person: null as any,
+        legalName: '',
+        comercialName: '',
+        documentType: { documentType: '', documentTypeId: '' },
+        documentRepresentative: ''
+      },
+      personNatural: {
+        person: null as any,
+        firstName: '',
+        middleName: '',
+        thirdName: '',
+        lastName: '',
+        seccondLastName: '',
+        marriedLastName: '',
+        gener: { gener: '', generId: '' },
+        statusSocial: { socialStatus: '', socialStatusId: '' }
+      }
     };
 
-  }
-
-  private syncSelectedRoleFromUser() {
-    const roleId = this.user?.roles?.[0]?.roleId ?? '';
-    this.selectedRoleId = roleId ? String(roleId) : '';
-  }
-
-  private loadUserAndRoles() {
-    this.userServie.getUser(this.userId).subscribe({
-      next: user => {
-        this.user = user;
-        this.syncSelectedRoleFromUser();
-      },
-      error: err => console.log(err)
-    });
-
-    this.userServie.getRoles().subscribe({
-      next: roles => {
-        this.roles = roles;
-        this.syncSelectedRoleFromUser();
-      },
-      error: err => console.log(err)
-    });
-  }
-
-  get isView(): boolean {
-    return this.mode === 'view';
-  }
-
-  get isEdite(): boolean {
-    return this.mode === 'edit';
-  }
-
-  get isCreate(): boolean {
-    return this.mode === 'create';
-  }
-
-  canEdit(field: string): boolean {
-    console.log(this.mode)
-    if (this.isView) return false;
-
-    if (this.isEdite) {
-      const lockedFields = [
-        'userId',
-        'createdAt',
-        'username',
-        'roles',
-        'updateDate',
-        'enabled',
-        'mostChangePass'
-      ];
-      return !lockedFields.includes(field);
-    }
-
-    return true; // create
-  }
-
-  onSearchClient() {
-    if (this.searchTerm.length < 2) {
-      this.clients = [];
-      return;
-    }
-
-    this.clientService.searchClients(this.searchTerm)
-      .subscribe(res => {
-        this.clients = res;
-        console.log(this.clients)
-      });
-  }
-
-  selectClient(client: Person) {
-  this.user.userId = client.personId;   // 👉 asignar ID
-  this.searchTerm = client.name;                 // 👉 limpiar input
-  this.showDropdown = false;            // 👉 cerrar dropdown
-  this.clients = [];     
-  this.person = client;
-  }
-
-  onDeselect(nada:string){
-      if (!nada || nada.trim() === '') {
-
-    // Limpiar búsqueda
-    this.searchTerm = '';
-
-    // Limpiar usuario
-    this.user.userId = '';
-    this.user.username = '';
-    this.user.roles = [];
-
-    // Limpiar persona
-    this.person = new Person();
-
-    // Limpiar dropdown
-    this.clients = [];
-    this.showDropdown = false;
-
-    // Limpiar rol seleccionado
-    this.selectedRoleId = '';
-  }
+    this.selectedPersonTypeId = '';
+    this.socialStatusSelected = '';
+    this.generSelected = '';
+    this.documentTypeSelected = '';
+    this.enabled = false;
   }
 }
+

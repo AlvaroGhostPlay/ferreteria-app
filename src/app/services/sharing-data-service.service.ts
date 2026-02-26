@@ -8,13 +8,21 @@ export type ClientInfoState = {
   mode: Mode;
 };
 
+export type PersonKind = 'clientes' | 'empleados' | 'proveedores';
+
+export type CrudState = {
+  id: string;
+  mode: Mode;
+  kind: PersonKind;
+};
+
 @Injectable({ providedIn: 'root' })
 export class SharingDataServiceService {
   private readonly KEY = 'editClientId';
   private readonly KEYINFO = 'editClientInfoId';
   private readonly KEYUSER = 'crudUser';
   private readonly KEYPRODUCT = 'crudProduct';
-  private readonly KEYEMPLOYEE= 'employeeCrud';
+  private readonly KEYPERSON = 'crudPerson';
 
   private editClientIdSubject = new BehaviorSubject<string>(
     sessionStorage.getItem(this.KEY) ?? ''
@@ -32,15 +40,17 @@ export class SharingDataServiceService {
     this.readProductClientInfoState()
   );
 
-  private crudEmployee = new BehaviorSubject<ClientInfoState>(
-    this.readUserEmployeeInfoState()
-  );
+  private crudPerson = new BehaviorSubject<CrudState>(this.readCrudPerson());
+  
+
+  private crudPersonSubject = new BehaviorSubject<CrudState>(this.readCrudPerson());
+crudPerson$ = this.crudPersonSubject.asObservable();
 
   editClientId$ = this.editClientIdSubject.asObservable();
   editClientInfoId$ = this.editClientInfoIdSubject.asObservable();
   userCrud$ = this.crudUser.asObservable();
   productCrud$ = this.crudProduct.asObservable();
-  employeeCrud$ = this.crudEmployee.asObservable();
+  personCrud$ = this.crudPerson.asObservable();
 
   // ✅ Solo ID (si querés mantenerlo)
   emitUpdateClient(id: string) {
@@ -133,44 +143,6 @@ export class SharingDataServiceService {
     }
   }
 
-
-  emitEmployee(obj: ClientInfoState) {
-    const safe: ClientInfoState = {
-      id: String(obj?.id ?? ''),
-      mode: (obj?.mode ?? 'create') as Mode,
-    };
-
-    sessionStorage.setItem(this.KEYEMPLOYEE, JSON.stringify(safe));
-    this.crudEmployee.next(safe);
-  }
-
-  clearEmployee() {
-    sessionStorage.removeItem(this.KEYEMPLOYEE);
-    this.crudEmployee.next({ id: '', mode: 'create' });
-  }
-
-  getEmployeeInfo(): ClientInfoState {
-    return this.crudEmployee.value;
-  }
-
-  private readUserEmployeeInfoState(): ClientInfoState {
-    const raw = sessionStorage.getItem(this.KEYEMPLOYEE);
-    if (!raw) return { id: '', mode: 'create' };
-
-    try {
-      const parsed = JSON.parse(raw);
-      const mode = parsed?.mode as Mode;
-
-      return {
-        id: String(parsed?.id ?? ''),
-        mode: (mode === 'edit' || mode === 'view' || mode === 'create') ? mode : 'create',
-      };
-    } catch {
-      sessionStorage.removeItem(this.KEYEMPLOYEE);
-      return { id: '', mode: 'create' };
-    }
-  }
-
   emitUserId(obj: ClientInfoState) {
     const safe: ClientInfoState = {
       id: String(obj?.id ?? ''),
@@ -205,6 +177,46 @@ export class SharingDataServiceService {
     } catch {
       sessionStorage.removeItem(this.KEYUSER);
       return { id: '', mode: 'create' };
+    }
+  }
+
+    emitPersonCrud(obj: Partial<CrudState>) {
+    const safe: CrudState = {
+      id: String(obj?.id ?? ''),
+      mode: (obj?.mode ?? 'create') as Mode,
+      kind: (obj?.kind ?? 'clientes') as PersonKind,
+    };
+
+    sessionStorage.setItem(this.KEYPERSON, JSON.stringify(safe));
+    this.crudPerson.next(safe);
+  }
+
+  clearPersonCrud() {
+    sessionStorage.removeItem(this.KEYPERSON);
+    this.crudPerson.next({ id: '', mode: 'create', kind: 'clientes' });
+  }
+
+  getPersonCrud(): CrudState {
+    return this.crudPerson.value;
+  }
+
+  private readCrudPerson(): CrudState {
+    const raw = sessionStorage.getItem(this.KEYPERSON);
+    if (!raw) return { id: '', mode: 'create', kind: 'clientes' };
+
+    try {
+      const parsed = JSON.parse(raw);
+      const mode = parsed?.mode as Mode;
+      const kind = parsed?.kind as PersonKind;
+
+      return {
+        id: String(parsed?.id ?? ''),
+        mode: (mode === 'edit' || mode === 'view' || mode === 'create') ? mode : 'create',
+        kind: (kind === 'clientes' || kind === 'empleados' || kind === 'proveedores') ? kind : 'clientes',
+      };
+    } catch {
+      sessionStorage.removeItem(this.KEYPERSON);
+      return { id: '', mode: 'create', kind: 'clientes' };
     }
   }
 }

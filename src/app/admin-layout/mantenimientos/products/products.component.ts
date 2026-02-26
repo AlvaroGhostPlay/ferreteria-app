@@ -14,55 +14,55 @@ import { PaginatorComponent } from '../../paginator/paginator.component';
 export class ProductsComponent {
 
   paginator: any = {
-      totalPages: 0, 
-      number: 0
-    };
-  url:string = '/auth/mantenimientos/productos/page/:page';
+    totalPages: 0,
+    number: 0
+  };
+  url: string = '/auth/mantenimientos/productos/page/:page';
 
   constructor(
     private router: Router,
     private productService: ProductService,
-    private route :ActivatedRoute,
-    private sharingDataService: SharingDataServiceService
-  ){}
+    private route: ActivatedRoute,
+    private sharingDataService: SharingDataServiceService,
+  ) { }
 
-    products: Product[] =[];
+  products: Product[] = [];
 
-      ngOnInit() {
+  ngOnInit() {
     this.products = [];
     this.route.paramMap.subscribe(pm => {
       const page = pm.get('page') ?? '0';
       this.productService.getProducts(page).subscribe({
-        next: productsDb =>{
-              this.products = productsDb.content;
-              this.paginator = {
-                totalPages: productsDb.totalPages,
-                number: productsDb.number, // mejor esto
-              };
-              console.log(productsDb)
+        next: productsDb => {
+          this.products = productsDb.content;
+          this.paginator = {
+            totalPages: productsDb.totalPages,
+            number: productsDb.number, // mejor esto
+          };
+          console.log(productsDb)
         },
         error: err => console.log(err)
       })
     });
-    
+
   }
 
-  deleteUser(id: string){
+  deleteUser(id: string) {
     this.products = [...this.products.filter(p => p.productId !== id)];
-}
+  }
 
-view(id: string) {
-  this.sharingDataService.emitProductCrud({ id, mode: 'view' });
-  this.router.navigate(['/auth/mantenimientos/productos/info']);
-}
+  view(id: string) {
+    this.sharingDataService.emitProductCrud({ id, mode: 'view' });
+    this.router.navigate(['/auth/mantenimientos/productos/view']);
+  }
 
-update(id: string) {
-  this.sharingDataService.emitProductCrud({ id, mode: 'edit' });
-  this.router.navigate(['/auth/mantenimientos/productos/edit']);
-}
+  update(id: string) {
+    this.sharingDataService.emitProductCrud({ id, mode: 'edit' });
+    this.router.navigate(['/auth/mantenimientos/productos/edit']);
+  }
 
-create(id: string) {
-  this.sharingDataService.emitProductCrud({ id, mode: 'create' });
-  this.router.navigate(['/auth/mantenimientos/productos/create']);
-}
+  create(id: string) {
+    this.sharingDataService.emitProductCrud({ id, mode: 'create' });
+    this.router.navigate(['/auth/mantenimientos/productos/create']);
+  }
 }

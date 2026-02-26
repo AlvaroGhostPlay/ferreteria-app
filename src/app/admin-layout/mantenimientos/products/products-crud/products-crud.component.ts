@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { Mode, SharingDataServiceService } from '../../../../services/sharing-data-service.service';
 import { filter, Subject, takeUntil } from 'rxjs';
 import { NavigationStart, Router } from '@angular/router';
-import { PersonService } from '../../../../services/person.service';
-import { Person } from '../../../../entitie/person';
 import { Product } from '../../../../entitie/product';
 import { ProductService } from '../../../../services/product.service';
 import { FormsModule } from '@angular/forms';
 import { ProductRequest } from '../../../../dto/product-request';
+import { CatalogService } from '../../../../services/catalog.service';
+import { Brand } from '../../../../entitie/brand';
+import { Category } from '../../../../entitie/category';
 
 @Component({
   selector: 'app-products-crud',
@@ -25,34 +26,55 @@ export class ProductCrudComponent {
   types: boolean[] = [true, false]
 
   product: Product = new Product();
-  selectedRoleId: string = '';
-  searchTerm = '';
-  clients: Person[] = [];
-  productRequest!: ProductRequest; 
+  selectedBrand: string = '';
+  selectedCategory: string = '';
+  productRequest!: ProductRequest;
+  brans: Brand[] = [];
+  categories: Category[] = [];
 
   constructor(
     private sharingDataService: SharingDataServiceService,
     private productService: ProductService,
     private router: Router,
-    private clientService: PersonService
+    private catalogService: CatalogService,
   ) { }
 
   ngOnInit() {
-    this.sharingDataService.userCrud$
+      this.product.category ??= new Category();
+  this.product.brand ??= new Brand();
+    this.sharingDataService.productCrud$
       .subscribe((obj: any) => {
         this.productId = obj.id;
         this.mode = obj.mode;
         console.log(this.product.productId)
 
-
+        if (!this.isEdit) return;
         this.productService.getProduct(this.productId).subscribe({
           next: product => {
             this.product = product;
-            this.syncSelectedRoleFromUser();
+            this.selectedBrand = String(this.product.brand.brandId ?? '');
+            this.selectedCategory = String(this.product.category.categoryId ?? '');
+            this.syncDatsdRoleFromProduct();
           },
           error: error => console.log(error)
         })
       });
+
+    this.catalogService.getCategory().subscribe({
+      next: categories => {
+        this.categories = categories;
+        console.log(this.categories)
+      },
+      error: err => console.log(err)
+    })
+
+    this.catalogService.getBrandType().subscribe({
+      next: brand => {
+        this.brans = brand;
+        console.log(this.brans)
+      },
+      error: err => console.log(err)
+    })
 
     this.router.events
       .pipe(
@@ -60,7 +82,7 @@ export class ProductCrudComponent {
         filter((e): e is NavigationStart => e instanceof NavigationStart)
       )
       .subscribe(e => {
-        const goingToUsers = e.url.startsWith('/auth/mantenimientos/usuarios');
+        const goingToUsers = e.url.startsWith('/auth/mantenimientos/productos');
         if (!goingToUsers) {
           this.sharingDataService.clearUserId();
         }
@@ -77,9 +99,15 @@ export class ProductCrudComponent {
     this.destroy$.complete();
   }
 
-  onRoleSelected(id: string) {
-    this.selectedRoleId = id;
-    //this.user.roles[0].roleId = id // lo dejas listo para el request
+  onBrandSelected(id: string) {
+    this.selectedBrand = id;
+    this.product.brand.brandId = this.selectedBrand;
+    console.log('Selected role Id:', id);
+  }
+
+  onCategorySelected(id: string) {
+    this.selectedCategory = id;
+    this.product.category.categoryId = this.selectedCategory;
     console.log('Selected role Id:', id);
   }
 
@@ -96,13 +124,9 @@ export class ProductCrudComponent {
     console.log('Enabled value:', value);
   }
 
-  onPassChange(value: boolean) {
-   // this.user.mostChangePass = value;
-    console.log('Enabled value:', value);
-  }
-
   save() {
     this.createUserRequest();
+    console.log(this.productRequest)
     this.productService.saveProduct(this.productRequest, this.productId).subscribe({
       next: (res) => {
         this.product = res;
@@ -110,22 +134,18 @@ export class ProductCrudComponent {
           // no cambies a edit
         }
         this.saveState();
-        this.productService.saveProduct(this.productRequest, this.productId ).subscribe({
-          next: ok =>{
-            this.router.navigate(['/auth/mantenimientos/productos'])
-          }
-        });
+        this.router.navigate(['/auth/mantenimientos/productos'])
       },
       error: (err) => console.log('Error al guardar cliente:', err)
     });
   }
 
-  delete(id:string){
+  delete(id: string) {
     this.productService.deleteProduct(id).subscribe({
       next: ok => {
         this.router.navigate(['/auth/mantenimientos/productos'])
       },
-      error : err => {
+      error: err => {
         console.log(err)
       }
     })
@@ -136,13 +156,14 @@ export class ProductCrudComponent {
       productId: null,
       productName: this.product.productName,
       descriptionProduct: this.product.descriptionProduct,
-      idCategory: this.product.category.categoryId, 
+      idCategory: this.product.category.categoryId,
       price: this.product.price,
       iva: this.product.iva,
       stock: this.product.stock,
       idBrand: this.product.brand.brandId,
       expirationDate: this.product.expirationDate,
-      image: this.product.image
+      image: this.product.image,
+      code:this.product.code
     }
   }
 
@@ -153,9 +174,11 @@ export class ProductCrudComponent {
     };
   }
 
-  private syncSelectedRoleFromUser() {
-    //const roleId = this.product?.roles?.[0]?.roleId ?? '';
-    //this.selectedRoleId = roleId ? String(roleId) : '';
+  private syncDatsdRoleFromProduct() {
+    const branId = this.product.brand.brandId ?? '';
+    const CategoryId = this.product.category.categoryId ?? '';
+    this.selectedBrand = branId ? String(branId) : '';
+    this.selectedCategory = CategoryId ? String(CategoryId) : '';
   }
 
 
@@ -177,31 +200,15 @@ export class ProductCrudComponent {
 
     if (this.isEdite) {
       const lockedFields = [
-        'userId',
-        'createdAt',
-        'username',
-        'roles',
-        'updateDate',
-        'enabled',
-        'mostChangePass'
+        'productId',
+        'category',
+        'brand',
+        'code',
       ];
       return !lockedFields.includes(field);
     }
 
     return true; // create
-  }
-
-  onSearchClient() {
-    if (this.searchTerm.length < 2) {
-      this.clients = [];
-      return;
-    }
-
-    this.clientService.searchClients(this.searchTerm)
-      .subscribe(res => {
-        this.clients = res;
-        console.log(this.clients)
-      });
   }
 }
 

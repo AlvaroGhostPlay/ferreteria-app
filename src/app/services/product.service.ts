@@ -19,7 +19,7 @@ export class ProductService {
   }
 
   getProduct(id: string): Observable<Product> {
-    return this.httpClient.get<Product>(this.uri + '/' + id);
+    return this.httpClient.get<Product>(this.uri + '/product/' + id);
   }
 
   saveProduct(product: ProductRequest, productId: string): Observable<Product> {
@@ -27,10 +27,10 @@ export class ProductService {
     console.log(productId)
     if (productId && productId !== '') {
       console.log('Entro al put')
-      return this.httpClient.put<Product>(this.uri + '/' + productId, product);
+      return this.httpClient.put<Product>(this.uri + '/product/' + productId, product);
     } else {
       console.log('Entro al post')
-      return this.httpClient.post<Product>(this.uri, product);
+      return this.httpClient.post<Product>(this.uri + '/product', product);
     }
   }
 

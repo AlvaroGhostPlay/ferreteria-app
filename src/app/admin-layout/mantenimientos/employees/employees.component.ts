@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router,  } from '@angular/router';
 import {PaginatorComponent} from '../../paginator/paginator.component'
-import { User } from '../../../entitie/user';
-import { UserService } from '../../../services/user.service';
-import { SharingDataServiceService } from '../../../services/sharing-data-service.service';
+import { PersonKind, SharingDataServiceService } from '../../../services/sharing-data-service.service';
+import { PersonService } from '../../../services/person.service';
+import { Person } from '../../../entitie/person';
 
 @Component({
   selector: 'app-employees',
@@ -12,57 +12,68 @@ import { SharingDataServiceService } from '../../../services/sharing-data-servic
 })
 export class EmployeesComponent {
 
-  paginator: any = {
-      totalPages: 0, 
-      number: 0
-    };
-  url:string = '/auth/mantenimientos/usuarios/page/:page';
+kind: PersonKind = 'clientes';
+
+  paginator: any = { totalPages: 0, number: 0 };
+  url: string = ''; // se arma en ngOnInit
+  persons: Person[] = [];
 
   constructor(
+    private sharing: SharingDataServiceService,
     private router: Router,
-    private userServie: UserService,
-    private route :ActivatedRoute,
-    private sharingDataService: SharingDataServiceService
-
-  ){}
-
-  users: User[] =[];
+    private service: PersonService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    this.users = [];
+    // kind viene de la ruta
     this.route.paramMap.subscribe(pm => {
+      this.kind = (pm.get('kind') as PersonKind) ?? 'clientes';
+      console.log(this.kind)
       const page = pm.get('page') ?? '0';
-      this.userServie.getUsers(page).subscribe({
-        next: usersDb =>{
-              this.users = usersDb.content;
-              this.paginator = {
-                totalPages: usersDb.totalPages,
-                number: usersDb.number, // mejor esto
-              };
+
+      this.url = `/auth/mantenimientos/${this.kind}/page`;
+
+      this.service.getPersons(this.kind, page).subscribe({
+        next: (res: any) => {
+          this.persons = res.content;
+          this.paginator = { totalPages: res.totalPages, number: res.number };
         },
         error: err => console.log(err)
-      })
+      });
     });
-    
   }
 
-deleteUser(id: string){
-    this.users = [...this.users.filter(c => c.userId !== id)];
-}
+  title(): string {
+    if (this.kind === 'empleados') return 'Mantenimiento de Empleados';
+    if (this.kind === 'proveedores') return 'Mantenimiento de Proveedores';
+    return 'Mantenimiento de Clientes';
+  }
 
-view(id: string) {
-  this.sharingDataService.emitEmployee({ id, mode: 'view' });
-  this.router.navigate(['/auth/mantenimientos/usuarios/info']);
-}
+  create() {
+    // ojo: en personas “create” normalmente no tiene id
+    this.sharing.emitPersonCrud({ id: '', mode: 'create', kind: this.kind });
+    this.router.navigate([`/auth/mantenimientos/${this.kind}/create`]);
+  }
 
-update(id: string) {
-  this.sharingDataService.emitEmployee({ id, mode: 'edit' });
-  this.router.navigate(['/auth/mantenimientos/usuarios/edit']);
-}
+  view(id: string) {
+    this.sharing.emitPersonCrud({ id, mode: 'view', kind: this.kind });
+    this.router.navigate([`/auth/mantenimientos/${this.kind}/view`]);
+  }
 
-create(id: string) {
-  this.sharingDataService.emitEmployee({ id, mode: 'create' });
-  this.router.navigate(['/auth/mantenimientos/usuarios/create']);
-}
+  update(id: string) {
+    this.sharing.emitPersonCrud({ id, mode: 'edit', kind: this.kind });
+    this.router.navigate([`/auth/mantenimientos/${this.kind}/edit`]);
+  }
+
+  deletePerson(id: string) {
+    // opcional: optimista en UI
+    this.persons = this.persons.filter(p => p.personId !== id);
+
+    this.service.deletePerson(this.kind, id).subscribe({
+      next: () => {},
+      error: err => console.log(err)
+    });
+  }
 }
 

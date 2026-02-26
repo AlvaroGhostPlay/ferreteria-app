@@ -24,7 +24,7 @@ export class VentaComponent {
     {
       product: {
         productId: '1',
-        code: 7802800716777,
+        code: '7802800716777',
         productName: 'Zuko Emoliente',
         stock: 50,
         price: 1.00,
@@ -49,7 +49,7 @@ export class VentaComponent {
     {
       product: {
         productId: '2',
-        code: 7750182220378,
+        code: '7750182220378',
         productName: 'Fanta Naranja 500ml',
         stock: 30,
         price: 1.80,
@@ -74,7 +74,7 @@ export class VentaComponent {
     {
       product: {
         productId: '3',
-        code: 7501006559019,
+        code: '7501006559019',
         productName: 'Canchita mantequilla',
         stock: 25,
         price: 3.50,
@@ -99,7 +99,7 @@ export class VentaComponent {
     {
       product: {
         productId: '4',
-        code: 7751271021999,
+        code: '7751271021999',
         productName: 'Gloria evaporada light 400g',
         stock: 45,
         price: 5.00,

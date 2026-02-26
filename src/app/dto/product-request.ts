@@ -9,4 +9,5 @@ export class ProductRequest{
     idBrand!: string;
     expirationDate!: Date;
     image!:string;
+    code!: string;
 }
