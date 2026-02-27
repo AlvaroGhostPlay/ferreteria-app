@@ -12,9 +12,6 @@ import { PersonKind } from './sharing-data-service.service';
 })
 export class PersonService {
 
-  uri: string = 'http://localhost:8090/api/persons/person-clients/';
-  uri2: string = 'http://localhost:8090/api/persons';
-
   private api = 'http://localhost:8090/api/persons';
 
   // 👇 Ajustá estas rutas a tu backend real
@@ -27,16 +24,15 @@ export class PersonService {
   constructor(private http:HttpClient) { }
 
   getPersonName(id:string): Observable<PersonName>{
-    return this.http.get<PersonName>(this.uri2+'/person-name/'+id);
+    return this.http.get<PersonName>(this.api+'/person-name/'+id);
   }
 
   getClients(page:string): Observable<any>{
-    console.log('TOKEN =>', sessionStorage.getItem('access_token'));
-    return this.http.get<any>(this.uri+page);
+    return this.http.get<any>(this.api+'/person-clients/'+page);
   }
 
   getClient(id:string): Observable<Client>{
-    return this.http.get<Client>(this.uri2+'/'+id);
+    return this.http.get<Client>(this.api+'/'+id);
   }
 
   saveClient(client: PersonCudDTO, clientId: string): Observable<Client>{
@@ -44,37 +40,37 @@ export class PersonService {
     console.log(client)
     if (clientId && clientId !== '') {
       console.log('Entro al put')
-      return this.http.put<Client>(this.uri2+'/'+clientId, client);
+      return this.http.put<Client>(this.api+'/'+clientId, client);
     } else{
       console.log('Entro al post')
-      return this.http.post<Client>(this.uri2, client);
+      return this.http.post<Client>(this.api, client);
     }
   }
 
   searchClients(term: string): Observable<Person[]> {
   console.log('Entro')
   return this.http.get<Person[]>(
-    `${this.uri2}/searchClients?term=${term}`
+    `${this.api}/searchClients?term=${term}`
   );
 }
 
   getPersons(kind: PersonKind, page: string): Observable<any> {
-    return this.http.get<any>(this.listUrlByKind[kind] + page);
+    return this.http.get<any>(`${this.listUrlByKind[kind]}${page}`);
   }
 
-  getPerson(kind: PersonKind, id: string): Observable<Person> {
+  getPerson( id: string): Observable<Person> {
     // si tu backend usa el mismo endpoint para obtener por id:
     return this.http.get<Person>(`${this.api}/${id}`);
   }
 
-  savePerson(kind: PersonKind, body: any, id: string): Observable<Person> {
+  savePerson( body: any, id: string): Observable<Person> {
     if (id && id.trim() !== '') {
       return this.http.put<Person>(`${this.api}/${id}`, body);
     }
     return this.http.post<Person>(`${this.api}`, body);
   }
 
-  deletePerson(kind: PersonKind, id: string): Observable<any> {
+  deletePerson(id: string): Observable<any> {
     return this.http.delete(`${this.api}/${id}`);
   }
 }

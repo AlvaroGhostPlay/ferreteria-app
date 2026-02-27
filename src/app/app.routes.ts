@@ -83,11 +83,11 @@ export const routes: Routes = [
       { path: 'mantenimientos/productos/create', component: ProductCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
       { path: 'mantenimientos/productos/view', component: ProductCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
 
-      { path: 'mantenimientos/empleados', component: EmployeesComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
+      /*{ path: 'mantenimientos/empleados', component: EmployeesComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
       { path: 'mantenimientos/empleados/page/:page', component: EmployeesComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
       { path: 'mantenimientos/empleados/edit', component: EmployeeCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
       { path: 'mantenimientos/empleados/create', component: EmployeeCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
-      { path: 'mantenimientos/empleados/view', component: EmployeeCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },
+      { path: 'mantenimientos/empleados/view', component: EmployeeCrudComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_ROLE_EMPLEADO'] } },*/
 
       { path: 'mantenimientos/:kind', component: EmployeesComponent, canActivate: [roleGuard] },
       { path: 'mantenimientos/:kind/page/:page', component: EmployeesComponent, canActivate: [roleGuard] },

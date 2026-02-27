@@ -28,6 +28,8 @@ kind: PersonKind = 'clientes';
   ngOnInit() {
     // kind viene de la ruta
     this.route.paramMap.subscribe(pm => {
+      const rawKind = pm.get('kind');
+  console.log('RAW kind:', rawKind);
       this.kind = (pm.get('kind') as PersonKind) ?? 'clientes';
       console.log(this.kind)
       const page = pm.get('page') ?? '0';
@@ -70,7 +72,7 @@ kind: PersonKind = 'clientes';
     // opcional: optimista en UI
     this.persons = this.persons.filter(p => p.personId !== id);
 
-    this.service.deletePerson(this.kind, id).subscribe({
+    this.service.deletePerson( id).subscribe({
       next: () => {},
       error: err => console.log(err)
     });
