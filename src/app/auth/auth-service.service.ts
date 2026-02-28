@@ -20,10 +20,13 @@ export class AuthServiceService {
   private clientId = 'ferr-jose-spa';
   private redirectUri = 'http://localhost:4200/auth/callback';
   private scope = 'openid profile';
+  private username = '';
 
   constructor(private http: HttpClient) { }
 
     loginWithPassword(username: string, password: string): Observable<void> {
+      this.username = username;
+      sessionStorage.setItem('username', this.username);
     return this.http.post<void>(
       `${this.authServer}/api/auth/login`,
       { username, password },
@@ -96,6 +99,7 @@ export class AuthServiceService {
   logoutApi(): Observable<void> {
     sessionStorage.setItem('refresh_token', '')
     sessionStorage.setItem('access_token', '')
+    sessionStorage.setItem('username','');
     return this.http.post<void>(
       `${this.authServer}/api/auth/logout`,
       {},

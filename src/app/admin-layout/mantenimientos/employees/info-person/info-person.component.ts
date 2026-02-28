@@ -3,7 +3,7 @@ import { InfoPersonService} from '../../../../services/info-person.service';
 import { CatalogService } from '../../../../services/catalog.service';
 import { AddressType } from '../../../../entitie/address-type';
 import { Address } from '../../../../entitie/address';
-import { SharingDataServiceService } from '../../../../services/sharing-data-service.service'; 
+import { PersonKind, SharingDataServiceService } from '../../../../services/sharing-data-service.service'; 
 import { PersonService } from '../../../../services/person.service'; 
 import { Subject} from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -17,12 +17,12 @@ import { AddressPhoneRequest } from '../../../../dto/address-phone-request';
 
 type Mode = 'create' | 'edit'   | 'view';
 @Component({
-  selector: 'info-clients-crud',
+  selector: 'info-persons-crud',
   imports: [FormsModule],
-  templateUrl: './info-clients-crud.component.html'
+  templateUrl: './info-person.component.html'
 })
-export class InfoClientsCrudComponent {
 
+export class InfoPersonComponent {
   status: number = 0;
   idClient: string = '';
   contPhone: number = 0;
@@ -39,6 +39,7 @@ export class InfoClientsCrudComponent {
   principalSelected: string = '';
   select: boolean[] = [true, false];
   primaryIndex: number | null = null;
+  kind: PersonKind= 'clientes';
 
   get isEdit(): boolean {
   return (this.idClient ?? '').trim().length > 0;
@@ -57,7 +58,7 @@ hasValue(v: unknown): boolean {
   ) { }
 
   ngOnInit(): void {
-    this.sharingDataService.editClientInfoId$
+    this.sharingDataService.personInfoCrud$
     .pipe(
             takeUntil(this.destroy$),
             filter(obj => !!obj && !!obj.id)
@@ -65,7 +66,9 @@ hasValue(v: unknown): boolean {
     .subscribe((obj:any) => {
       this.idClient = obj.id;
       this.mode = obj.mode;
+      this.kind = obj.kind;
       console.log(this.mode)
+      console.log(this.idClient)
     });
 
     this.personService.getPersonName(this.idClient).subscribe({
@@ -121,7 +124,7 @@ hasValue(v: unknown): boolean {
       )
       .subscribe(e => {
         // si estamos en /edit y vamos a otra ruta => limpiar
-        if (this.router.url.includes('/auth/ventas/clientes/address/edit')) {
+        if (this.router.url.includes('/auth/mantenimientos/'+this.kind+'/address/edit')) {
           // Si el destino NO es edit ni create, limpiamos
           if (!e.url.includes('/auth/ventas/clientes/address/edit')) {
             this.sharingDataService.clearEditClientId();
@@ -345,7 +348,7 @@ phones: this.phones.map(p => ({
       this.infoPersonService.saveAddressAndPhone(request).subscribe({
         next: (res) => {
           console.log(res);
-          this.router.navigate(['/auth/mantenimientos/clientes']);
+          this.router.navigate(['/auth/mantenimientos/'+this.kind]);
         },
         error: (err) => {console.log(err),this.status = err.status;}
       })
@@ -354,7 +357,7 @@ phones: this.phones.map(p => ({
       this.infoPersonService.updateAddressAndPhone(this.idClient, request).subscribe({
         next: (res) => {
           console.log(res); 
-          this.router.navigate(['/auth/mantenimientos/clientes']);
+          this.router.navigate(['/auth/mantenimientos/'+this.kind]);
         },
         error: (err) => {console.log(err),
           console.log(err.status),

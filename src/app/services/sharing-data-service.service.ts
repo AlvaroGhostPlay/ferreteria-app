@@ -23,6 +23,7 @@ export class SharingDataServiceService {
   private readonly KEYUSER = 'crudUser';
   private readonly KEYPRODUCT = 'crudProduct';
   private readonly KEYPERSON = 'crudPerson';
+    private readonly KEYPERSONINFO = 'info-crud-persons';
 
   private editClientIdSubject = new BehaviorSubject<string>(
     sessionStorage.getItem(this.KEY) ?? ''
@@ -30,6 +31,10 @@ export class SharingDataServiceService {
 
   private editClientInfoIdSubject = new BehaviorSubject<ClientInfoState>(
     this.readClientInfoState()
+  );
+
+    private PersonInfoCrud = new BehaviorSubject<CrudState>(
+    this.readPersonInfoCrud()
   );
 
   private crudUser = new BehaviorSubject<ClientInfoState>(
@@ -48,6 +53,7 @@ crudPerson$ = this.crudPersonSubject.asObservable();
 
   editClientId$ = this.editClientIdSubject.asObservable();
   editClientInfoId$ = this.editClientInfoIdSubject.asObservable();
+  personInfoCrud$ = this.PersonInfoCrud.asObservable();
   userCrud$ = this.crudUser.asObservable();
   productCrud$ = this.crudProduct.asObservable();
   personCrud$ = this.crudPerson.asObservable();
@@ -216,6 +222,46 @@ crudPerson$ = this.crudPersonSubject.asObservable();
       };
     } catch {
       sessionStorage.removeItem(this.KEYPERSON);
+      return { id: '', mode: 'create', kind: 'clientes' };
+    }
+  }
+
+  emitPersonInfoCrud(obj: CrudState) {
+    const safe: CrudState = {
+      id: String(obj?.id ?? ''),
+      mode: (obj?.mode ?? 'create') as Mode,
+      kind: obj.kind
+    };
+
+    sessionStorage.setItem(this.KEYPERSONINFO, JSON.stringify(safe));
+    this.PersonInfoCrud.next(safe);
+  }
+
+  clearPersonInfoCrud() {
+    sessionStorage.removeItem(this.KEYPERSONINFO);
+    this.PersonInfoCrud.next({ id: '', mode: 'create', kind:'clientes' });
+  }
+
+  getPersonInfoCrud(): ClientInfoState {
+    return this.PersonInfoCrud.value;
+  }
+
+  private readPersonInfoCrud(): CrudState {
+    const raw = sessionStorage.getItem(this.KEYPERSONINFO);
+    if (!raw) return { id: '', mode: 'create', kind: 'clientes' };
+
+    try {
+      const parsed = JSON.parse(raw);
+      const mode = parsed?.mode as Mode;
+      const kind = parsed?.kind as PersonKind;
+
+      return {
+        id: String(parsed?.id ?? ''),
+        mode: (mode === 'edit' || mode === 'view' || mode === 'create') ? mode : 'create',
+        kind: (kind === 'clientes' || kind === 'empleados' || kind === 'proveedores') ? kind : 'clientes',
+      };
+    } catch {
+      sessionStorage.removeItem(this.KEYPERSONINFO);
       return { id: '', mode: 'create', kind: 'clientes' };
     }
   }

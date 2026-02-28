@@ -12,11 +12,11 @@ import { Gener } from '../../../../entitie/gener';
 import { PersonCudDTO } from '../../../../dto/client-request';
 import { SocuialStatus } from '../../../../entitie/status-social';
 import { DocumentType } from '../../../../entitie/document-type';
-import { InfoClientsCrudComponent } from '../../../ventas/clientes/info-clients-crud/info-clients-crud.component';
+import { InfoPersonComponent } from '../info-person/info-person.component';
 
 @Component({
   selector: 'app-employee-crud',
-  imports: [FormsModule, InfoClientsCrudComponent],
+  imports: [FormsModule, InfoPersonComponent],
   templateUrl: './employee-crud.component.html'
 })
 export class EmployeeCrudComponent {
@@ -101,6 +101,7 @@ export class EmployeeCrudComponent {
       .subscribe((state: CrudState) => {
         this.id = state.id;
         this.mode = state.mode;
+        console.log(this.mode)
         this.kind = state.kind;
 
         // create => limpiar formulario
@@ -176,8 +177,10 @@ export class EmployeeCrudComponent {
 
         // navegar a address según modo + kind
         if (this.mode === 'create') {
+          this.sharingDataService.emitPersonInfoCrud({id: this.id, mode: this.mode, kind: this.kind})
           this.router.navigate([`/auth/mantenimientos/${this.kind}/address/create`]);
         } else if (this.mode === 'edit') {
+          this.sharingDataService.emitPersonInfoCrud({id: this.id, mode: this.mode, kind: this.kind })
           this.router.navigate([`/auth/mantenimientos/${this.kind}/address/edit`]);
         } else {
           // view no debería guardar, pero por si acaso:

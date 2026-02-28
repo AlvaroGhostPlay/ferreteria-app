@@ -1,30 +1,13 @@
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthServiceService } from '../../auth/auth-service.service'
-type MenuSectionId =
-  | 'dashboard'
-  | 'ventas'
-  | 'inventario'
-  | 'productos'
-  | 'reportes'
-  | 'caja'
-  | 'mantenimientos'
-  | 'supervision'
-  | 'config';
-
-interface MenuItem {
-  label: string;
-  route: string;
-  icon?: string;      // opcional
-  section: MenuSectionId;
-}
-
-interface MenuGroup {
-  title: string;
-  section: MenuSectionId;
-  ulrBase: string;
-  items: MenuItem[];
-} 
+import { NavigationService } from '../../services/navigation.service';
+import { WarehouseService } from '../../services/warehouse.service';
+import { UserService } from '../../services/user.service';
+import { JobRoleDto } from '../../entitie/job-role';
+import { MenuGroup } from '../../entitie/menu-group';
+import { EMPTY } from 'rxjs';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'nadvar',
@@ -32,78 +15,59 @@ interface MenuGroup {
   templateUrl: './nadvar.component.html',
 })
 export class NadvarComponent {
-  menu: MenuGroup[] = [
-    {
-      title: 'Inicio',
-      section: 'dashboard',
-      ulrBase: '/auth/inicio',
-      items: [
-      ],
-    },
-    {
-      title: 'Caja',
-      section: 'caja',
-      ulrBase: '/caja',
-      items: [
-        { label: 'Apertura/Cierre', route: '/caja/corte', section: 'caja' },
-        { label: 'Movimientos', route: '/caja/movimientos', section: 'caja' },
-      ],
-    },
-    {
-      title: 'Mantenimientos',
-      section: 'mantenimientos',
-      ulrBase: '/auth/mantenimientos',
-      items: [
-        { label: 'Usuarios', route: '/auth/mantenimientos/usuarios', section: 'mantenimientos' },
-        { label: 'Roles', route: '/auth/mantenimientos/roles', section: 'mantenimientos' },
-        { label: 'Catálogos', route: '/auth/mantenimientos/catalogos', section: 'mantenimientos' },
-      ],
-    },
-    {
-      title: 'Supervisor',
-      section: 'supervision',
-      ulrBase: '/supervision',
-      items: [
-        { label: 'Aprobaciones', route: '/supervision/aprobaciones', section: 'supervision' },
-        { label: 'Incidencias', route: '/supervision/incidencias', section: 'supervision' },
-      ],
-    },
-    {
-      title: 'Ventas',
-      section: 'ventas',
-      ulrBase: '/auth/ventas',
-      items: [
-        { label: 'Nueva venta', route: '/auth/ventas/venta', section: 'ventas' },
-        { label: 'Historial', route: '/auth/ventas/historial', section: 'ventas' },
-        { label: 'Clientes', route: '/auth/ventas/clientes', section: 'ventas' },
-      ],
-    },
-    {
-      title: 'Productos',
-      section: 'productos',
-      ulrBase: '/productos',
-      items: [
-        { label: 'Listado', route: '/productos', section: 'productos' },
-        { label: 'Precios', route: '/productos/precios', section: 'productos' },
-      ],
-    },
-    {
-      title: 'Reportes',
-      section: 'reportes',
-      ulrBase: '/reportes',
-      items: [
-        { label: 'Ventas', route: '/reportes/ventas', section: 'reportes' },
-        { label: 'Inventario', route: '/reportes/inventario', section: 'reportes' },
-      ],
-    },
-  ];
+
+  private username = '';
+  private userId = '';
+  private jobRoles: JobRoleDto[] = []
+
+  menu: MenuGroup[] = []
 
   constructor(
     private authService: AuthServiceService,
-    private router: Router
-  ){}
+    private router: Router,
+    private navigationService: NavigationService,
+    private warehouseService: WarehouseService,
+    private userService: UserService
+  ) { }
 
-  get auth(): boolean{
+  ngOnInit() {
+    // 1) username seguro
+    const stored = sessionStorage.getItem('username') ?? '';
+    let username = stored;
+
+    try {
+      const obj = JSON.parse(stored);
+      username = obj?.name ?? obj?.username ?? stored;
+    } catch { }
+
+    this.username = username?.trim() ?? '';
+
+    if (!this.username) {
+      console.error('No username en sessionStorage');
+      return;
+    }
+
+    this.userService.getUserByUsername(this.username).subscribe({
+      next: userDB => {
+        this.userId = userDB.userId;
+        this.warehouseService.getWarehouseAndJobRole(this.userId).subscribe({
+          next: userWarehouse => {
+            console.log(userWarehouse)
+            this.navigationService.getNadvar(userWarehouse.jobRole[0].jobRoleId, true).subscribe({
+              next: menus =>{
+                this.menu = menus
+                console.log(menus)
+                console.log(this.menu)
+              }
+            })
+          },
+          error: err => console.log(err)
+        })
+      }
+    })
+    // 2) cadena: user -> roles -> navbar
+  }
+  get auth(): boolean {
     return this.authService.isAuthenticated()
   }
 
@@ -111,7 +75,7 @@ export class NadvarComponent {
     return this.menu;
   }
 
-  logout():void{
+  logout(): void {
     this.authService.logoutApi();
     this.router.navigate(['/login']);
   }

@@ -10,6 +10,7 @@ import { AddressType } from '../entitie/address-type';
 import { PhoneType } from '../entitie/phone-type';
 import { Brand } from '../entitie/brand';
 import { Category } from '../entitie/category';
+import { JobRoleDto } from '../entitie/job-role';
 
 @Injectable({
   providedIn: 'root'
@@ -51,5 +52,4 @@ export class CatalogService {
   getCategory(): Observable<Category[]>{
     return this.http.get<Category[]>(this.uri+'category');
   }
-
 }

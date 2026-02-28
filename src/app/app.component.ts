@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { NadvarComponent } from "./admin-layout/nadvar/nadvar.component";
+import { RouteSessionCleanerService } from './auth/route-session-cleaner.service';
 
 @Component({
   selector: 'app-root',
@@ -9,4 +9,7 @@ import { NadvarComponent } from "./admin-layout/nadvar/nadvar.component";
 })
 export class AppComponent {
   title = 'ferreteria-app';
+    constructor(cleaner: RouteSessionCleanerService) {
+    cleaner.init();
+  }
 }

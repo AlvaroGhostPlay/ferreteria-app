@@ -59,6 +59,7 @@ kind: PersonKind = 'clientes';
   }
 
   view(id: string) {
+    this.sharing.emitPersonInfoCrud({ id, mode: 'view', kind: this.kind });
     this.sharing.emitPersonCrud({ id, mode: 'view', kind: this.kind });
     this.router.navigate([`/auth/mantenimientos/${this.kind}/view`]);
   }

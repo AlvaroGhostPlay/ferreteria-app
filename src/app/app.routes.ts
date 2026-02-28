@@ -32,6 +32,7 @@ import { redirectGuard } from './auth/redirect.guard';
 import { ProductCrudComponent } from './admin-layout/mantenimientos/products/products-crud/products-crud.component';
 import { EmployeeCrudComponent } from './admin-layout/mantenimientos/employees/employee-crud/employee-crud.component';
 import { EmployeesComponent } from './admin-layout/mantenimientos/employees/employees.component';
+import { InfoPersonComponent } from './admin-layout/mantenimientos/employees/info-person/info-person.component';
 
 export const routes: Routes = [
 
@@ -92,7 +93,7 @@ export const routes: Routes = [
       { path: 'mantenimientos/:kind', component: EmployeesComponent, canActivate: [roleGuard] },
       { path: 'mantenimientos/:kind/page/:page', component: EmployeesComponent, canActivate: [roleGuard] },
       { path: 'mantenimientos/:kind/:mode', component: EmployeeCrudComponent, canActivate: [roleGuard] },
-      { path: 'mantenimientos/:kind/address/:mode', component: InfoClientsCrudComponent, canActivate: [roleGuard] },
+      { path: 'mantenimientos/:kind/address/:mode', component: InfoPersonComponent, canActivate: [roleGuard] },
 
       { path: 'ventas', component: VentasComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_ROLE_EMPLEADO'] } },
       { path: 'ventas/venta', component: VentaComponent, canActivate: [roleGuard], data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_ROLE_EMPLEADO'] } },

@@ -23,6 +23,10 @@ export class UserService {
       return this.httpClient.get<User>(this.uri+id);
     }
 
+    getUserByUsername(username: string): Observable<User>{
+      return this.httpClient.get<User>(this.uri+'/username/'+username);
+    }
+
     getRoles():Observable<Role[]>{
       return this.httpClient.get<Role[]>(this.uri+"/role");
     }

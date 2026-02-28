@@ -1,0 +1,168 @@
+<div class="contenedor">
+    <div class="header">
+
+        <h1 class="color-blanco titulo-formulario">Información del Cliente</h1>
+        <div>
+            <h2 class="color-blanco aline-center">{{ personName.personName }}</h2>
+        </div>
+
+    </div>
+    <div class="shadow-box">
+        @if (mode === 'create') {
+        <h1 class="color-blanco titulo-formulario">Crear Direcciones</h1>
+        } @else {
+        <h1 class="color-blanco titulo-formulario">Editar Direcciones</h1>
+        }
+        @if (cont < addressesTypes.length && mode !=='view' ) { <div>
+            <div class="btn-right">
+                <button class="btn btn-primary " type="button" (click)="addAddress()">
+                    Agregar dirección
+                </button>
+            </div>
+    </div>
+    }
+
+    @for (addr of addresses; track $index; let i = $index) {
+    <h2 class="color-blanco cliente-subtitulo">Dirección {{ i + 1 }}</h2>
+    <div class="block-form">
+
+        <div class="campos">
+            <div><label class="color-blanco">Tipo de Dirección</label></div>
+            <div class="campo-input">
+                <select class="form-select" [name]="'addressType-' + i" [ngModel]="addr.idAddressType.addressTypeId"
+                    (ngModelChange)="onAddressTypeSelected($event, i)" required>
+                    <option value="" disabled>Seleccione opción</option>
+
+                    @for (dt of getOptionsFor(addr); track dt.addressTypeId) {
+                    <option [value]="dt.addressTypeId">{{ dt.addressType }}</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="campos">
+            <div><label class="color-blanco">Calle / Avenida</label></div>
+            <div class="campo-input">
+                <input [(ngModel)]="addr.line1" name="street-{{i}}" type="text" />
+            </div>
+        </div>
+
+        <div class="campos">
+            <div><label class="color-blanco">Número Exterior</label></div>
+            <div class="campo-input">
+                <input [(ngModel)]="addr.line2" name="ext-number-{{i}}" type="text" />
+            </div>
+        </div>
+
+        <div class="campos">
+            <div><label class="color-blanco">Ciudad / Municipio</label></div>
+            <div class="campo-input">
+                <input [(ngModel)]="addr.city" name="city-{{i}}" type="text" />
+            </div>
+        </div>
+
+        <div class="campos">
+            <div><label class="color-blanco">Departamento</label></div>
+            <div class="campo-input">
+                <input [(ngModel)]="addr.state" name="state-{{i}}" type="text" />
+            </div>
+        </div>
+
+        <div class="campos">
+            <div><label class="color-blanco">País</label></div>
+            <div class="campo-input">
+                <input [(ngModel)]="addr.country" name="country-{{i}}" type="text" />
+            </div>
+        </div>
+
+        <div class="campos">
+            <div><label class="color-blanco">Código Postal</label></div>
+            <div class="campo-input">
+                <input [(ngModel)]="addr.postalCode" name="zip-{{i}}" type="text" />
+            </div>
+        </div>
+
+        <div class="campos span-2">
+            <div><label class="color-blanco">Referencia</label></div>
+            <div class="campo-input">
+                <input [(ngModel)]="addr.reference" name="ref-{{i}}" type="text" />
+            </div>
+        </div>
+
+        <div class="campos">
+            <div><label class="color-blanco">Es la dirección principal</label></div>
+            <div class="campo-input">
+                <input type="checkbox" [(ngModel)]="addr.isPrimary" [name]="'primary-' + i"
+                    (ngModelChange)="setPrimary(i, $event)" [disabled]="isOtherPrimary(i)" />
+            </div>
+        </div>
+
+        @if (mode !== 'view') {
+        <div class="btn-center">
+            <button class="btn btn-danger" type="button" (click)="removeAddress(i)">
+                Quitar Dirección {{ i + 1 }}
+            </button>
+        </div>
+        }
+
+    </div>
+    }
+
+    @if (mode === 'create') {
+    <h1 class="color-blanco titulo-formulario">Crear Teléfonos</h1>
+    } @else {
+    <h1 class="color-blanco titulo-formulario">Editar Teléfonos</h1>
+    }
+    @if (contPhone < phoneTypes.length && mode !=='view' ) { <div>
+        <div class="btn-right">
+            <button class="btn btn-primary " type="button" (click)="addPhone()">
+                Agregar Teléfono
+            </button>
+        </div>
+</div>
+}
+@for (addr of phones; track $index; let i = $index) {
+<h2 class="color-blanco cliente-subtitulo">Teléfono {{ i + 1 }}</h2>
+<div class="block-form">
+
+    <div class="campos">
+        <div><label class="color-blanco">Tipo de Teléfono</label></div>
+        <div class="campo-input">
+            <select class="form-select" [name]="'phoneType-' + i" [ngModel]="addr.type.phoneTypeId"
+                (ngModelChange)="onPhoneTypeSelected($event, i)" required>
+                <option value="" disabled>Seleccione opción</option>
+
+                @for (dt of getOptionsForPhone(addr); track dt.phoneTypeId) {
+                <option [value]="dt.phoneTypeId">{{ dt.phoneType }}</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="campos">
+        <div><label class="color-blanco">Número de Teléfono</label></div>
+        <div class="campo-input">
+            <input [(ngModel)]="addr.phoneNumber" name="phone-{{i}}" type="text" />
+        </div>
+    </div>
+
+    @if (mode !== 'view') {
+    <div class="btn-center">
+        <button class="btn btn-danger" type="button" (click)="removePhone(i)">
+            Quitar Teléfono {{ i + 1 }}
+        </button>
+    </div>
+    }
+
+</div>
+}
+
+@if (mode !== 'view') {
+<div class="btn-right">
+    <button class="btn btn-primary " type="button" (click)="save()">Guardar</button>
+</div>
+}
+
+</div>
+
+</div>
